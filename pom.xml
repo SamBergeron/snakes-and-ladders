@@ -2,6 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.uqam.conception</groupId>
   <artifactId>snakesAndLadders</artifactId>
+  
   <version>0.0.1-SNAPSHOT</version>
   <name>snakesAndLadders</name>
+  <packaging>jar</packaging>
+  
 </project>
