@@ -21,6 +21,13 @@ public abstract class Joueur {
 		this.caseCourante = deplacement;
 	}
 	
+	/*
+	 * Permet de gerer les commandes d'un joueur pendant son tour (undo/redo/lancer le de)
+	 */
+	public boolean gererCommande(){
+		return false;
+	}
+	
 	public void setCaseCourante(int nouvellePosition){
 		this.caseCourante = nouvellePosition;
 	}

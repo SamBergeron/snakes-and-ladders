@@ -75,6 +75,11 @@ public class Partie {
 		Joueur gagnant = null;
 		while(gagnant == null){
 			for(Joueur j : joueurs){
+				while(j.gererCommande()){
+					//on continue de gere la commande tant que le joueur
+					//humain decide de faire des undo redo
+				}
+				
 				int valeurDe = de.rouler();
 				int deplacement = valeurDe + j.getCaseCourante();
 				
@@ -83,7 +88,7 @@ public class Partie {
 				deplacement = algo.calculerVictoire(j.getCaseCourante(), deplacement, posFinale);
 				deplacement = plateau.getCases().get(deplacement).getPosition();
 				
-				System.out.println("Tour du joeur " + j.getNom());
+				System.out.println("Tour du joueur " + j.getNom());
 				j.deplacer(deplacement);
 				
 				if(deplacement == posFinale){

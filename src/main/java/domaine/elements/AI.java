@@ -17,4 +17,9 @@ public class AI extends Joueur{
 	public void deplacer(int valeurDe){
 		super.deplacer(valeurDe);
 	}
+	
+	@Override
+	public boolean gererCommande(){
+		return super.gererCommande();
+	}
 }

@@ -6,12 +6,14 @@ import domaine.elements.Humain;
 import domaine.elements.Joueur;
 import domaine.elements.Plateau;
 import domaine.elements.statique.*;
+import presentation.vue.MenuPrincipal;
 import domaine.controleDeJeu.*;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// Juste un test pour qu'on roule dequoi
+		/*
 		Plateau p = new Plateau(8, 8, 5, 5);
 		De d = new De(NombreFaces.SIX);
 		System.out.println(p);
@@ -31,6 +33,10 @@ public class Main {
 		partie.addJoueur(j3);
 		
 		System.out.println(partie.jouerUnePartie());
+		*/
+		MenuPrincipal menuPrincipal = new MenuPrincipal();
+		menuPrincipal.afficherEcran();
+		
 	}
 
 }
