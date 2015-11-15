@@ -2,17 +2,18 @@ package domaine.elements;
 
 import domaine.elements.statique.Couleur;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 public class Humain extends Joueur{
 	
-	private LinkedList histoCase;
+	private List<Integer> histoCase;
 	private int positionListe;
 	
 	
-	public Humain(String nom, Couleur couleurPion, int caseCourante) {
-		super(nom, couleurPion, caseCourante);
-		this.histoCase = new LinkedList();
+	public Humain(String nom, Couleur couleurPion) {
+		super(nom, couleurPion);
+		this.histoCase = new LinkedList<Integer>();
 		this.histoCase.add(0);					//on ajoute la premiere position du joueur : la case 0
 		this.positionListe = 0;
 	}
@@ -21,10 +22,10 @@ public class Humain extends Joueur{
 	 * Prend en parametre la valeur du jet de de 
 	 * Retourne la nouvelle position du joueur 
 	 */
-	public int jouerUnTour(int valeurDe){
-		int resultat = super.jouerUnTour(valeurDe);
-		//updateCaseHisto(resultat);					//a implementer
-		return resultat;
+	@Override
+	public void deplacer(int deplacement){
+		updateCaseHisto(deplacement);
+		super.deplacer(deplacement);
 	}	
 	
 	/*
@@ -32,9 +33,8 @@ public class Humain extends Joueur{
 	 * en rajoutant une nouvelle position au tableau
 	 */
 	private void updateCaseHisto(int valeurDe){
-		this.histoCase.add(valeurDe);
+		histoCase.add(valeurDe);
 		this.positionListe++;
-		//A faire : la taille de histoCase ne doit jamais etre plus grande que 10
 	}
 	
 	public void undo(){

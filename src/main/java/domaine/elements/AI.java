@@ -5,15 +5,16 @@ import domaine.elements.statique.Couleur;
 public class AI extends Joueur{
 	
 
-	public AI(String nom, Couleur couleurPion, int caseCourante) {
-		super(nom, couleurPion, caseCourante);
+	public AI(String nom, Couleur couleurPion) {
+		super(nom, couleurPion);
 	}
 
 	/*
 	 * Prend en parametre la valeur du jet de de 
 	 * Retourne la nouvelle position du joueur 
 	 */
-	public int jouerUnTour(int valeurDe){
-		return super.jouerUnTour(valeurDe);
+	@Override
+	public void deplacer(int valeurDe){
+		super.deplacer(valeurDe);
 	}
 }

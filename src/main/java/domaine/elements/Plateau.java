@@ -28,14 +28,14 @@ public class Plateau {
 	private void genererCasesSerpentsEchelles(){
 		for(int i=0; i < nbSerpent; i++){
 			int debut = (int)(Math.random() * (cases.size()-2)); // Pcq on veut ignorer le 1er et dernier element
-			int fin = (int)(Math.random() * (debut-2)); 
-			cases.set(debut, new CaseSerpent(debut, fin));
+			int fin = 1 + (int)(Math.random() * (debut-2)); 
+			cases.set(debut, new CaseSerpent(debut, cases.get(fin)));
 		}
 		
 		for(int i=0; i < nbEchelle; i++){
 			int debut = (int)(Math.random() * (cases.size() - 2)); // Pcq on veut ignorer le 1er et dernier element
 			int fin = debut + ((int)(Math.random() * (cases.size() - debut - 2))); 
-			cases.set(debut, new CaseEchelle(debut, fin));
+			cases.set(debut, new CaseEchelle(debut, cases.get(fin)));
 		}
 	}
 

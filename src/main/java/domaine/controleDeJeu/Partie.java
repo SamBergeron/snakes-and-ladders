@@ -1,6 +1,9 @@
 package domaine.controleDeJeu;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.plaf.SliderUI;
 
 import domaine.elements.De;
 import domaine.elements.Joueur;
@@ -8,28 +11,41 @@ import domaine.elements.Plateau;
 import domaine.elements.statique.Couleur;
 
 public class Partie {
-	private List<Joueur>joueurs;
-	De de;
-	Plateau plateau;
-	StrategieVictoire strategieAlgorithme;
+	private List<Joueur> joueurs;
+	private De de;
+	private Plateau plateau;
+	private StrategieVictoire algo;
 	
-	/*
-	 * Constructeur
-	 */
-	public Partie(List<Joueur>listeJoueur,int typeDe, int longueur, int largeur, int serpents, int echelles, int typeAlgorithme){
-		this.joueurs.addAll(listeJoueur);
-		switch(typeDe){							//voir pour un pattern GoF
-			//case 6 : this.de = new De6Faces();
-			//case 8 : this.de = new De8Faces();
-			//case 20 : this.de = new De20Faces();
-			//default : System.out.println("Probleme instantiation Partie - (a faire : interrompre la partie"); //a faire : securiser le default
-		}
-		this.plateau = new Plateau(longueur,largeur,serpents,echelles);
-		switch(typeAlgorithme){					//voir pour un pattern GoF
-			case 1 : this.strategieAlgorithme = new StrategieAlgorithme1();
-			case 2 : this.strategieAlgorithme = new StrategieAlgorithme2();
-			case 3 : this.strategieAlgorithme = new StrategieAlgorithme3();
-		}
+	public Partie() {
+		this.joueurs = new ArrayList<Joueur>();
+	}
+	
+	public De getDe() {
+		return de;
+	}
+
+	public void setDe(De de) {
+		this.de = de;
+	}
+
+	public Plateau getPlateau() {
+		return plateau;
+	}
+
+	public void setPlateau(Plateau plateau) {
+		this.plateau = plateau;
+	}
+
+	public StrategieVictoire getAlgo() {
+		return algo;
+	}
+
+	public void setAlgo(StrategieVictoire algo) {
+		this.algo = algo;
+	}
+
+	public void addJoueur(Joueur j){
+		joueurs.add(j);
 	}
 	
 	/*
@@ -54,9 +70,30 @@ public class Partie {
 	/*
 	 * Demarre une nouvelle partie
 	 */
-	public void jouerUnePartie(){
+	public Joueur jouerUnePartie(){
 		
-	
+		Joueur gagnant = null;
+		while(gagnant == null){
+			for(Joueur j : joueurs){
+				int valeurDe = de.rouler();
+				int deplacement = valeurDe + j.getCaseCourante();
+				
+				// Check victoire avec l'algo
+				int posFinale = plateau.getCaseFinale().getPosition();
+				deplacement = algo.calculerVictoire(j.getCaseCourante(), deplacement, posFinale);
+				deplacement = plateau.getCases().get(deplacement).getPosition();
+				
+				System.out.println("Tour du joeur " + j.getNom());
+				j.deplacer(deplacement);
+				
+				if(deplacement == posFinale){
+					gagnant = j;
+					break;
+				}
+			}
+		}
+		return gagnant;
+		
 	}
 
 }

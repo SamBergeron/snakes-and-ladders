@@ -2,23 +2,25 @@ package domaine.elements;
 
 public class CaseSerpent extends Case {
 	
-	private int redirection;
+	private Case redirection;
 	
-	public CaseSerpent(int position) {
-		super(position);
-	}
-	
-	public CaseSerpent(int position, int redirection){
+	public CaseSerpent(int position, Case redirection){
 		super(position);
 		this.redirection = redirection;
 	}
-
-	public int getRedirection() {
+	
+	@Override
+	public int getPosition(){
+		System.out.println("Case Serpent... ON DESCEND!");
+		return redirection.getPosition();
+	}
+	
+	public Case getRedirection() {
 		return redirection;
 	}
 
-	public void setRedirection(int redirection) {
-		if(redirection < this.position)
+	public void setRedirection(Case redirection) {
+		if(redirection.getPosition() < this.position)
 			this.redirection = redirection;
 		else throw new Error("Un serpent doit rediriger vers une case plus petite");
 	}
