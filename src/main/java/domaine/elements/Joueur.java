@@ -1,5 +1,4 @@
 package domaine.elements;
-
 import domaine.elements.statique.*;
 
 public abstract class Joueur {
