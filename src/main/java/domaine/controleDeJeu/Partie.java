@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.plaf.SliderUI;
 
+import controleur.jeu.FacadeJeu;
 import domaine.elements.De;
 import domaine.elements.Joueur;
 import domaine.elements.Plateau;
@@ -71,13 +72,15 @@ public class Partie {
 	 * Demarre une nouvelle partie
 	 */
 	public Joueur jouerUnePartie(){
+		FacadeJeu facadeJeu = new FacadeJeu(); //controleur qui communique avec Partie
 		
 		Joueur gagnant = null;
 		while(gagnant == null){
 			for(Joueur j : joueurs){
 				while(j.gererCommande()){
 					//on continue de gere la commande tant que le joueur
-					//humain decide de faire des undo redo
+					//humain decide de faire des undo redo et on met à jour le plateau de jeu
+					facadeJeu.majPlateau(plateau.getLongueur(), plateau.getLargeur(), joueurs);
 				}
 				
 				int valeurDe = de.rouler();
@@ -90,6 +93,8 @@ public class Partie {
 				
 				System.out.println("Tour du joueur " + j.getNom());
 				j.deplacer(deplacement);
+				
+				facadeJeu.majPlateau(plateau.getLongueur(), plateau.getLargeur(), joueurs);
 				
 				if(deplacement == posFinale){
 					gagnant = j;
