@@ -83,6 +83,15 @@ public class Plateau {
 		this.nbSerpent = nbSerpent;
 	}
 
+	/*
+	 * Interroge la case situee a l'index position sur le plateau de jeu
+	 * On veut savoir si il y a une redirection (serpents ou echelle)
+	 */
+	public int getNouvellePosition(int position){
+		//A implementer
+		return 0;
+	}
+	
 	@Override
 	public String toString() {
 		return "Plateau [cases=" + cases + ", longueur=" + longueur + ", largeur=" + largeur + "]";
