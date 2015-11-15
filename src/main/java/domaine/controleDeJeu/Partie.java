@@ -1,6 +1,8 @@
 package domaine.controleDeJeu;
 
 import java.util.List;
+
+import domaine.elements.De;
 import domaine.elements.Joueur;
 import domaine.elements.Plateau;
 import domaine.elements.statique.Couleur;
@@ -17,10 +19,10 @@ public class Partie {
 	public Partie(List<Joueur>listeJoueur,int typeDe, int longueur, int largeur, int serpents, int echelles, int typeAlgorithme){
 		this.joueurs.addAll(listeJoueur);
 		switch(typeDe){							//voir pour un pattern GoF
-			case 6 : this.de = new De6Faces();
-			case 8 : this.de = new De8Faces();
-			case 20 : this.de = new De20Faces();
-			default : System.out.println("Probleme instantiation Partie - (a faire : interrompre la partie"); //a faire : securiser le default
+			//case 6 : this.de = new De6Faces();
+			//case 8 : this.de = new De8Faces();
+			//case 20 : this.de = new De20Faces();
+			//default : System.out.println("Probleme instantiation Partie - (a faire : interrompre la partie"); //a faire : securiser le default
 		}
 		this.plateau = new Plateau(longueur,largeur,serpents,echelles);
 		switch(typeAlgorithme){					//voir pour un pattern GoF
