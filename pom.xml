@@ -3,8 +3,8 @@
   <groupId>com.uqam.conception</groupId>
   <artifactId>snakesAndLadders</artifactId>
   
-  <version>0.0.1-SNAPSHOT</version>
-  <name>snakesAndLadders</name>
+  <version>0.1</version>
+  <name>Serpents-Echelles</name>
   <packaging>jar</packaging>
   
   <dependencies>
@@ -18,16 +18,28 @@
   <build>
 	<plugins>
 	  <plugin>
-	  <groupId>org.apache.maven.plugins</groupId>
-	  <artifactId>maven-jar-plugin</artifactId>
-		<configuration>
-		  <archive>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <finalName>${pom.name}-${pom.version}-standalone</finalName>
+  		  <appendAssemblyId>false</appendAssemblyId>
+          <archive>
 			<manifest>
 			  <mainClass>main.Main</mainClass>
 			</manifest>
 		  </archive>
-		</configuration>
-	  </plugin>
+        </configuration>
+      </plugin>
 	</plugins>
   </build>
 	
