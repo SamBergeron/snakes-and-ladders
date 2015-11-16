@@ -2,9 +2,9 @@ package presentation.vue;
 
 import java.util.Scanner;
 
-import controleur.jeu.ControleurMenuPrincipal;
+import controleurs.ControleurMenuPrincipal;
 
-public class MenuPrincipal {
+public class MenuPrincipal implements IMenu {
 
 	public void afficherEcran(){
 		boolean commandeOk = false;
@@ -23,6 +23,7 @@ public class MenuPrincipal {
 				cmp.gererCommande(choix);
 			}
 		}
+		sc.close();
 	}
 	
 }

@@ -1,8 +1,10 @@
-package controleur.jeu;
+package controleurs;
 
 import java.util.List;
 import java.util.Scanner;
 
+import domaine.configuration.ConfigPartie;
+import domaine.configuration.SerializerConfigPartie;
 import domaine.controleDeJeu.Partie;
 import domaine.controleDeJeu.StrategieAlgorithme1;
 import domaine.controleDeJeu.StrategieAlgorithme2;
@@ -16,20 +18,13 @@ import domaine.elements.statique.Couleur;
 import domaine.elements.statique.NombreFaces;
 
 public class FacadeJeu {
+	private SerializerConfigPartie configLoader;
 	
 	public void demarrerPartie(){ //on commence par creer les objets du domaine
-		Scanner sc = new Scanner(System.in);
-		/*on doit recuperer les donnees XML pour :
-		 * - nombres de cases du plateau de jeu
-		 * - nombre de serpents
-		 * - nombre d'echelles
-		 * pour le moment, ces donnees sont attribuees automatiquement 
-		 */
-		int longueur = 8;
-		int largeur = 8;
-		int nbEchelles = 5;
-		int nbSerpents = 5;
+		configLoader = new SerializerConfigPartie();
+		ConfigPartie config = configLoader.chargerConfig();
 		
+		Scanner sc = new Scanner(System.in);
 		System.out.println("Rentrez le type de de (6,8 ou 20 faces) : ");
 		int nbFaceDe = sc.nextInt();
 		while(nbFaceDe!=6 && nbFaceDe!=8 && nbFaceDe!=20){
@@ -46,7 +41,7 @@ public class FacadeJeu {
 			typeAlgo = sc.nextInt();
 		}
 		
-		Plateau p = new Plateau(longueur, largeur, nbEchelles, nbSerpents);
+		Plateau p = new Plateau(config.getLongueurPlateau(), config.getLargeurPlateau(), config.getNbSerpents(), config.getNbEchelles());
 		De d;
 		if(nbFaceDe==6){
 			d = new De(NombreFaces.SIX);
@@ -94,7 +89,8 @@ public class FacadeJeu {
 			}
 			partie.addJoueur(nouveauJoueur);
 		}
-		System.out.println(partie.jouerUnePartie());		
+		System.out.println(partie.jouerUnePartie());
+		sc.close();
 	}
 	
 	/*

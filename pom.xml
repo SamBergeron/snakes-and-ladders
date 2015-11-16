@@ -7,4 +7,28 @@
   <name>snakesAndLadders</name>
   <packaging>jar</packaging>
   
+  <dependencies>
+    <dependency>
+	  <groupId>com.google.code.gson</groupId>
+	  <artifactId>gson</artifactId>
+	  <version>1.7.1</version>
+    </dependency>
+  </dependencies>
+  
+  <build>
+	<plugins>
+	  <plugin>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-jar-plugin</artifactId>
+		<configuration>
+		  <archive>
+			<manifest>
+			  <mainClass>main.Main</mainClass>
+			</manifest>
+		  </archive>
+		</configuration>
+	  </plugin>
+	</plugins>
+  </build>
+	
 </project>
