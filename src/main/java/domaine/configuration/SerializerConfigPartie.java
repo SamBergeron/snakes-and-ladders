@@ -26,7 +26,7 @@ public class SerializerConfigPartie {
 		}
 	}
 	
-	public ConfigPartie chargerConfig(){
+	public ConfigPartie chargerConfig() throws IOException{
 		Gson jsonReader = new Gson();
 		try {
 			FileReader fr = new FileReader(FICHIER_CONFIG);
@@ -37,10 +37,8 @@ public class SerializerConfigPartie {
 			return config;
 		} catch (IOException e) {
 			System.out.println("Erreur de lecture dans le fichier de config");
-			System.out.println("Si la configuration n'existe pas veuiller en créer une!");
-			e.printStackTrace();
+			throw e;
 		}
-		return null;
 	}
 	
 }
