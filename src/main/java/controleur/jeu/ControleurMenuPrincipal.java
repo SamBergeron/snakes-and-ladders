@@ -1,20 +1,8 @@
 package controleur.jeu;
 
-import java.util.Scanner;
+import presentation.vue.PlateauJeu;
 
-import domaine.controleDeJeu.Partie;
-import domaine.controleDeJeu.StrategieAlgorithme1;
-import domaine.controleDeJeu.StrategieAlgorithme2;
-import domaine.controleDeJeu.StrategieAlgorithme3;
-import domaine.elements.AI;
-import domaine.elements.De;
-import domaine.elements.Humain;
-import domaine.elements.Joueur;
-import domaine.elements.Plateau;
-import domaine.elements.statique.Couleur;
-import domaine.elements.statique.NombreFaces;
-
-public class ControleurMenuPrincipal {
+public class ControleurMenuPrincipal{
 
 	
 	/*
@@ -24,8 +12,11 @@ public class ControleurMenuPrincipal {
 	 */
 	public void gererCommande (int commande){
 		if(commande==1){ //on demarre une nouvelle partie
+			//PlateauJeu plateauJeu = new PlateauJeu();
+			//plateauJeu.afficherFenetre();
 			FacadeJeu facadeJeu = new FacadeJeu();
 			facadeJeu.demarrerPartie();
+
 		}
 		else if(commande==2){ //on veut configurer une partie
 			//affiche l'ecran de configuration -- A faire

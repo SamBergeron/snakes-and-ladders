@@ -35,7 +35,8 @@ public class Main {
 		System.out.println(partie.jouerUnePartie());
 		*/
 		MenuPrincipal menuPrincipal = new MenuPrincipal();
-		menuPrincipal.afficherEcran();
+		menuPrincipal.afficherFenetre();
+		//menuPrincipal.afficherEcran();
 		
 	}
 

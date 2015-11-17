@@ -101,6 +101,7 @@ public class FacadeJeu {
 	 * Temporaire : utile seulement pour debuguage
 	 * Attention pour un affichage correct : donner des noms de joueurs avec 2 caracteres (ex : j1 ou j2)
 	 * Si deux joueurs ou plus sont sur la meme case : un seul apparaitra en console
+	 * 
 	 */
 	public void majPlateau(int longueur, int largeur, List<Joueur>joueurs){	//affiche le plateau en console
 		int i,j,k;
