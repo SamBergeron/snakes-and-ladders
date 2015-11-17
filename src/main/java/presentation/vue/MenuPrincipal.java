@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import controleur.jeu.ControleurMenuPrincipal;
+import controleurs.ControleurMenuPrincipal;
 
 public class MenuPrincipal extends JFrame implements IMenu{
 
