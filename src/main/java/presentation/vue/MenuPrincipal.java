@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import controleur.jeu.ControleurMenuPrincipal;
 
-public class MenuPrincipal extends JFrame{
+public class MenuPrincipal extends JFrame implements IMenu{
 
 	JButton b_debutPartie;
 	JButton b_configurerPartie;
@@ -21,9 +21,11 @@ public class MenuPrincipal extends JFrame{
 	ControleurMenuPrincipal controleurMenuPrincipal;
 	
 	//IHM Graphique
-	public void afficherFenetre(){
+	public void afficherEcran(){
 		
 		controleurMenuPrincipal = new ControleurMenuPrincipal();
+
+
 
 		this.setTitle("Snakes and Ladders - Menu Principal");
 
@@ -75,7 +77,10 @@ public class MenuPrincipal extends JFrame{
 				cmp.gererCommande(choix);
 			}
 		}
+		sc.close();
 	}*/
+
+		
 	
 	private class EcouteurBouton implements ActionListener{
 

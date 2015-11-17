@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.plaf.SliderUI;
 
-import controleur.jeu.FacadeJeu;
+import controleurs.FacadeJeu;
 import domaine.elements.De;
 import domaine.elements.Joueur;
 import domaine.elements.Plateau;

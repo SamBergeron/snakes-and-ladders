@@ -21,3 +21,6 @@ buildNumber.properties
 .project
 .classpath
 .settings
+
+# Specific project files
+configPartie.json
