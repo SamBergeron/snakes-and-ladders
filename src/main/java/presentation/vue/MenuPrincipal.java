@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 
 import controleurs.ControleurMenuPrincipal;
 
-//public class MenuPrincipal extends JFrame implements IMenu{
 public class MenuPrincipal implements IMenu{
 	JButton b_debutPartie;
 	JButton b_configurerPartie;
