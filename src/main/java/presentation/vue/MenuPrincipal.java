@@ -12,11 +12,13 @@ import javax.swing.JPanel;
 
 import controleurs.ControleurMenuPrincipal;
 
-public class MenuPrincipal extends JFrame implements IMenu{
-
+//public class MenuPrincipal extends JFrame implements IMenu{
+public class MenuPrincipal implements IMenu{
 	JButton b_debutPartie;
 	JButton b_configurerPartie;
 	JButton b_quitterPartie;
+	
+	JFrame f_menuPrincipal;
 	
 	ControleurMenuPrincipal controleurMenuPrincipal;
 	
@@ -25,17 +27,17 @@ public class MenuPrincipal extends JFrame implements IMenu{
 		
 		controleurMenuPrincipal = new ControleurMenuPrincipal();
 
+		f_menuPrincipal = new JFrame();
 
-
-		this.setTitle("Snakes and Ladders - Menu Principal");
-
+		f_menuPrincipal.setTitle("Snakes and Ladders - Menu Principal");
 		Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
 		int largeur = (int)tailleEcran.getWidth();
 		int hauteur = (int)tailleEcran.getHeight();
-		this.setSize(largeur/2, hauteur/2);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
+
+		f_menuPrincipal.setSize(largeur/2, hauteur/2);
+		f_menuPrincipal.setLocationRelativeTo(null);
+		f_menuPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f_menuPrincipal.setResizable(false);
 		
 		JPanel panelMenu = new JPanel();
 		
@@ -53,9 +55,8 @@ public class MenuPrincipal extends JFrame implements IMenu{
 		b_quitterPartie.addActionListener(ecouteurBouton);
 		panelMenu.add(b_quitterPartie);
 		
-		
-		this.add(panelMenu);
-		this.setVisible(true);
+		f_menuPrincipal.add(panelMenu);
+		f_menuPrincipal.setVisible(true);
 	}
 	
 	//IHM Console
@@ -79,19 +80,20 @@ public class MenuPrincipal extends JFrame implements IMenu{
 		}
 		sc.close();
 	}*/
-
-		
 	
 	private class EcouteurBouton implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource()== b_debutPartie){
+				f_menuPrincipal.setVisible(false);
 				controleurMenuPrincipal.gererCommande(1);
 			}
 			else if(e.getSource() == b_configurerPartie){
+				f_menuPrincipal.setVisible(false);
 				controleurMenuPrincipal.gererCommande(2);
 			}
 			else if(e.getSource()== b_quitterPartie){
+				f_menuPrincipal.setVisible(false);
 				controleurMenuPrincipal.gererCommande(3);
 			}
 		}
