@@ -21,7 +21,5 @@ public class De {
 	public void setNbFaces(NombreFaces nbFaces) {
 		this.nbFaces = nbFaces;
 	}
-	
-	
 
 }

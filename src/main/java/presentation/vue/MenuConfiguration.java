@@ -2,7 +2,11 @@ package presentation.vue;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +21,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -32,7 +38,7 @@ public class MenuConfiguration implements IMenu {
 	JPanel panelConfiguration; //un panel gerant la configuration generale de la page de configuration
 	JPanel panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8; //un panel pour chaque case du GridLayout
 	
-	GridLayout layoutConfiguration;
+	GridBagLayout layoutConfiguration;
 	
 	JLabel label_case;
 	JLabel label_serpents;
@@ -45,7 +51,7 @@ public class MenuConfiguration implements IMenu {
 	JSpinner spinnerSerpents;
 	JSpinner spinnerEchelles;
 	
-	int nbCases = 40; //nb de cases choisit par le joueur
+	int nbCases = 40; //nb de cases choisit par le joueur, initialise au minimum : 40
 	
 	//signifie que 1/5eme au maximum des cases peuvent etre des serpents 
 	//signifie que un autre 1/5eme au maximum des cases peuvent etre des echelles 
@@ -55,8 +61,25 @@ public class MenuConfiguration implements IMenu {
 		
 		/* Mode Graphique */
 		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //permet des composants swing avec un style recent
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		controleurMenuConfiguration = new ControleurMenuConfiguration();
 		
+		/* Creation de la fenetre */
 		f_menuConfiguration = new JFrame();
 	
 		f_menuConfiguration.setTitle("Snakes and Ladders - Menu Configuration");
@@ -69,27 +92,18 @@ public class MenuConfiguration implements IMenu {
 		f_menuConfiguration.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f_menuConfiguration.setResizable(false);	
 		
-		
-		//Ajout du panel et de son layout
-		panelConfiguration = new JPanel();
-		layoutConfiguration = new GridLayout(4,2);
-		panelConfiguration.setLayout(layoutConfiguration);
-		
-		panel1 = new JPanel();
-		panel2 = new JPanel();
-		panel3 = new JPanel();
-		panel4 = new JPanel();
-		panel5 = new JPanel();
-		panel6 = new JPanel();
-		panel7 = new JPanel();
-		panel8 = new JPanel();
+		layoutConfiguration = new GridBagLayout();
+		f_menuConfiguration.setLayout(layoutConfiguration);		
+
 		
 		//Ajout des labels
+		final Font police_label = new Font(Font.DIALOG, Font.BOLD, 35);
 		label_case = new JLabel("Cases");
+		label_case.setFont(police_label);
 		label_serpents = new JLabel("Serpents");
-		panelConfiguration.add(label_serpents);
+		label_serpents.setFont(police_label);
 		label_echelles = new JLabel("Echelles");	
-		panelConfiguration.add(label_echelles);
+		label_echelles.setFont(police_label);
 
 		//Ajout des spinner
 		//Spinner choix du nombre de case (commence a 40 cases, minimum 40 cases, maximum 200cases, incremente de 10cases)
@@ -97,48 +111,87 @@ public class MenuConfiguration implements IMenu {
 		spinnerCases = new JSpinner(new SpinnerNumberModel(40,40,200,10));
 		spinnerCases.addChangeListener(ecouteurSpinner);
 		Dimension d = spinnerCases.getPreferredSize();
-		d.width = 150;
+		//d.width = 150;
+		d.width = largeur/5;
+		d.height = hauteur/30;
 		spinnerCases.setPreferredSize(d);
-		panel1.add(label_case);
-		panel2.add(spinnerCases);
-		panelConfiguration.add(panel1);
-		panelConfiguration.add(panel2);
-
-		
+		spinnerCases.setFont(police_label);
+	
 		//1 case sur 5 peut etre un serpent
 		spinnerSerpents = new JSpinner(new SpinnerNumberModel(0,0,nbCases/pourcentageSerpentEchelle,1));
 		d = spinnerSerpents.getPreferredSize();
-		d.width = 150;
+		d.width = largeur/5;
+		d.height = hauteur/30;
 		spinnerSerpents.setPreferredSize(d);
-		panel3.add(label_serpents);
-		panel4.add(spinnerSerpents);
-		panelConfiguration.add(panel3);
-		panelConfiguration.add(panel4);
+		spinnerSerpents.setFont(police_label);
 		
 		//1 case sur 5 peut etre une echelle
 		spinnerEchelles = new JSpinner(new SpinnerNumberModel(0,0,nbCases/pourcentageSerpentEchelle,1));	
 		d = spinnerEchelles.getPreferredSize();
-		d.width = 150;
+		d.width = largeur/5;
+		d.height = hauteur/30;
 		spinnerEchelles.setPreferredSize(d);
-		panel5.add(label_echelles);
-		panel6.add(spinnerEchelles);
-		panelConfiguration.add(panel5);
-		panelConfiguration.add(panel6);
+		spinnerEchelles.setFont(police_label);
 		
 		//Ajout des boutons sauvegarde et retour
+		final Font police_bouton = new Font(Font.DIALOG, Font.BOLD, 20);
 		EcouteurBouton ecouteurBouton = new EcouteurBouton();
 		b_svgConfig = new JButton("Sauvegarder Configuration");
 		b_svgConfig.addActionListener(ecouteurBouton);
+		b_svgConfig.setFont(police_bouton);
+		d = b_svgConfig.getPreferredSize();
+		d.width = largeur/5;
+		d.height = hauteur/10;
+		b_svgConfig.setPreferredSize(d);
 		b_retour = new JButton("Retour Menu Principal");	
-		b_retour.addActionListener(ecouteurBouton);
-		panel7.add(b_svgConfig);
-		panel8.add(b_retour);
-		panelConfiguration.add(panel7);
-		panelConfiguration.add(panel8);		
+		b_retour.addActionListener(ecouteurBouton);	
+		b_retour.setFont(police_bouton);
+		b_retour.setPreferredSize(d);
+		
+		/* Ajout des boutons sur la fenetre */
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		gbc.gridx = gbc.gridy = 0;	//la grille commence en [0,0]
+		gbc.gridheight = 1; // valeur par défaut - peut s'étendre sur une seule ligne.
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.insets = new Insets(hauteur/56, largeur/50, hauteur/56, largeur/80);
+		f_menuConfiguration.add(label_case,gbc);
+		
+		gbc.gridx = 1;
+		gbc.insets = new Insets(hauteur/56, largeur/50, hauteur/56, largeur/50);
+		f_menuConfiguration.add(spinnerCases,gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.insets = new Insets(hauteur/40, largeur/50, hauteur/75,largeur/80);
+		f_menuConfiguration.add(label_serpents,gbc);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		gbc.insets = new Insets(hauteur/40, largeur/50, hauteur/75, largeur/50);
+		f_menuConfiguration.add(spinnerSerpents,gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy =2;
+		gbc.insets = new Insets(hauteur/40, largeur/50, hauteur/20, largeur/80);
+		f_menuConfiguration.add(label_echelles,gbc);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		gbc.insets = new Insets(hauteur/40, largeur/50, hauteur/20, largeur/50);
+		f_menuConfiguration.add(spinnerEchelles,gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.insets = new Insets(hauteur/56, largeur/50, hauteur/75, largeur/50);
+		f_menuConfiguration.add(b_svgConfig,gbc);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		gbc.insets = new Insets(hauteur/56, largeur/50, hauteur/75, largeur/50);
+		f_menuConfiguration.add(b_retour,gbc);
 		
 			
-		f_menuConfiguration.add(panelConfiguration);
-		f_menuConfiguration.pack();
 		f_menuConfiguration.setVisible(true);		
 
 		// Mode Console
@@ -210,7 +263,5 @@ public class MenuConfiguration implements IMenu {
 			}
 		}
 	}
-	
-
 	
 }
