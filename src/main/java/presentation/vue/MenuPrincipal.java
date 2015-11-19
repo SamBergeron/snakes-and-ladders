@@ -1,11 +1,17 @@
 package presentation.vue;
 
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,6 +24,10 @@ public class MenuPrincipal implements IMenu{
 	JButton b_quitterPartie;
 	
 	JFrame f_menuPrincipal;
+	
+	GridLayout layoutPrincipal;
+	
+	JPanel panelMenu;
 	
 	ControleurMenuPrincipal controleurMenuPrincipal;
 	
@@ -38,23 +48,26 @@ public class MenuPrincipal implements IMenu{
 		f_menuPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f_menuPrincipal.setResizable(false);
 		
-		JPanel panelMenu = new JPanel();
+		panelMenu = new JPanel();
+		layoutPrincipal = new GridLayout(4,2);
+		panelMenu.setLayout(layoutPrincipal);	
+		
 		
 		EcouteurBouton ecouteurBouton = new EcouteurBouton();
 		
 		b_debutPartie = new JButton("Jouer");
 		b_debutPartie.addActionListener(ecouteurBouton);
-		panelMenu.add(b_debutPartie);
-		
+		panelMenu.add(b_debutPartie);	
 		b_configurerPartie = new JButton("Configurer");
 		b_configurerPartie.addActionListener(ecouteurBouton);
 		panelMenu.add(b_configurerPartie);
-		
+
 		b_quitterPartie = new JButton("Quitter");
 		b_quitterPartie.addActionListener(ecouteurBouton);
 		panelMenu.add(b_quitterPartie);
-		
+
 		f_menuPrincipal.add(panelMenu);
+		//f_menuPrincipal.pack();
 		f_menuPrincipal.setVisible(true);
 	}
 	
@@ -84,7 +97,8 @@ public class MenuPrincipal implements IMenu{
 
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource()== b_debutPartie){
-				f_menuPrincipal.setVisible(false);
+				//f_menuPrincipal.setVisible(false);
+				f_menuPrincipal.dispose();
 				controleurMenuPrincipal.gererCommande(1);
 			}
 			else if(e.getSource() == b_configurerPartie){
