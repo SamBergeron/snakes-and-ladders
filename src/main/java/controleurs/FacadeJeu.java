@@ -96,9 +96,9 @@ public class FacadeJeu {
 			System.out.println(partie.jouerUnePartie());
 			sc.close();
 			
-		// Si la configuration n'existe pas on skip et on représente le menu principal	
+		// Si la configuration n'existe pas on skip et on reprï¿½sente le menu principal	
 		} catch (IOException e) {
-			System.out.println("Si la configuration n'existe pas veuiller en créer une!");
+			System.out.println("Si la configuration n'existe pas veuiller en crï¿½er une!");
 			MenuPrincipal mp = new MenuPrincipal();
 			mp.afficherEcran();
 		}
@@ -109,6 +109,8 @@ public class FacadeJeu {
 	 * Attention pour un affichage correct : donner des noms de joueurs avec 2 caracteres (ex : j1 ou j2)
 	 * Si deux joueurs ou plus sont sur la meme case : un seul apparaitra en console
 	 */
+	
+	/* affichage du plateau de jeu en console
 	public void majPlateau(int longueur, int largeur, List<Joueur>joueurs){	//affiche le plateau en console
 		int i,j,k;
 		k = (longueur*largeur)-1; //nombre de case totale sur le plateau
@@ -166,6 +168,6 @@ public class FacadeJeu {
 			System.out.println("");
 		}
 		System.out.println("");
-	}
+	}*/
 	
 }

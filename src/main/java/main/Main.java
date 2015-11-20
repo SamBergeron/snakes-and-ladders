@@ -36,6 +36,7 @@ public class Main {
 		*/
 		MenuPrincipal menuPrincipal = new MenuPrincipal();
 		menuPrincipal.afficherEcran();
+		//menuPrincipal.afficherEcran();
 		
 	}
 

@@ -80,7 +80,7 @@ public class Partie {
 				while(j.gererCommande()){
 					//on continue de gere la commande tant que le joueur
 					//humain decide de faire des undo redo et on met à jour le plateau de jeu
-					facadeJeu.majPlateau(plateau.getLongueur(), plateau.getLargeur(), joueurs);
+					//facadeJeu.majPlateau(plateau.getLongueur(), plateau.getLargeur(), joueurs);
 				}
 				
 				int valeurDe = de.rouler();
@@ -94,7 +94,7 @@ public class Partie {
 				System.out.println("Tour du joueur " + j.getNom());
 				j.deplacer(deplacement);
 				
-				facadeJeu.majPlateau(plateau.getLongueur(), plateau.getLargeur(), joueurs);
+				//facadeJeu.majPlateau(plateau.getLongueur(), plateau.getLargeur(), joueurs);
 				
 				if(deplacement == posFinale){
 					gagnant = j;
