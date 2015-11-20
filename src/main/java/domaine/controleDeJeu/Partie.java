@@ -65,45 +65,38 @@ public class Partie {
 	 * du joueur graphiquement
 	 */
 	public void deplacementPion(int position, Couleur couleurPion){
-		//A faire
+		//Probablement pas utile finalement (?)
 	}
 	
 	/*
-	 * Demarre une nouvelle partie
+	 * determine si on a un joueur humain ou artificiel, pour savoir
+	 * si le de doit se lancer automatiquement ou non
 	 */
-	public Joueur jouerUnePartie(){
-		FacadeJeu facadeJeu = new FacadeJeu(); //controleur qui communique avec Partie
-		
-		Joueur gagnant = null;
-		while(gagnant == null){
-			for(Joueur j : joueurs){
-				while(j.gererCommande()){
-					//on continue de gere la commande tant que le joueur
-					//humain decide de faire des undo redo et on met à jour le plateau de jeu
-					//facadeJeu.majPlateau(plateau.getLongueur(), plateau.getLargeur(), joueurs);
-				}
-				
-				int valeurDe = de.rouler();
-				int deplacement = valeurDe + j.getCaseCourante();
-				
-				// Check victoire avec l'algo
-				int posFinale = plateau.getCaseFinale().getPosition();
-				deplacement = algo.calculerVictoire(j.getCaseCourante(), deplacement, posFinale);
-				deplacement = plateau.getCases().get(deplacement).getPosition();
-				
-				System.out.println("Tour du joueur " + j.getNom());
-				j.deplacer(deplacement);
-				
-				//facadeJeu.majPlateau(plateau.getLongueur(), plateau.getLargeur(), joueurs);
-				
-				if(deplacement == posFinale){
-					gagnant = j;
-					break;
-				}
-			}
-		}
-		return gagnant;
-		
+	public boolean estAI(int indexJoueur){
+		return joueurs.get(indexJoueur).estAI();
 	}
-
+	
+	public void undo(int indexJoueur){
+		joueurs.get(indexJoueur).undo();
+	}
+	public void redo(int indexJoueur){
+		joueurs.get(indexJoueur).redo();
+	}
+	public String afficherNomJoueur(int indexJoueur){
+		return joueurs.get(indexJoueur).getNom();
+	}
+	public boolean tirerDeEtDeplacer(int indexJoueur){
+		boolean unGagnant = false;
+		int valeurDe = de.rouler();
+		int deplacement = valeurDe + joueurs.get(indexJoueur).getCaseCourante();	
+		int posFinale = plateau.getCaseFinale().getPosition();
+		deplacement = algo.calculerVictoire(joueurs.get(indexJoueur).getCaseCourante(), deplacement, posFinale);
+		deplacement = plateau.getCases().get(deplacement).getPosition();
+		System.out.println("Tour du joueur " + joueurs.get(indexJoueur).getNom()); //pour debuguage seulement
+		joueurs.get(indexJoueur).deplacer(deplacement);
+		if(deplacement==posFinale){
+			unGagnant = true;
+		}
+		return unGagnant;
+	}
 }

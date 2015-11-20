@@ -133,7 +133,7 @@ public class MenuConfiguration implements IMenu {
 		spinnerEchelles.setPreferredSize(d);
 		spinnerEchelles.setFont(police_label);
 		
-		//Ajout des boutons sauvegarde et retour
+		//Creation des boutons sauvegarde et retour
 		final Font police_bouton = new Font(Font.DIALOG, Font.BOLD, 20);
 		EcouteurBouton ecouteurBouton = new EcouteurBouton();
 		b_svgConfig = new JButton("Sauvegarder Configuration");

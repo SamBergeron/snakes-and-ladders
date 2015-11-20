@@ -22,10 +22,18 @@ public abstract class Joueur {
 	}
 	
 	/*
-	 * Permet de gerer les commandes d'un joueur pendant son tour (undo/redo/lancer le de)
+	 * Retourne vrai si le joueur est de type AI
 	 */
-	public boolean gererCommande(){
-		return false;
+	public boolean estAI(){
+		return true;
+	}
+	
+	public void undo(){
+		
+	}
+	
+	public void redo(){
+		
 	}
 	
 	public void setCaseCourante(int nouvellePosition){

@@ -19,7 +19,8 @@ public class AI extends Joueur{
 	}
 	
 	@Override
-	public boolean gererCommande(){
-		return super.gererCommande();
+	public boolean estAI(){
+		return super.estAI();
 	}
+	
 }
