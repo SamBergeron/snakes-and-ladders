@@ -1,6 +1,7 @@
 package presentation.vue;
 
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,34 +9,56 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import controleurs.ControleurMenuPrincipal;
+import controleurs.FacadeJeu;
 
-public class PlateauJeu extends JFrame{
+public class PlateauJeu implements IMenu{
 
 	JButton b_debutPartie;
 	JButton b_configurerPartie;
 	JButton b_quitterPartie;
 	
-	ControleurMenuPrincipal controleurMenuPrincipal;
+	JFrame f_plateauJeu;
+	
+	GridBagLayout layoutPlateauJeu;
 	
 	//IHM Graphique
 	public void afficherFenetre(){
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //permet des composants swing avec un style recent
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		controleurMenuPrincipal = new ControleurMenuPrincipal();
+		f_plateauJeu = new JFrame();
 
-		this.setTitle("Snakes and Ladders - Partie en cours");
+		f_plateauJeu.setTitle("Snakes and Ladders - Partie en cours");
 
 		Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
 		int largeur = (int)tailleEcran.getWidth();
 		int hauteur = (int)tailleEcran.getHeight();
-		this.setSize(largeur, hauteur-(hauteur/20));
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
+		f_plateauJeu.setSize(largeur, hauteur-(hauteur/20));
+		f_plateauJeu.setLocationRelativeTo(null);
+		f_plateauJeu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f_plateauJeu.setResizable(false);
 		
-		JPanel panelMenu = new JPanel();
+		layoutPlateauJeu = new GridBagLayout();
+		f_plateauJeu.setLayout(layoutPlateauJeu);			
 		
+		/*
 		EcouteurBouton ecouteurBouton = new EcouteurBouton();
 		
 		b_debutPartie = new JButton("Jouer");
@@ -52,22 +75,27 @@ public class PlateauJeu extends JFrame{
 		
 		
 		this.add(panelMenu);
-		this.setVisible(true);
+		this.setVisible(true);*/
 	}
 	
 	private class EcouteurBouton implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource()== b_debutPartie){
-				controleurMenuPrincipal.gererCommande(1);
+				//controleurMenuPrincipal.gererCommande(1);
 			}
 			else if(e.getSource() == b_configurerPartie){
-				controleurMenuPrincipal.gererCommande(2);
+				//controleurMenuPrincipal.gererCommande(2);
 			}
 			else if(e.getSource()== b_quitterPartie){
-				controleurMenuPrincipal.gererCommande(3);
+				//controleurMenuPrincipal.gererCommande(3);
 			}
 		}
+	}
+
+	public void afficherEcran() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
