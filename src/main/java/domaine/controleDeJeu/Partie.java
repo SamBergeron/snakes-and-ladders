@@ -1,5 +1,6 @@
 package domaine.controleDeJeu;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,8 @@ public class Partie {
 	private De de;
 	private Plateau plateau;
 	private StrategieVictoire algo;
+	private int deplacement;
+	private int anciennePosition = 1;
 	
 	public Partie() {
 		this.joueurs = new ArrayList<Joueur>();
@@ -77,10 +80,14 @@ public class Partie {
 	}
 	
 	public void undo(int indexJoueur){
+		anciennePosition = joueurs.get(indexJoueur).getCaseCourante(); //utile pour l'affichage du pion a l'ecran
 		joueurs.get(indexJoueur).undo();
+		deplacement = joueurs.get(indexJoueur).getCaseCourante(); 		//utile pour l'affichage du pion a l'ecran
 	}
 	public void redo(int indexJoueur){
+		anciennePosition = joueurs.get(indexJoueur).getCaseCourante(); //utile pour l'affichage du pion a l'ecran
 		joueurs.get(indexJoueur).redo();
+		deplacement = joueurs.get(indexJoueur).getCaseCourante(); 		//utile pour l'affichage du pion a l'ecran
 	}
 	public String afficherNomJoueur(int indexJoueur){
 		return joueurs.get(indexJoueur).getNom();
@@ -88,7 +95,8 @@ public class Partie {
 	public boolean tirerDeEtDeplacer(int indexJoueur){
 		boolean unGagnant = false;
 		int valeurDe = de.rouler();
-		int deplacement = valeurDe + joueurs.get(indexJoueur).getCaseCourante();	
+		anciennePosition = joueurs.get(indexJoueur).getCaseCourante();
+		deplacement = valeurDe + anciennePosition;	
 		int posFinale = plateau.getCaseFinale().getPosition();
 		deplacement = algo.calculerVictoire(joueurs.get(indexJoueur).getCaseCourante(), deplacement, posFinale);
 		deplacement = plateau.getCases().get(deplacement).getPosition();
@@ -98,5 +106,25 @@ public class Partie {
 			unGagnant = true;
 		}
 		return unGagnant;
+	}
+	
+	public int getDeplacement(){
+		return deplacement;
+	}
+	
+	public int getAnciennePosition(){
+		return anciennePosition;
+	}
+	
+	public Color getCouleurPion(int indexJoueur){
+		Couleur couleur = joueurs.get(indexJoueur).getCouleurPion();
+		switch(couleur){
+			case ROUGE : return Color.RED;
+			case VERT : return Color.GREEN;
+			case BLEU : return Color.BLUE;
+			case JAUNE : return Color.YELLOW;
+			case BLANC : return Color.WHITE;
+			default : return Color.BLACK; 
+		}
 	}
 }

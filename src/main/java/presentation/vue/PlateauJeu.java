@@ -1,22 +1,29 @@
 package presentation.vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -26,6 +33,7 @@ import javax.swing.border.LineBorder;
 
 import controleurs.ControleurMenuPrincipal;
 import controleurs.FacadeJeu;
+import domaine.elements.statique.Couleur;
 
 public class PlateauJeu implements IMenu{
 
@@ -36,6 +44,8 @@ public class PlateauJeu implements IMenu{
 	
 	JFrame f_plateauJeu;
 	JPanel panelBouton;
+	JPanel panelPlateau;
+	JLayeredPane layPlateau;
 	
 	FacadeJeu facadeJeu;
 	
@@ -44,6 +54,7 @@ public class PlateauJeu implements IMenu{
 	
 	int largeur;
 	int hauteur;
+	
 	//IHM Graphique
 	public void afficherEcran(){
 		try {
@@ -132,6 +143,66 @@ public class PlateauJeu implements IMenu{
 	}
 	
 	/*
+	 * Supprime l'image du pion situe sur la case anciennePosition
+	 * Affiche l'image du pion situe sur la case nouvellePosition
+	 */
+	public void afficherPion(Color couleurPion, int nouvellePosition, int anciennePosition){
+		ImageIcon imagePion;
+		if(couleurPion==Color.BLUE){
+			imagePion = new ImageIcon(getClass().getResource("/images/pionbleu.png"));
+		}
+		else if(couleurPion==Color.GREEN){
+			imagePion = new ImageIcon(getClass().getResource("/images/pionvert.jpg"));
+		}
+		else if(couleurPion==Color.YELLOW){
+			imagePion = new ImageIcon(getClass().getResource("/images/pionjaune.jpg"));
+		}
+		else if(couleurPion==Color.WHITE){
+			imagePion = new ImageIcon(getClass().getResource("/images/pionblanc.jpg"));
+		}
+		else if(couleurPion==Color.BLACK){
+			imagePion = new ImageIcon(getClass().getResource("/images/pionnoir.jpg"));
+		}
+		else{
+			imagePion = new ImageIcon(getClass().getResource("/images/pionrouge.jpg"));
+		}
+		
+		/* Permet de modifier la taille de l'image */
+		Image image = imagePion.getImage();
+		Image nouvelleImage = image.getScaledInstance(largeur/50, hauteur/30, Image.SCALE_SMOOTH);
+		imagePion = new ImageIcon(nouvelleImage);
+			
+		/* Pour eviter les problemes d'affichage si le joueur part de la 1ere case*/
+		if(anciennePosition==0){
+			anciennePosition=1;
+		}
+		if(nouvellePosition==0){
+			nouvellePosition=1;
+		}
+		
+		/* On recherche l'ancienne case du joueur pour y supprimer son pion */
+		String ancPosition = ""+anciennePosition;
+		Component[] components = panelPlateau.getComponents();
+		for (Component com : components){
+			JLabel encours = (JLabel)com;
+			if(encours.getText().equals(ancPosition)){
+				System.out.println("On a trouve le bon element!");
+				encours.setIcon(null);
+			}
+		}		
+	
+		/* On recherche la nouvelle case du joueur pour y afficher son pion */
+		String nouvPosition = ""+nouvellePosition;
+		for (Component com : components){ 
+			JLabel encours = (JLabel)com;
+			if(encours.getText().equals(nouvPosition)){
+				System.out.println("On a trouve le bon element!");
+				encours.setIcon(imagePion);
+			}
+		}
+	}
+	
+	/*
 	 * Affiche le plateau de jeu
 	 * la largeur est de 10 par defaut
 	 * nbLigne demande la nombre de ligne que contient le plateau
@@ -140,9 +211,10 @@ public class PlateauJeu implements IMenu{
 		//en cours d'implémentation //////////////////////////////////////////
 		Border border = LineBorder.createGrayLineBorder();
 		final Font police_label = new Font(Font.DIALOG, Font.BOLD, hauteur/50);
-		System.out.println("largeur vaut : "+largeur+" hauteur vaut "+hauteur);
-		JPanel panelPlateau = new JPanel();
+		
+		panelPlateau = new JPanel();
 		panelPlateau.setLayout(new GridLayout(nbLigne,10));
+		layPlateau = f_plateauJeu.getLayeredPane();
 		
 		int i,j,k;
 		k = (nbLigne*10)-1; //nombre de case totale sur le plateau
@@ -162,7 +234,7 @@ public class PlateauJeu implements IMenu{
 			}else{
 				int temp = k-10+1;
 				for(j=10; j>0; j--){
-					JLabel jlab = new JLabel();
+					JLabel jlab = new JLabel();			
 					jlab.setText(""+(temp+1));
 					jlab.setBorder(border);
 					jlab.setHorizontalAlignment(SwingConstants.CENTER); //permet de placer le texte au centre du JLabel
@@ -179,8 +251,9 @@ public class PlateauJeu implements IMenu{
 				decroissant = true;
 			}
 		}
+		panelPlateau.revalidate();	 //permet d'attribuer les bonnes coordonees de chaque JLabel dans le JPanel
 		Container pane = f_plateauJeu.getContentPane();
-		pane.add(panelPlateau, BorderLayout.CENTER);	
+		pane.add(panelPlateau, BorderLayout.CENTER);		
 	}
 	
 	public JButton getb_undo(){

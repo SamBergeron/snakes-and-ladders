@@ -1,5 +1,6 @@
 package controleurs;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -85,18 +86,18 @@ public class FacadeJeu {
 			
 			System.out.println("Nombre de joueurs : ");
 			int nbJoueur = sc.nextInt();
-			nombreJoueur=nbJoueur;
 			while(nbJoueur<1 || nbJoueur>6){
 				System.out.println("Nombre de joueur incorrect");
 				System.out.println("Nombre de joueurs : ");
 				nbJoueur = sc.nextInt();
 			}
+			nombreJoueur=nbJoueur;
 			int i;
 			for(i=0; i<nbJoueur; i++){
 				String nomJoueur;
 				int typeJoueur=0;
 				Joueur nouveauJoueur; 
-				Couleur couleurPion = Couleur.BLEU; //pour le moment tous les pions sont bleu, on changera cela plus tard
+				Couleur couleurPion = Couleur.BLANC; //pour le moment tous les pions sont bleu, on changera cela plus tard
 				System.out.println("Nom du joueur : ");
 				nomJoueur = sc.next();
 				while(typeJoueur!=1 && typeJoueur!=2){
@@ -118,6 +119,11 @@ public class FacadeJeu {
 			plateauJeu.afficherPlateauJeu(config.getLongueurPlateau()); //affiche le plateau de jeu du nombre de cases voulues
 			//plateauJeu.genererSerpents(int positionSerpent);  //A FAIRE : idee d'implementation : passe au travers de la liste de case et retourner l'index de la case
 			//plateauJeu.genererEchelles(int positionEchelle); //A FAIRE
+			
+			//afficher les pions de tous les joueurs (faire une boucle for)
+			for(i=0; i<nombreJoueur; i++){
+				plateauJeu.afficherPion(partie.getCouleurPion(i), 1,1);
+			}
 			
 			control(); 									//attache les actionslistener aux boutons de plateau jeu
 			afficheUndoRedo(indexJoueurCourant);		//active ou desactive les undo/redo selon le type du joueur courant
@@ -201,12 +207,16 @@ public class FacadeJeu {
 	public void gererCommande (int commande){
 		if(commande==1){ //on fait un undo
 			partie.undo(indexJoueurCourant);
+			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());
 		}
 		else if(commande==2){ //on fait un redo
 			partie.redo(indexJoueurCourant);
+			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());
 		}
 		else if(commande==3){ //on lance le de et on deplace le joueur
 			boolean finPartie = partie.tirerDeEtDeplacer(indexJoueurCourant);
+			System.out.println("nouvelle position : "+partie.getDeplacement()+" Ancienne position : "+partie.getAnciennePosition());
+			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());	//on affiche la nouvelle position du joueur
 			if(finPartie==true){
 				JOptionPane.showMessageDialog(null, "Felicitation, le gagnant est : "+partie.afficherNomJoueur(indexJoueurCourant));
 				indexJoueurCourant=0;
