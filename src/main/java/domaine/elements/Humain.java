@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class Humain extends Joueur{
 	
 	private List<Integer> histoCase;
@@ -36,23 +38,8 @@ public class Humain extends Joueur{
 	 * @see domaine.elements.Joueur#gererCommande()
 	 */
 	@Override
-	public boolean gererCommande(){
-		Scanner sc = new Scanner(System.in);
-		int commande = 0;
-		System.out.println(this.getNom()+" selectionnez une action a faire : ");
-		System.out.println("1 - Undo");
-		System.out.println("2 - Redo");
-		System.out.println("3 - Tirer au de et deplacer le pion");	
-		commande = sc.nextInt();
-		if(commande==1){
-			this.undo();
-			return true;
-		}
-		else if(commande==2){
-			this.redo();
-			return true;
-		}
-		return false;
+	public boolean estAI(){
+		return false; //retourne vrai si c'est un humain : permet de savoir que l'on a besoin des boutons undo/redo
 	}
 	
 	/*
@@ -64,12 +51,15 @@ public class Humain extends Joueur{
 		this.positionListe++;
 	}
 	
+	@Override
 	public void undo(){	
 		if(positionListe==0){
-			System.out.println("Impossible de faire undo : aucun mouvement precedent dans l'historique");
+			//ATTENTION : pas sur de laisser ca ici 
+			JOptionPane.showMessageDialog(null, "Impossible de faire undo : aucun mouvement precedent dans l'historique");
 		}
 		else if(histoCase.size()-positionListe>10){
-			System.out.println("Impossible de faire undo : pas plus de 10 undo autorises");
+			//ATTENTION : pas sur de laisser ca ici 
+			JOptionPane.showMessageDialog(null, "Impossible de faire undo : pas plus de 10 undo autorises");
 		}
 		else{
 			positionListe--;
@@ -78,9 +68,11 @@ public class Humain extends Joueur{
 		}
 	}
 	
+	@Override
 	public void redo(){
 		if(positionListe==histoCase.size()-1){
-			System.out.println("Impossible de faire redo : aucun mouvement suivant dans l'historique");
+			//ATTENTION : pas sur de laisser ca ici 
+			JOptionPane.showMessageDialog(null, "Impossible de faire redo : aucun mouvement suivant dans l'historique");
 		}
 		else{
 			positionListe++;
@@ -88,5 +80,6 @@ public class Humain extends Joueur{
 			System.out.println("Redo effectue avec succes");
 		}	
 	}
+	
 
 }

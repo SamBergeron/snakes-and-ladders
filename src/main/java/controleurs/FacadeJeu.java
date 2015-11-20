@@ -1,8 +1,12 @@
 package controleurs;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 import domaine.configuration.ConfigPartie;
 import domaine.configuration.SerializerConfigPartie;
@@ -17,14 +21,26 @@ import domaine.elements.Joueur;
 import domaine.elements.Plateau;
 import domaine.elements.statique.Couleur;
 import domaine.elements.statique.NombreFaces;
+import presentation.vue.MenuConfiguration;
 import presentation.vue.MenuPrincipal;
+import presentation.vue.PlateauJeu;
 
 public class FacadeJeu {
 	private SerializerConfigPartie configLoader;
 	private ConfigPartie config;
+	private PlateauJeu plateauJeu;
+	private Partie partie;
+	private int indexJoueurCourant;
+	private int nombreJoueur;
+	private ActionListener actionListener;
+	private ActionListener actionListener2;
+	private ActionListener actionListener3;
+	private ActionListener actionListener4;
 	
 	public void demarrerPartie(){ //on commence par creer les objets du domaine
 		try {
+			
+			////////////////////////////// cette portion de code doit remplacer le mode console par le mode graphique
 			configLoader = new SerializerConfigPartie();
 			config = configLoader.chargerConfig();
 		
@@ -55,7 +71,7 @@ public class FacadeJeu {
 				d = new De(NombreFaces.VINGT);
 			}
 			
-			Partie partie = new Partie();
+			partie = new Partie();
 			partie.setDe(d);
 			partie.setPlateau(p);
 			
@@ -69,6 +85,7 @@ public class FacadeJeu {
 			
 			System.out.println("Nombre de joueurs : ");
 			int nbJoueur = sc.nextInt();
+			nombreJoueur=nbJoueur;
 			while(nbJoueur<1 || nbJoueur>6){
 				System.out.println("Nombre de joueur incorrect");
 				System.out.println("Nombre de joueurs : ");
@@ -93,8 +110,20 @@ public class FacadeJeu {
 				}
 				partie.addJoueur(nouveauJoueur);
 			}
-			System.out.println(partie.jouerUnePartie());
 			sc.close();
+			plateauJeu = new PlateauJeu();
+			plateauJeu.afficherEcran();
+			indexJoueurCourant=0;	
+			////////////////////////////// cette portion de code doit basculer en mode graphique plutot que console
+			plateauJeu.afficherPlateauJeu(config.getLongueurPlateau()); //affiche le plateau de jeu du nombre de cases voulues
+			//plateauJeu.genererSerpents(int positionSerpent);  //A FAIRE : idee d'implementation : passe au travers de la liste de case et retourner l'index de la case
+			//plateauJeu.genererEchelles(int positionEchelle); //A FAIRE
+			
+			control(); 									//attache les actionslistener aux boutons de plateau jeu
+			afficheUndoRedo(indexJoueurCourant);		//active ou desactive les undo/redo selon le type du joueur courant
+			if(partie.estAI(indexJoueurCourant)){		//si le joueur courant est artificiel, il tire tout de suite au de (pas d'autres actions possble)
+				gererCommande(3);
+			}
 			
 		// Si la configuration n'existe pas on skip et on repr�sente le menu principal	
 		} catch (IOException e) {
@@ -104,13 +133,8 @@ public class FacadeJeu {
 		}
 	}
 	
-	/*
-	 * Temporaire : utile seulement pour debuguage
-	 * Attention pour un affichage correct : donner des noms de joueurs avec 2 caracteres (ex : j1 ou j2)
-	 * Si deux joueurs ou plus sont sur la meme case : un seul apparaitra en console
-	 */
 	
-	/* affichage du plateau de jeu en console
+	/* Affichage du plateau de jeu en console -- En train d'etre remplace par affichagePLateauJeu dans la classe PlateauJeu
 	public void majPlateau(int longueur, int largeur, List<Joueur>joueurs){	//affiche le plateau en console
 		int i,j,k;
 		k = (longueur*largeur)-1; //nombre de case totale sur le plateau
@@ -169,5 +193,85 @@ public class FacadeJeu {
 		}
 		System.out.println("");
 	}*/
+	
+	/*
+	 * Permet de lancer la bonne commande selon le bouton appuye par l'utilisateur
+	 * dans PlateauJeu
+	 */
+	public void gererCommande (int commande){
+		if(commande==1){ //on fait un undo
+			partie.undo(indexJoueurCourant);
+		}
+		else if(commande==2){ //on fait un redo
+			partie.redo(indexJoueurCourant);
+		}
+		else if(commande==3){ //on lance le de et on deplace le joueur
+			boolean finPartie = partie.tirerDeEtDeplacer(indexJoueurCourant);
+			if(finPartie==true){
+				JOptionPane.showMessageDialog(null, "Felicitation, le gagnant est : "+partie.afficherNomJoueur(indexJoueurCourant));
+				indexJoueurCourant=0;
+				gererCommande(4);
+			}
+			indexJoueurCourant++;
+			if(indexJoueurCourant>=nombreJoueur){
+				indexJoueurCourant=0;
+			}	
+			afficheUndoRedo(indexJoueurCourant);
+			if(partie.estAI(indexJoueurCourant)){
+				gererCommande(3);
+			}
+		}
+		else if(commande==4){ //on quitte la partie et on revient au menu principal
+			plateauJeu.getf_plateauJeu().dispose();
+			MenuPrincipal mp = new MenuPrincipal();
+			mp.afficherEcran();
+		}
+	}
+	
+	/*
+	 * Implemente les actionlistener sur les boutons de PlateauJeu
+	 */
+	public void control(){
+       actionListener = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					gererCommande(1);
+				}
+	    };                
+	    plateauJeu.getb_undo().addActionListener(actionListener);   
+	    
+	    actionListener2 = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					gererCommande(2);
+				}
+	    };                
+	    plateauJeu.getb_redo().addActionListener(actionListener2);   
+	    
+	    actionListener3 = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					gererCommande(3);
+				}
+	    };                
+		plateauJeu.getb_tirerDe().addActionListener(actionListener3);  
+		
+		actionListener4 = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					gererCommande(4);
+				}
+		};                
+		plateauJeu.getb_quitter().addActionListener(actionListener4);  
+	}			
+
+	/*
+	 * Active ou Desactive les boutons undo et redo sur le Plateau de jeu
+	 * dependamment que le joueur courant soit AI ou Humain
+	 */
+	public void afficheUndoRedo(int indexJoueurCourant){
+		if(partie.estAI(indexJoueurCourant)){ //si c'est un joueur artificiel je cache les boutons undo/redo
+			plateauJeu.cacheUndoRedo(true);
+		}
+		else{ //sinon je les affiche
+			plateauJeu.cacheUndoRedo(false);
+		}
+	}		
 	
 }
