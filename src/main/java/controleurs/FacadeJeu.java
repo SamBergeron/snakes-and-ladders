@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JOptionPane;
 
@@ -134,11 +136,9 @@ public class FacadeJeu {
 			
 			
 			plateauJeu.afficherPlateauJeu(config.getLongueurPlateau()); //affiche le plateau de jeu du nombre de cases voulues
-			//genererSerpents();  //A FAIRE : idee d'implementation : passe au travers de la liste de case et retourner l'index de la case
 			plateauJeu.setAdresseSerpent(partie.getAdresseSerpents());
 			plateauJeu.setAdresseEchelle(partie.getAdresseEchelles());
 			plateauJeu.refreshSpecialPanel();
-			//plateauJeu.genererEchelles(int positionEchelle); //A FAIRE
 			
 			//afficher les pions de tous les joueurs (faire une boucle for)
 			for(i=0; i<nombreJoueur; i++){
@@ -147,8 +147,11 @@ public class FacadeJeu {
 			
 			control(); 									//attache les actionslistener aux boutons de plateau jeu
 			afficheUndoRedo(indexJoueurCourant);		//active ou desactive les undo/redo selon le type du joueur courant
+			JOptionPane.showMessageDialog(null, "Tour du joueur "+partie.afficherNomJoueur(indexJoueurCourant));
 			if(partie.estAI(indexJoueurCourant)){		//si le joueur courant est artificiel, il tire tout de suite au de (pas d'autres actions possble)
-				gererCommande(3);
+				while(gererCommande(3)){
+					//voir control() - actionlistener3 pour plus d'information
+				}
 			}
 			
 		// Si la configuration n'existe pas on skip et on repr�sente le menu principal	
@@ -163,17 +166,18 @@ public class FacadeJeu {
 	 * Permet de lancer la bonne commande selon le bouton appuye par l'utilisateur
 	 * dans PlateauJeu
 	 */
-	public void gererCommande (int commande){
+	public boolean gererCommande (int commande){
 		if(commande==1){ //on fait un undo
 			partie.undo(indexJoueurCourant);
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());
-
+			return false;
 		}
 		else if(commande==2){ //on fait un redo
 			partie.redo(indexJoueurCourant);
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());
+			return false;
 		}
-		else if(commande==3){ //on lance le de et on deplace le joueur
+		else if(commande==3){ //on lance le de et on deplace le joueur	
 			boolean finPartie = partie.tirerDeEtDeplacer(indexJoueurCourant);
 			System.out.println("nouvelle position : "+partie.getDeplacement()+" Ancienne position : "+partie.getAnciennePosition());
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());	//on affiche la nouvelle position du joueur
@@ -181,6 +185,7 @@ public class FacadeJeu {
 				JOptionPane.showMessageDialog(null, "Felicitation, le gagnant est : "+partie.afficherNomJoueur(indexJoueurCourant));
 				indexJoueurCourant=0;
 				gererCommande(4);
+				return false;
 			}
 			indexJoueurCourant++;
 			if(indexJoueurCourant>=nombreJoueur){
@@ -188,14 +193,18 @@ public class FacadeJeu {
 			}	
 			afficheUndoRedo(indexJoueurCourant);
 			if(partie.estAI(indexJoueurCourant)&&finPartie!=true){
-				gererCommande(3);
+				JOptionPane.showMessageDialog(null, "Tour du joueur "+partie.afficherNomJoueur(indexJoueurCourant));
+				return true;
 			}
+			JOptionPane.showMessageDialog(null, "Tour du joueur "+partie.afficherNomJoueur(indexJoueurCourant));
 		}
 		else if(commande==4){ //on quitte la partie et on revient au menu principal
 			plateauJeu.getf_plateauJeu().dispose();
 			MenuPrincipal mp = new MenuPrincipal();
 			mp.afficherEcran();
+			return false;
 		}
+		return false;
 	}
 	
 	/*
@@ -219,7 +228,11 @@ public class FacadeJeu {
 	    
 	    actionListener3 = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					gererCommande(3);
+					while(gererCommande(3)){
+						//tant que c'est le tour d'un joueur de type AI
+						//on continue a lancer automatiquement la commande 3 :
+						//la seule action qu'un joueur artificiel peut faire
+					}
 				}		
 	    };                
 		plateauJeu.getb_tirerDe().addActionListener(actionListener3);  
@@ -244,14 +257,8 @@ public class FacadeJeu {
 			plateauJeu.cacheUndoRedo(false);
 		}
 	}	
-	/*
-	public void genererSerpents(){
-		Point[] adresseSerpents = partie.getAdresseSerpents(); //contient le numero de case de depart(x) et d'arrivee(y) du serpent
-		plateauJeu.dessinerSerpent(adresseSerpents);
-	}*/
 	
 	public Point[] getAdresseSerpents(){
 		return partie.getAdresseSerpents();
-	}
-	
+	}	
 }

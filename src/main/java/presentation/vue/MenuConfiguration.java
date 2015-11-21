@@ -54,7 +54,7 @@ public class MenuConfiguration implements IMenu {
 	int nbCases = 40; //nb de cases choisit par le joueur, initialise au minimum : 40
 	
 	//signifie que 1/5eme au maximum des cases peuvent etre des serpents 
-	//signifie que un autre 1/5eme au maximum des cases peuvent etre des echelles 
+	//signifie qu'un autre 1/5eme au maximum des cases peuvent etre des echelles 
 	final int pourcentageSerpentEchelle = 5;
 
 	public void afficherEcran() {
@@ -152,7 +152,7 @@ public class MenuConfiguration implements IMenu {
 		GridBagConstraints gbc = new GridBagConstraints();
 		
 		gbc.gridx = gbc.gridy = 0;	//la grille commence en [0,0]
-		gbc.gridheight = 1; // valeur par défaut - peut s'étendre sur une seule ligne.
+		gbc.gridheight = 1; 		// valeur par défaut - peut s'étendre sur une seule ligne.
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.insets = new Insets(hauteur/56, largeur/50, hauteur/56, largeur/80);
 		f_menuConfiguration.add(label_case,gbc);
@@ -193,42 +193,6 @@ public class MenuConfiguration implements IMenu {
 		
 			
 		f_menuConfiguration.setVisible(true);		
-
-		// Mode Console
-		/*
-		boolean retry = true;
-		SerializerConfigPartie serializerConfig = new SerializerConfigPartie();
-		ConfigPartie config = new ConfigPartie();
-		while(retry){
-			try {
-				Scanner sc = new Scanner(System.in);
-				System.out.println("Veuillez configurer votre partie");
-				System.out.println("Commencez par donner les dimensions du plateau");
-				System.out.println("Longueur: ");
-				config.setLongueurPlateau(sc.nextInt());
-				
-				System.out.println("Largeur: ");
-				config.setLargeurPlateau(sc.nextInt());
-				
-				System.out.println("Nombre d'�chelles: ");
-				config.setNbEchelles(sc.nextInt());
-				
-				System.out.println("Nombre de Serpents: ");
-				config.setNbSerpents(sc.nextInt());
-				
-				serializerConfig.sauverConfig(config);
-				
-				// On retourne au menu principal
-				MenuPrincipal m = new MenuPrincipal();
-				m.afficherEcran();
-				
-				sc.close();
-				retry = false;
-				
-			} catch (InputMismatchException e) {
-				System.out.println("Cette entr�e est invalide veuillez r�essayer");
-			}
-		}*/
 		
 	}
 	

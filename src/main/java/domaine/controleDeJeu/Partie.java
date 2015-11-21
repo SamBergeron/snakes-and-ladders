@@ -101,8 +101,11 @@ public class Partie {
 		anciennePosition = joueurs.get(indexJoueur).getCaseCourante();
 		deplacement = valeurDe + anciennePosition;	
 		int posFinale = plateau.getCaseFinale().getPosition();
+		System.out.println("partie - tirerDeEtDeplace - posFinale vaut : "+posFinale+" et deplacement vaut : "+deplacement);
 		deplacement = algo.calculerVictoire(joueurs.get(indexJoueur).getCaseCourante(), deplacement, posFinale);
-		deplacement = plateau.getCases().get(deplacement).getPosition();
+		System.out.println("deplacement2 vaut : "+deplacement);
+		deplacement = plateau.getCases().get(deplacement-1).getPosition();
+		System.out.println("deplacement3 vaut : "+deplacement);
 		System.out.println("Tour du joueur " + joueurs.get(indexJoueur).getNom()); //pour debuguage seulement
 		joueurs.get(indexJoueur).deplacer(deplacement);
 		if((deplacement)==posFinale){

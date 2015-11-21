@@ -199,7 +199,6 @@ public class PlateauJeu implements IMenu{
 		
 		/* On recherche l'ancienne case du joueur pour y supprimer son pion */
 		String ancPosition = ""+anciennePosition;
-		//Component[] components = panelPlateau.getComponents();
 		Component[] components = specialPanel.getComponents();
 		for (Component com : components){
 			JPanel encours = (JPanel)com;
@@ -231,9 +230,7 @@ public class PlateauJeu implements IMenu{
 		Border border = LineBorder.createGrayLineBorder();
 		final Font police_label = new Font(Font.DIALOG, Font.BOLD, hauteur/50);
 		
-		//panelPlateau = new JPanel();
 		specialPanel = new SpecialPanel();
-		//panelPlateau.setLayout(new GridLayout(nbLigne,10));
 		specialPanel.setLayout(new GridLayout(nbLigne,10));
 		layPlateau = f_plateauJeu.getLayeredPane();
 		
@@ -390,7 +387,7 @@ public class PlateauJeu implements IMenu{
 			//on affiche le serpent selon les coordonnees obtenues
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setPaint(Color.RED);
-			g2d.setStroke(new BasicStroke(10));
+			g2d.setStroke(new BasicStroke(5));
 			g2d.draw(new Line2D.Float(x1centre, y1centre, x2centre, y2centre));		
 		}
 	}
@@ -439,7 +436,7 @@ public class PlateauJeu implements IMenu{
 			//on affiche l'echelle selon les coordonnees obtenues
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setPaint(Color.GREEN);
-			g2d.setStroke(new BasicStroke(10));
+			g2d.setStroke(new BasicStroke(5));
 			g2d.draw(new Line2D.Float(x1centre, y1centre, x2centre, y2centre));		
 		}
 	}
