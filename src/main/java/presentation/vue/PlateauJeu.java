@@ -148,23 +148,30 @@ public class PlateauJeu implements IMenu{
 	 */
 	public void afficherPion(Color couleurPion, int nouvellePosition, int anciennePosition){
 		ImageIcon imagePion;
+		int indexpion = 0; //TEST //numero du panel contenant l'image du pion dans le panel
 		if(couleurPion==Color.BLUE){
 			imagePion = new ImageIcon(getClass().getResource("/images/pionbleu.png"));
+			indexpion=4;
 		}
 		else if(couleurPion==Color.GREEN){
-			imagePion = new ImageIcon(getClass().getResource("/images/pionvert.jpg"));
+			imagePion = new ImageIcon(getClass().getResource("/images/pionvert.png"));
+			indexpion=0;
 		}
 		else if(couleurPion==Color.YELLOW){
-			imagePion = new ImageIcon(getClass().getResource("/images/pionjaune.jpg"));
+			imagePion = new ImageIcon(getClass().getResource("/images/pionjaune.png"));
+			indexpion=1;
 		}
 		else if(couleurPion==Color.WHITE){
-			imagePion = new ImageIcon(getClass().getResource("/images/pionblanc.jpg"));
+			imagePion = new ImageIcon(getClass().getResource("/images/pionblanc.png"));
+			indexpion=5;
 		}
 		else if(couleurPion==Color.BLACK){
-			imagePion = new ImageIcon(getClass().getResource("/images/pionnoir.jpg"));
+			imagePion = new ImageIcon(getClass().getResource("/images/pionnoir.png"));
+			indexpion=2;
 		}
 		else{
-			imagePion = new ImageIcon(getClass().getResource("/images/pionrouge.jpg"));
+			imagePion = new ImageIcon(getClass().getResource("/images/pionrouge.png"));
+			indexpion=6;
 		}
 		
 		/* Permet de modifier la taille de l'image */
@@ -184,21 +191,39 @@ public class PlateauJeu implements IMenu{
 		String ancPosition = ""+anciennePosition;
 		Component[] components = panelPlateau.getComponents();
 		for (Component com : components){
+			JPanel encours = (JPanel)com;
+			JLabel jlabnumcase = (JLabel)encours.getComponent(3);
+			JLabel jlabpion = (JLabel)encours.getComponent(indexpion);
+			if(jlabnumcase.getText().equals(ancPosition)){
+				System.out.println("On a trouve le bon element!");
+				jlabpion.setIcon(null);
+			}			
+			/* Avant
 			JLabel encours = (JLabel)com;
 			if(encours.getText().equals(ancPosition)){
 				System.out.println("On a trouve le bon element!");
 				encours.setIcon(null);
 			}
+			*/
 		}		
 	
 		/* On recherche la nouvelle case du joueur pour y afficher son pion */
 		String nouvPosition = ""+nouvellePosition;
 		for (Component com : components){ 
+			JPanel encours = (JPanel)com;
+			JLabel jlabnumcase = (JLabel)encours.getComponent(3);
+			JLabel jlabpion = (JLabel)encours.getComponent(indexpion);
+			if(jlabnumcase.getText().equals(nouvPosition)){
+				System.out.println("On a trouve le bon element!");
+				jlabpion.setIcon(imagePion);
+			}				
+			/* AVANT
 			JLabel encours = (JLabel)com;
 			if(encours.getText().equals(nouvPosition)){
 				System.out.println("On a trouve le bon element!");
 				encours.setIcon(imagePion);
 			}
+			*/
 		}
 	}
 	
@@ -222,6 +247,29 @@ public class PlateauJeu implements IMenu{
 		for(i=nbLigne; i>0; i--){
 			if(decroissant==true){
 				for(j=10; j>0; j--){
+					/*test*/
+					JPanel cases = new JPanel(); //le panel represente une case du plateau
+					cases.setLayout(new GridLayout(2,4));
+					JLabel labpionvert = new JLabel();
+					cases.add(labpionvert);
+					JLabel labpionjaune = new JLabel();
+					cases.add(labpionjaune);
+					JLabel labpionnoir = new JLabel();
+					cases.add(labpionnoir);
+					JLabel labnumcase = new JLabel(""+(k+1));
+					cases.add(labnumcase);
+					JLabel labpionbleu = new JLabel();
+					cases.add(labpionbleu);
+					JLabel labpionblanc = new JLabel();
+					cases.add(labpionblanc);
+					JLabel labpionrouge = new JLabel();
+					cases.add(labpionrouge);
+					JLabel labserpentechelle = new JLabel();
+					cases.add(labserpentechelle);
+					cases.setBorder(border);
+					panelPlateau.add(cases);
+					
+					/*avant
 					JLabel jlab = new JLabel();
 					jlab.setText(""+(k+1));
 					jlab.setBorder(border);
@@ -229,11 +277,34 @@ public class PlateauJeu implements IMenu{
 					jlab.setVerticalAlignment(SwingConstants.CENTER); //permet de placer le texte au centre du JLabel
 					jlab.setFont(police_label);
 					panelPlateau.add(jlab);
+					*/
 					k--;
 				}
 			}else{
 				int temp = k-10+1;
 				for(j=10; j>0; j--){
+					JPanel cases = new JPanel(); //le panel represente une case du plateau
+					cases.setLayout(new GridLayout(2,4));
+					JLabel labpionvert = new JLabel();
+					cases.add(labpionvert);
+					JLabel labpionjaune = new JLabel();
+					cases.add(labpionjaune);
+					JLabel labpionnoir = new JLabel();
+					cases.add(labpionnoir);
+					JLabel labnumcase = new JLabel(""+(temp+1));
+					cases.add(labnumcase);
+					JLabel labpionbleu = new JLabel();
+					cases.add(labpionbleu);
+					JLabel labpionblanc = new JLabel();
+					cases.add(labpionblanc);
+					JLabel labpionrouge = new JLabel();
+					cases.add(labpionrouge);
+					JLabel labserpentechelle = new JLabel();
+					cases.add(labserpentechelle);
+					cases.setBorder(border);
+					panelPlateau.add(cases);
+					temp++;
+					/*
 					JLabel jlab = new JLabel();			
 					jlab.setText(""+(temp+1));
 					jlab.setBorder(border);
@@ -242,6 +313,7 @@ public class PlateauJeu implements IMenu{
 					jlab.setFont(police_label);
 					panelPlateau.add(jlab);
 					temp++;
+					*/
 					k--;
 				}				
 			}

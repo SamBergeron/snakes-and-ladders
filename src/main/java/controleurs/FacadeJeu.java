@@ -97,7 +97,20 @@ public class FacadeJeu {
 				String nomJoueur;
 				int typeJoueur=0;
 				Joueur nouveauJoueur; 
-				Couleur couleurPion = Couleur.BLANC; //pour le moment tous les pions sont bleu, on changera cela plus tard
+				Couleur couleurPion;
+				if(i==0){
+					couleurPion = Couleur.VERT; 
+				}else if(i==1){
+					couleurPion = Couleur.BLEU; 
+				}else if(i==2){
+					couleurPion = Couleur.JAUNE; 
+				}else if(i==3){
+					couleurPion = Couleur.NOIR; 
+				}else if(i==4){
+					couleurPion = Couleur.ROUGE; 
+				}else{
+					couleurPion = Couleur.BLANC; 
+				}
 				System.out.println("Nom du joueur : ");
 				nomJoueur = sc.next();
 				while(typeJoueur!=1 && typeJoueur!=2){
@@ -203,11 +216,14 @@ public class FacadeJeu {
 	/*
 	 * Permet de lancer la bonne commande selon le bouton appuye par l'utilisateur
 	 * dans PlateauJeu
+	 * retourne vrai si le prochain joueur est de type AI : permet de relancer gererCommande avec une commande automatique de 3 (tirer le dé et avancer)
+	 * si le prochain joueur est de type humain, retourne faux
 	 */
 	public void gererCommande (int commande){
 		if(commande==1){ //on fait un undo
 			partie.undo(indexJoueurCourant);
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());
+
 		}
 		else if(commande==2){ //on fait un redo
 			partie.redo(indexJoueurCourant);
@@ -227,7 +243,7 @@ public class FacadeJeu {
 				indexJoueurCourant=0;
 			}	
 			afficheUndoRedo(indexJoueurCourant);
-			if(partie.estAI(indexJoueurCourant)){
+			if(partie.estAI(indexJoueurCourant)&&finPartie!=true){
 				gererCommande(3);
 			}
 		}
@@ -259,7 +275,7 @@ public class FacadeJeu {
 	    actionListener3 = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					gererCommande(3);
-				}
+				}		
 	    };                
 		plateauJeu.getb_tirerDe().addActionListener(actionListener3);  
 		
