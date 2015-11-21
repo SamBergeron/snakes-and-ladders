@@ -1,5 +1,6 @@
 package presentation.vue;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -14,13 +15,17 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -47,6 +52,8 @@ public class PlateauJeu implements IMenu{
 	JPanel panelPlateau;
 	JLayeredPane layPlateau;
 	
+	SpecialPanel specialPanel;
+	
 	FacadeJeu facadeJeu;
 	
 	GridBagLayout layoutPlateauJeu;
@@ -54,6 +61,8 @@ public class PlateauJeu implements IMenu{
 	
 	int largeur;
 	int hauteur;
+	
+	Point[] adresseSerpent;
 	
 	//IHM Graphique
 	public void afficherEcran(){
@@ -189,22 +198,15 @@ public class PlateauJeu implements IMenu{
 		
 		/* On recherche l'ancienne case du joueur pour y supprimer son pion */
 		String ancPosition = ""+anciennePosition;
-		Component[] components = panelPlateau.getComponents();
+		//Component[] components = panelPlateau.getComponents();
+		Component[] components = specialPanel.getComponents();
 		for (Component com : components){
 			JPanel encours = (JPanel)com;
 			JLabel jlabnumcase = (JLabel)encours.getComponent(3);
 			JLabel jlabpion = (JLabel)encours.getComponent(indexpion);
 			if(jlabnumcase.getText().equals(ancPosition)){
-				System.out.println("On a trouve le bon element!");
 				jlabpion.setIcon(null);
 			}			
-			/* Avant
-			JLabel encours = (JLabel)com;
-			if(encours.getText().equals(ancPosition)){
-				System.out.println("On a trouve le bon element!");
-				encours.setIcon(null);
-			}
-			*/
 		}		
 	
 		/* On recherche la nouvelle case du joueur pour y afficher son pion */
@@ -214,16 +216,8 @@ public class PlateauJeu implements IMenu{
 			JLabel jlabnumcase = (JLabel)encours.getComponent(3);
 			JLabel jlabpion = (JLabel)encours.getComponent(indexpion);
 			if(jlabnumcase.getText().equals(nouvPosition)){
-				System.out.println("On a trouve le bon element!");
 				jlabpion.setIcon(imagePion);
 			}				
-			/* AVANT
-			JLabel encours = (JLabel)com;
-			if(encours.getText().equals(nouvPosition)){
-				System.out.println("On a trouve le bon element!");
-				encours.setIcon(imagePion);
-			}
-			*/
 		}
 	}
 	
@@ -233,12 +227,13 @@ public class PlateauJeu implements IMenu{
 	 * nbLigne demande la nombre de ligne que contient le plateau
 	 */
 	public void afficherPlateauJeu(int nbLigne){
-		//en cours d'implémentation //////////////////////////////////////////
 		Border border = LineBorder.createGrayLineBorder();
 		final Font police_label = new Font(Font.DIALOG, Font.BOLD, hauteur/50);
 		
-		panelPlateau = new JPanel();
-		panelPlateau.setLayout(new GridLayout(nbLigne,10));
+		//panelPlateau = new JPanel();
+		specialPanel = new SpecialPanel();
+		//panelPlateau.setLayout(new GridLayout(nbLigne,10));
+		specialPanel.setLayout(new GridLayout(nbLigne,10));
 		layPlateau = f_plateauJeu.getLayeredPane();
 		
 		int i,j,k;
@@ -247,11 +242,10 @@ public class PlateauJeu implements IMenu{
 		for(i=nbLigne; i>0; i--){
 			if(decroissant==true){
 				for(j=10; j>0; j--){
-					/*test*/
-					JPanel cases = new JPanel(); //le panel represente une case du plateau
-					cases.setLayout(new GridLayout(2,4));
-					JLabel labpionvert = new JLabel();
-					cases.add(labpionvert);
+					JPanel cases = new JPanel(); 			//le panel represente une case du plateau
+					cases.setLayout(new GridLayout(2,4));	//la case est une matrice 2x4 qui contient respectivement :
+					JLabel labpionvert = new JLabel();		//pionvert/pionjaune/pionnoir/numcase
+					cases.add(labpionvert);					//pionbleu/pionblanc/pionrouge/serpentechelle
 					JLabel labpionjaune = new JLabel();
 					cases.add(labpionjaune);
 					JLabel labpionnoir = new JLabel();
@@ -267,26 +261,18 @@ public class PlateauJeu implements IMenu{
 					JLabel labserpentechelle = new JLabel();
 					cases.add(labserpentechelle);
 					cases.setBorder(border);
-					panelPlateau.add(cases);
-					
-					/*avant
-					JLabel jlab = new JLabel();
-					jlab.setText(""+(k+1));
-					jlab.setBorder(border);
-					jlab.setHorizontalAlignment(SwingConstants.CENTER); //permet de placer le texte au centre du JLabel
-					jlab.setVerticalAlignment(SwingConstants.CENTER); //permet de placer le texte au centre du JLabel
-					jlab.setFont(police_label);
-					panelPlateau.add(jlab);
-					*/
+					//panelPlateau.add(cases);
+					cases.setOpaque(false);
+					specialPanel.add(cases);
 					k--;
 				}
 			}else{
 				int temp = k-10+1;
 				for(j=10; j>0; j--){
-					JPanel cases = new JPanel(); //le panel represente une case du plateau
-					cases.setLayout(new GridLayout(2,4));
-					JLabel labpionvert = new JLabel();
-					cases.add(labpionvert);
+					JPanel cases = new JPanel(); 			//le panel represente une case du plateau
+					cases.setLayout(new GridLayout(2,4));	//la case est une matrice 2x4 qui contient respectivement :
+					JLabel labpionvert = new JLabel();		//pionvert/pionjaune/pionnoir/numcase
+					cases.add(labpionvert);					//pionbleu/pionblanc/pionrouge/serpentechelle
 					JLabel labpionjaune = new JLabel();
 					cases.add(labpionjaune);
 					JLabel labpionnoir = new JLabel();
@@ -302,18 +288,10 @@ public class PlateauJeu implements IMenu{
 					JLabel labserpentechelle = new JLabel();
 					cases.add(labserpentechelle);
 					cases.setBorder(border);
-					panelPlateau.add(cases);
+					//panelPlateau.add(cases);
+					cases.setOpaque(false);
+					specialPanel.add(cases);
 					temp++;
-					/*
-					JLabel jlab = new JLabel();			
-					jlab.setText(""+(temp+1));
-					jlab.setBorder(border);
-					jlab.setHorizontalAlignment(SwingConstants.CENTER); //permet de placer le texte au centre du JLabel
-					jlab.setVerticalAlignment(SwingConstants.CENTER); //permet de placer le texte au centre du JLabel
-					jlab.setFont(police_label);
-					panelPlateau.add(jlab);
-					temp++;
-					*/
 					k--;
 				}				
 			}
@@ -323,9 +301,13 @@ public class PlateauJeu implements IMenu{
 				decroissant = true;
 			}
 		}
-		panelPlateau.revalidate();	 //permet d'attribuer les bonnes coordonees de chaque JLabel dans le JPanel
+		//panelPlateau.revalidate();	 //permet d'attribuer les bonnes coordonees de chaque JLabel dans le JPanel
+		specialPanel.revalidate();
+		//specialPanel.setBackground(Color.GREEN);
+		specialPanel.setOpaque(false);
 		Container pane = f_plateauJeu.getContentPane();
-		pane.add(panelPlateau, BorderLayout.CENTER);		
+		//pane.add(panelPlateau, BorderLayout.CENTER);		
+		pane.add(specialPanel, BorderLayout.CENTER);	
 	}
 	
 	public JButton getb_undo(){
@@ -346,6 +328,59 @@ public class PlateauJeu implements IMenu{
 	public JFrame getf_plateauJeu(){
 		return f_plateauJeu;
 	}
+	public void refreshSpecialPanel(){
+		specialPanel.repaint();
+	}
+	
+	public void setAdresseSerpent(Point[] tabAdresse){
+		adresseSerpent = tabAdresse;
+	}
+	
+	/*
+	 * dessine les serpents a l'ecran
+	 * coorSerpent est un tableau de point, chaque point contient la case de depart(x)
+	 * et la case d'arrivee(y) d'un serpent
+	 */
+	public void dessinerSerpent(Graphics g){
+		//Component[] components = panelPlateau.getComponents();
+		Component[] components = specialPanel.getComponents();
+		for(Point p : adresseSerpent){
+			System.out.println(p);
+			String caseDepart = ""+p.x;
+			String caseArrivee = ""+p.y;
+			int x1=0;
+			int y1=0;
+			int x2=0;
+			int y2=0;
+			for (Component com : components){
+				JPanel encours = (JPanel)com;
+				JLabel jlabnumcase = (JLabel)encours.getComponent(3); //encours.getComponent renvoie le numero de la case
+				if(jlabnumcase.getText().equals(caseDepart)){
+					x1 = jlabnumcase.getX();
+					y1 = jlabnumcase.getY();
+				}else if(jlabnumcase.getText().equals(caseArrivee)){
+					x2 = jlabnumcase.getX();
+					y2 = jlabnumcase.getY();
+				}	
+			}
+			//Veirifier lors d'un debuguage : tout ce qui precede fonctionne
+			//ici on a un probleme : des traces du trait apparaissent, mais caché par qqchose
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setPaint(Color.BLACK);
+			g2d.setStroke(new BasicStroke(10));
+			System.out.println("x1"+x1+"y1"+y1+"x2"+x2+"y2"+y2);
+			g2d.draw(new Line2D.Float(x1, y1, x2, y2));
+		}
+	}
+	
+	private class SpecialPanel extends JPanel{
+		@Override
+		public void paintComponent(Graphics g){
+			super.paintComponent(g);
+			dessinerSerpent(g);
+		}
+	}
+	
 }
 
 

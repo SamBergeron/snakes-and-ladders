@@ -1,6 +1,7 @@
 package controleurs;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -122,6 +123,7 @@ public class FacadeJeu {
 				}else{
 					nouveauJoueur = new AI(nomJoueur,couleurPion);
 				}
+				nouveauJoueur.setCaseCourante(1);
 				partie.addJoueur(nouveauJoueur);
 			}
 			sc.close();
@@ -129,8 +131,12 @@ public class FacadeJeu {
 			plateauJeu.afficherEcran();
 			indexJoueurCourant=0;	
 			////////////////////////////// cette portion de code doit basculer en mode graphique plutot que console
+			
+			
 			plateauJeu.afficherPlateauJeu(config.getLongueurPlateau()); //affiche le plateau de jeu du nombre de cases voulues
-			//plateauJeu.genererSerpents(int positionSerpent);  //A FAIRE : idee d'implementation : passe au travers de la liste de case et retourner l'index de la case
+			//genererSerpents();  //A FAIRE : idee d'implementation : passe au travers de la liste de case et retourner l'index de la case
+			plateauJeu.setAdresseSerpent(partie.getAdresseSerpents());
+			plateauJeu.refreshSpecialPanel();
 			//plateauJeu.genererEchelles(int positionEchelle); //A FAIRE
 			
 			//afficher les pions de tous les joueurs (faire une boucle for)
@@ -152,72 +158,9 @@ public class FacadeJeu {
 		}
 	}
 	
-	
-	/* Affichage du plateau de jeu en console -- En train d'etre remplace par affichagePLateauJeu dans la classe PlateauJeu
-	public void majPlateau(int longueur, int largeur, List<Joueur>joueurs){	//affiche le plateau en console
-		int i,j,k;
-		k = (longueur*largeur)-1; //nombre de case totale sur le plateau
-		boolean decroissant = true;
-		for(i=longueur; i>0; i--){
-			System.out.print(" ");
-			for(j=largeur; j>0; j--){
-				System.out.print("---");
-			}
-			System.out.println("");
-			System.out.print("|");
-			if(decroissant==true){
-				for(j=largeur; j>0; j--){
-					boolean trouve = false;
-					for(Joueur p : joueurs){
-						if(p.getCaseCourante()==k){
-							System.out.print(p.getNom().toUpperCase()+"|");
-							trouve = true;
-							break;
-						}
-					}
-					if(k<10&&trouve==false){
-						System.out.print(k+" |");
-					}else if(trouve==false){
-						System.out.print(k+"|");
-					}
-					k--;
-				}
-			}else{
-				int temp = k-largeur+1;
-				for(j=largeur; j>0; j--){
-					boolean trouve = false;
-					for(Joueur p : joueurs){
-						if(p.getCaseCourante()==temp){
-							System.out.print(p.getNom().toUpperCase()+"|");
-							trouve = true;
-							break;
-						}
-					}
-					if(temp<10 && trouve==false){
-						System.out.print(temp+" |");
-					}else if(trouve==false){
-						System.out.print(temp+"|");
-
-					}
-					temp++;
-					k--;
-				}				
-			}
-			if(decroissant==true){
-				decroissant = false;
-			}else{
-				decroissant = true;
-			}
-			System.out.println("");
-		}
-		System.out.println("");
-	}*/
-	
 	/*
 	 * Permet de lancer la bonne commande selon le bouton appuye par l'utilisateur
 	 * dans PlateauJeu
-	 * retourne vrai si le prochain joueur est de type AI : permet de relancer gererCommande avec une commande automatique de 3 (tirer le dé et avancer)
-	 * si le prochain joueur est de type humain, retourne faux
 	 */
 	public void gererCommande (int commande){
 		if(commande==1){ //on fait un undo
@@ -256,6 +199,7 @@ public class FacadeJeu {
 	
 	/*
 	 * Implemente les actionlistener sur les boutons de PlateauJeu
+	 * et leur associe l'action a effectuer en cas de besoin
 	 */
 	public void control(){
        actionListener = new ActionListener() {
@@ -298,6 +242,15 @@ public class FacadeJeu {
 		else{ //sinon je les affiche
 			plateauJeu.cacheUndoRedo(false);
 		}
-	}		
+	}	
+	/*
+	public void genererSerpents(){
+		Point[] adresseSerpents = partie.getAdresseSerpents(); //contient le numero de case de depart(x) et d'arrivee(y) du serpent
+		plateauJeu.dessinerSerpent(adresseSerpents);
+	}*/
+	
+	public Point[] getAdresseSerpents(){
+		return partie.getAdresseSerpents();
+	}
 	
 }

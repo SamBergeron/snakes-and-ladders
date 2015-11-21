@@ -1,5 +1,6 @@
 package domaine.elements;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,9 @@ public class Plateau {
 	private int largeur;
 	private int nbEchelle;
 	private int nbSerpent;
+	
+	private Point adresseSerpents[];
+	private Point adresseEchelles[];
 	
 	public Plateau(int longueur, int largeur, int serpents, int echelles) {
 		this.longueur = longueur;
@@ -26,19 +30,34 @@ public class Plateau {
 	}
 	
 	private void genererCasesSerpentsEchelles(){
+		adresseSerpents = new Point[nbSerpent];
+		adresseEchelles = new Point[nbEchelle];
+		
 		for(int i=0; i < nbSerpent; i++){
 			int debut = (int)(Math.random() * (cases.size()-2)); // Pcq on veut ignorer le 1er et dernier element
 			int fin = 1 + (int)(Math.random() * (debut-2)); 
 			cases.set(debut, new CaseSerpent(debut, cases.get(fin)));
+			Point p = new Point(debut,fin);
+			adresseSerpents[i]=p;
 		}
 		
 		for(int i=0; i < nbEchelle; i++){
 			int debut = (int)(Math.random() * (cases.size() - 2)); // Pcq on veut ignorer le 1er et dernier element
 			int fin = debut + ((int)(Math.random() * (cases.size() - debut - 2))); 
 			cases.set(debut, new CaseEchelle(debut, cases.get(fin)));
+			Point p = new Point(debut,fin);
+			adresseEchelles[i]=p;
 		}
 	}
 
+	public Point[] getAdresseEchelle(){
+		return adresseEchelles;
+	}
+	
+	public Point[] getAdresseSerpent(){
+		return adresseSerpents;
+	}
+	
 	public Case getCaseFinale(){
 		return cases.get(cases.size() - 1);
 	}

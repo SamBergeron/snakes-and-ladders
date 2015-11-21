@@ -1,6 +1,7 @@
 package domaine.controleDeJeu;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +115,10 @@ public class Partie {
 	
 	public int getAnciennePosition(){
 		return anciennePosition;
+	}
+	
+	public Point[] getAdresseSerpents(){
+		return plateau.getAdresseSerpent();
 	}
 	
 	public Color getCouleurPion(int indexJoueur){
