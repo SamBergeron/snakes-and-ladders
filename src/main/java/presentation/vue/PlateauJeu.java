@@ -63,6 +63,7 @@ public class PlateauJeu implements IMenu{
 	int hauteur;
 	
 	Point[] adresseSerpent;
+	Point[] adresseEchelle;
 	
 	//IHM Graphique
 	public void afficherEcran(){
@@ -261,7 +262,6 @@ public class PlateauJeu implements IMenu{
 					JLabel labserpentechelle = new JLabel();
 					cases.add(labserpentechelle);
 					cases.setBorder(border);
-					//panelPlateau.add(cases);
 					cases.setOpaque(false);
 					specialPanel.add(cases);
 					k--;
@@ -288,7 +288,6 @@ public class PlateauJeu implements IMenu{
 					JLabel labserpentechelle = new JLabel();
 					cases.add(labserpentechelle);
 					cases.setBorder(border);
-					//panelPlateau.add(cases);
 					cases.setOpaque(false);
 					specialPanel.add(cases);
 					temp++;
@@ -301,12 +300,11 @@ public class PlateauJeu implements IMenu{
 				decroissant = true;
 			}
 		}
-		//panelPlateau.revalidate();	 //permet d'attribuer les bonnes coordonees de chaque JLabel dans le JPanel
+		//Cette configuration fonctionne pour l'affichage des lignes
 		specialPanel.revalidate();
-		//specialPanel.setBackground(Color.GREEN);
-		specialPanel.setOpaque(false);
+		specialPanel.setOpaque(true);
+		specialPanel.setBackground(Color.WHITE);
 		Container pane = f_plateauJeu.getContentPane();
-		//pane.add(panelPlateau, BorderLayout.CENTER);		
 		pane.add(specialPanel, BorderLayout.CENTER);	
 	}
 	
@@ -334,6 +332,18 @@ public class PlateauJeu implements IMenu{
 	
 	public void setAdresseSerpent(Point[] tabAdresse){
 		adresseSerpent = tabAdresse;
+		System.out.println("Debuguage setAdresseSerpent");
+		for(Point p : adresseSerpent){
+			System.out.println(""+p);
+		}
+	}
+	
+	public void setAdresseEchelle(Point[] tabAdresse){
+		adresseEchelle = tabAdresse;
+		System.out.println("Debuguage setAdresseEchelle");
+		for(Point p : adresseEchelle){
+			System.out.println(""+p);
+		}
 	}
 	
 	/*
@@ -342,42 +352,110 @@ public class PlateauJeu implements IMenu{
 	 * et la case d'arrivee(y) d'un serpent
 	 */
 	public void dessinerSerpent(Graphics g){
-		//Component[] components = panelPlateau.getComponents();
 		Component[] components = specialPanel.getComponents();
 		for(Point p : adresseSerpent){
-			System.out.println(p);
-			String caseDepart = ""+p.x;
-			String caseArrivee = ""+p.y;
-			int x1=0;
-			int y1=0;
-			int x2=0;
-			int y2=0;
-			for (Component com : components){
+			String caseDepart = ""+p.x;		//contient le numero de la case de depart
+			String caseArrivee = ""+p.y;	//contient le numero de la case d'arrivee
+			int x1centre = 0;
+			int y1centre = 0;
+			int x2centre = 0;
+			int y2centre = 0;
+			int i = 0;
+			int j = 0;
+			
+			//on recupere la case depart en passant au travers toutes les cases du composant representant le plateau (specialPanel)
+			for(Component com : components){
 				JPanel encours = (JPanel)com;
-				JLabel jlabnumcase = (JLabel)encours.getComponent(3); //encours.getComponent renvoie le numero de la case
+				JLabel jlabnumcase = (JLabel)encours.getComponent(3); //encours.getComponent(3) renvoie le numero de la case
 				if(jlabnumcase.getText().equals(caseDepart)){
-					x1 = jlabnumcase.getX();
-					y1 = jlabnumcase.getY();
-				}else if(jlabnumcase.getText().equals(caseArrivee)){
-					x2 = jlabnumcase.getX();
-					y2 = jlabnumcase.getY();
-				}	
+					//on recupere les coordonnees du centre de la case
+					x1centre = com.getLocation().x+(com.getSize().width/2);
+					y1centre = com.getLocation().y+(com.getSize().height/2);				
+					break;
+				}
+				i++;	
 			}
-			//Veirifier lors d'un debuguage : tout ce qui precede fonctionne
-			//ici on a un probleme : des traces du trait apparaissent, mais caché par qqchose
+			//on recupere la case arrivee en passant au travers toutes les cases du composant representant le plateau (specialPanel)
+			for(Component com2 : components){
+				JPanel encours = (JPanel)com2;
+				JLabel jlabnumcase = (JLabel)encours.getComponent(3); //encours.getComponent(3) renvoie le numero de la case
+				if(jlabnumcase.getText().equals(caseArrivee)){
+					//on recupere les coordonnees du centre de la case
+					x2centre = com2.getLocation().x+(com2.getSize().width/2);
+					y2centre = com2.getLocation().y+(com2.getSize().height/2);				
+					break;
+				}
+				j++;	
+			}
+			//on affiche le serpent selon les coordonnees obtenues
 			Graphics2D g2d = (Graphics2D) g;
-			g2d.setPaint(Color.BLACK);
+			g2d.setPaint(Color.RED);
 			g2d.setStroke(new BasicStroke(10));
-			System.out.println("x1"+x1+"y1"+y1+"x2"+x2+"y2"+y2);
-			g2d.draw(new Line2D.Float(x1, y1, x2, y2));
+			g2d.draw(new Line2D.Float(x1centre, y1centre, x2centre, y2centre));		
 		}
 	}
 	
+	/*
+	 * dessine les echelles a l'ecran
+	 * coorEchelle est un tableau de point, chaque point contient la case de depart(x)
+	 * et la case d'arrivee(y) d'une echelle
+	 */
+	public void dessinerEchelle(Graphics g){
+		Component[] components = specialPanel.getComponents();
+		for(Point p : adresseEchelle){
+			String caseDepart = ""+p.x;		//contient le numero de la case de depart
+			String caseArrivee = ""+p.y;	//contient le numero de la case d'arrivee
+			int x1centre = 0;
+			int y1centre = 0;
+			int x2centre = 0;
+			int y2centre = 0;
+			int i = 0;
+			int j = 0;
+			
+			//on recupere la case depart en passant au travers toutes les cases du composant representant le plateau (specialPanel)
+			for(Component com : components){
+				JPanel encours = (JPanel)com;
+				JLabel jlabnumcase = (JLabel)encours.getComponent(3); //encours.getComponent(3) renvoie le numero de la case
+				if(jlabnumcase.getText().equals(caseDepart)){
+					//on recupere les coordonnees du centre de la case
+					x1centre = com.getLocation().x+(com.getSize().width/2);
+					y1centre = com.getLocation().y+(com.getSize().height/2);				
+					break;
+				}
+				i++;	
+			}
+			//on recupere la case arrivee en passant au travers toutes les cases du composant representant le plateau (specialPanel)
+			for(Component com2 : components){
+				JPanel encours = (JPanel)com2;
+				JLabel jlabnumcase = (JLabel)encours.getComponent(3); //encours.getComponent(3) renvoie le numero de la case
+				if(jlabnumcase.getText().equals(caseArrivee)){
+					//on recupere les coordonnees du centre de la case
+					x2centre = com2.getLocation().x+(com2.getSize().width/2);
+					y2centre = com2.getLocation().y+(com2.getSize().height/2);				
+					break;
+				}
+				j++;	
+			}
+			//on affiche l'echelle selon les coordonnees obtenues
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setPaint(Color.GREEN);
+			g2d.setStroke(new BasicStroke(10));
+			g2d.draw(new Line2D.Float(x1centre, y1centre, x2centre, y2centre));		
+		}
+	}
+	
+	/*
+	 * SpecialPanel est un JPanel regulier mais qui permet de dessiner
+	 * des serpents et des echelles a chaque fois que paintComponent est
+	 * appelé. Cet appel est souvent implicite
+	 * (lors de la creation du JPanel, lors d'un mouvement sur le JPanel etc..)
+	 */
 	private class SpecialPanel extends JPanel{
 		@Override
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
 			dessinerSerpent(g);
+			dessinerEchelle(g);
 		}
 	}
 	

@@ -136,6 +136,7 @@ public class FacadeJeu {
 			plateauJeu.afficherPlateauJeu(config.getLongueurPlateau()); //affiche le plateau de jeu du nombre de cases voulues
 			//genererSerpents();  //A FAIRE : idee d'implementation : passe au travers de la liste de case et retourner l'index de la case
 			plateauJeu.setAdresseSerpent(partie.getAdresseSerpents());
+			plateauJeu.setAdresseEchelle(partie.getAdresseEchelles());
 			plateauJeu.refreshSpecialPanel();
 			//plateauJeu.genererEchelles(int positionEchelle); //A FAIRE
 			

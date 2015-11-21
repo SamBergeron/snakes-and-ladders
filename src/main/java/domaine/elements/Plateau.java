@@ -34,19 +34,29 @@ public class Plateau {
 		adresseEchelles = new Point[nbEchelle];
 		
 		for(int i=0; i < nbSerpent; i++){
-			int debut = (int)(Math.random() * (cases.size()-2)); // Pcq on veut ignorer le 1er et dernier element
-			int fin = 1 + (int)(Math.random() * (debut-2)); 
+			int debut = 0;
+			int fin = 0;
+			while((debut-fin)<10){ //car on veut que le serpent fasse descendre d'au moins un niveau complet
+				debut = (int)(Math.random() * (cases.size()-2)); // Pcq on veut ignorer le 1er et dernier element
+				fin = 1 + (int)(Math.random() * (debut-2)); 
+			}
 			cases.set(debut, new CaseSerpent(debut, cases.get(fin)));
 			Point p = new Point(debut,fin);
 			adresseSerpents[i]=p;
+			System.out.println("Serpent numero "+(i+1)+" commence a : "+debut+" fini a : "+fin);
 		}
 		
 		for(int i=0; i < nbEchelle; i++){
-			int debut = (int)(Math.random() * (cases.size() - 2)); // Pcq on veut ignorer le 1er et dernier element
-			int fin = debut + ((int)(Math.random() * (cases.size() - debut - 2))); 
+			int debut = 0;
+			int fin = 0;
+			while((fin-debut)<10 || debut==0){ //car on veut que l'echelle fasse monter d'au moins un niveau complet
+				debut = (int)(Math.random() * (cases.size() - 2)); // Pcq on veut ignorer le 1er et dernier element
+				fin = debut + ((int)(Math.random() * (cases.size() - debut - 2))); 
+			}
 			cases.set(debut, new CaseEchelle(debut, cases.get(fin)));
 			Point p = new Point(debut,fin);
 			adresseEchelles[i]=p;
+			System.out.println("Echelle numero "+(i+1)+" commence a : "+debut+" fini a : "+fin);
 		}
 	}
 

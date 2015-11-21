@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.plaf.SliderUI;
 
 import controleurs.FacadeJeu;
@@ -96,6 +97,7 @@ public class Partie {
 	public boolean tirerDeEtDeplacer(int indexJoueur){
 		boolean unGagnant = false;
 		int valeurDe = de.rouler();
+		JOptionPane.showMessageDialog(null, "RESULTAT DÉ : "+valeurDe); //NE PAS LAISSER ICI : POUR DEBUGUAGE
 		anciennePosition = joueurs.get(indexJoueur).getCaseCourante();
 		deplacement = valeurDe + anciennePosition;	
 		int posFinale = plateau.getCaseFinale().getPosition();
@@ -103,7 +105,7 @@ public class Partie {
 		deplacement = plateau.getCases().get(deplacement).getPosition();
 		System.out.println("Tour du joueur " + joueurs.get(indexJoueur).getNom()); //pour debuguage seulement
 		joueurs.get(indexJoueur).deplacer(deplacement);
-		if(deplacement==posFinale){
+		if((deplacement)==posFinale){
 			unGagnant = true;
 		}
 		return unGagnant;
@@ -119,6 +121,10 @@ public class Partie {
 	
 	public Point[] getAdresseSerpents(){
 		return plateau.getAdresseSerpent();
+	}
+	
+	public Point[] getAdresseEchelles(){
+		return plateau.getAdresseEchelle();
 	}
 	
 	public Color getCouleurPion(int indexJoueur){
