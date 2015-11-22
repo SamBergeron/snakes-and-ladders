@@ -1,19 +1,27 @@
 package presentation.vue;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
@@ -89,8 +98,20 @@ public class MenuConfiguration implements IMenu {
 
 		f_menuConfiguration.setSize(largeur/2, hauteur/2);
 		f_menuConfiguration.setLocationRelativeTo(null);
-		f_menuConfiguration.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f_menuConfiguration.setResizable(false);	
+		f_menuConfiguration.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		f_menuConfiguration.setResizable(false);
+		
+		/* Mise en place de l'image de background du menu de configuration */
+		BufferedImage img = null;
+		try{
+			img = ImageIO.read(getClass().getResource("/images/configurationBackground.jpg"));
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(largeur/2, hauteur/2, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		f_menuConfiguration.setContentPane(new JLabel(imageIcon));		
+		
 		
 		layoutConfiguration = new GridBagLayout();
 		f_menuConfiguration.setLayout(layoutConfiguration);		
@@ -100,10 +121,46 @@ public class MenuConfiguration implements IMenu {
 		final Font police_label = new Font(Font.DIALOG, Font.BOLD, 35);
 		label_case = new JLabel("Cases");
 		label_case.setFont(police_label);
+		label_case.setForeground(Color.BLUE);
+		Image iconeBouton = null;
+		try {
+			iconeBouton = ImageIO.read(getClass().getResource("/images/square.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dimg = iconeBouton.getScaledInstance(largeur/40, hauteur/30, Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(dimg);
+		label_case.setIcon(imageIcon);		
+		
 		label_serpents = new JLabel("Serpents");
 		label_serpents.setFont(police_label);
+		label_serpents.setForeground(Color.RED);
+		iconeBouton = null;
+		try {
+			iconeBouton = ImageIO.read(getClass().getResource("/images/snakeConfig.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dimg = iconeBouton.getScaledInstance(largeur/40, hauteur/30, Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(dimg);
+		label_serpents.setIcon(imageIcon);		
+		
+		
 		label_echelles = new JLabel("Echelles");	
 		label_echelles.setFont(police_label);
+		label_echelles.setForeground(Color.GREEN);
+		iconeBouton = null;
+		try {
+			iconeBouton = ImageIO.read(getClass().getResource("/images/ladderConfig.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dimg = iconeBouton.getScaledInstance(largeur/40, hauteur/30, Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(dimg);
+		label_echelles.setIcon(imageIcon);	
 
 		//Ajout des spinner
 		//Spinner choix du nombre de case (commence a 40 cases, minimum 40 cases, maximum 200cases, incremente de 10cases)
@@ -111,8 +168,7 @@ public class MenuConfiguration implements IMenu {
 		spinnerCases = new JSpinner(new SpinnerNumberModel(40,40,200,10));
 		spinnerCases.addChangeListener(ecouteurSpinner);
 		Dimension d = spinnerCases.getPreferredSize();
-		//d.width = 150;
-		d.width = largeur/5;
+		d.width = largeur/10;
 		d.height = hauteur/30;
 		spinnerCases.setPreferredSize(d);
 		spinnerCases.setFont(police_label);
@@ -120,7 +176,7 @@ public class MenuConfiguration implements IMenu {
 		//1 case sur 5 peut etre un serpent
 		spinnerSerpents = new JSpinner(new SpinnerNumberModel(0,0,nbCases/pourcentageSerpentEchelle,1));
 		d = spinnerSerpents.getPreferredSize();
-		d.width = largeur/5;
+		d.width = largeur/10;
 		d.height = hauteur/30;
 		spinnerSerpents.setPreferredSize(d);
 		spinnerSerpents.setFont(police_label);
@@ -128,25 +184,73 @@ public class MenuConfiguration implements IMenu {
 		//1 case sur 5 peut etre une echelle
 		spinnerEchelles = new JSpinner(new SpinnerNumberModel(0,0,nbCases/pourcentageSerpentEchelle,1));	
 		d = spinnerEchelles.getPreferredSize();
-		d.width = largeur/5;
+		d.width = largeur/10;
 		d.height = hauteur/30;
 		spinnerEchelles.setPreferredSize(d);
 		spinnerEchelles.setFont(police_label);
 		
 		//Creation des boutons sauvegarde et retour
-		final Font police_bouton = new Font(Font.DIALOG, Font.BOLD, 20);
+		final Font police_bouton = new Font(Font.DIALOG, Font.BOLD, 45);
+		
 		EcouteurBouton ecouteurBouton = new EcouteurBouton();
-		b_svgConfig = new JButton("Sauvegarder Configuration");
+		b_svgConfig = new JButton("Sauvegarder");
 		b_svgConfig.addActionListener(ecouteurBouton);
 		b_svgConfig.setFont(police_bouton);
 		d = b_svgConfig.getPreferredSize();
 		d.width = largeur/5;
 		d.height = hauteur/10;
 		b_svgConfig.setPreferredSize(d);
-		b_retour = new JButton("Retour Menu Principal");	
+		b_svgConfig.setForeground(Color.BLACK);
+		iconeBouton = null;
+		try {
+			iconeBouton = ImageIO.read(getClass().getResource("/images/save.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dimg = iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(dimg);
+		b_svgConfig.setIcon(imageIcon);		
+		b_svgConfig.setOpaque(false);
+		b_svgConfig.setContentAreaFilled(false);
+		b_svgConfig.setBorderPainted(false);	
+		b_svgConfig.addMouseListener(new MouseAdapter(){
+			public void mouseEntered(MouseEvent evt){
+				b_svgConfig.setForeground(Color.GREEN);
+			}
+			public void mouseExited(MouseEvent evt){
+				b_svgConfig.setForeground(Color.BLACK);
+			}
+		});			
+		
+		b_retour = new JButton("Retour");	
 		b_retour.addActionListener(ecouteurBouton);	
 		b_retour.setFont(police_bouton);
 		b_retour.setPreferredSize(d);
+		b_retour.setForeground(Color.BLACK);
+		iconeBouton = null;
+		try {
+			iconeBouton = ImageIO.read(getClass().getResource("/images/back.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dimg = iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(dimg);
+		b_retour.setIcon(imageIcon);		
+		b_retour.setOpaque(false);
+		b_retour.setContentAreaFilled(false);
+		b_retour.setBorderPainted(false);	
+		b_retour.addMouseListener(new MouseAdapter(){
+			public void mouseEntered(MouseEvent evt){
+				b_retour.setForeground(Color.RED);
+			}
+			public void mouseExited(MouseEvent evt){
+				b_retour.setForeground(Color.BLACK);
+			}
+		});				
+		
+		
 		
 		/* Ajout des boutons sur la fenetre */
 		GridBagConstraints gbc = new GridBagConstraints();

@@ -83,7 +83,7 @@ public class MenuPrincipal implements IMenu{
 
 		f_menuPrincipal.setSize(largeur/2, hauteur/2);
 		f_menuPrincipal.setLocationRelativeTo(null);
-		f_menuPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f_menuPrincipal.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		f_menuPrincipal.setResizable(false);
 		
 		/* Mise en place de l'image de background du menu principal */
