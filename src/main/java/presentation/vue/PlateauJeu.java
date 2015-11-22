@@ -186,7 +186,17 @@ public class PlateauJeu implements IMenu{
 		
 		/* Permet de modifier la taille de l'image */
 		Image image = imagePion.getImage();
-		Image nouvelleImage = image.getScaledInstance(largeur/50, hauteur/30, Image.SCALE_SMOOTH);
+		Image nouvelleImage;
+		if(couleurPion==Color.YELLOW && ((largeur*hauteur)<150)){
+			nouvelleImage = image.getScaledInstance(largeur/50, hauteur/30, Image.SCALE_SMOOTH);
+		}else if((largeur*hauteur)<150){
+			nouvelleImage = image.getScaledInstance(largeur/30, hauteur/18, Image.SCALE_SMOOTH);
+		}else if(couleurPion==Color.YELLOW){
+			nouvelleImage = image.getScaledInstance(largeur/70, hauteur/42, Image.SCALE_SMOOTH);
+		}else{
+			nouvelleImage = image.getScaledInstance(largeur/50, hauteur/30, Image.SCALE_SMOOTH);
+		}
+		
 		imagePion = new ImageIcon(nouvelleImage);
 			
 		/* Pour eviter les problemes d'affichage si le joueur part de la 1ere case*/
