@@ -1,6 +1,7 @@
 package controleurs;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +11,8 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import domaine.configuration.ConfigPartie;
@@ -256,9 +259,5 @@ public class FacadeJeu {
 		else{ //sinon je les affiche
 			plateauJeu.cacheUndoRedo(false);
 		}
-	}	
-	
-	public Point[] getAdresseSerpents(){
-		return partie.getAdresseSerpents();
 	}	
 }

@@ -19,10 +19,15 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
+import java.io.IOException;
 import java.util.LinkedList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -100,43 +105,129 @@ public class PlateauJeu implements IMenu{
 		f_plateauJeu.setLayout(new BorderLayout());
 		
 		/* Creations des boutons */
-		final Font police_bouton = new Font(Font.DIALOG, Font.BOLD, 20);
+		final Font police_bouton = new Font(Font.DIALOG, Font.BOLD, 40);
+		
 		b_undo = new JButton("Undo");
 		b_undo.setFont(police_bouton);
 		d = b_undo.getPreferredSize();
 		d.width = largeur/5;
 		d.height = hauteur/10;
 		b_undo.setPreferredSize(d);
+		b_undo.setForeground(Color.BLACK);
+		Image iconeBouton = null;
+		try {
+			iconeBouton = ImageIO.read(getClass().getResource("/images/Undo.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Image dimg = iconeBouton.getScaledInstance(largeur/15, hauteur/20, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		b_undo.setIcon(imageIcon);		
+		b_undo.setOpaque(false);
+		b_undo.setContentAreaFilled(false);
+		b_undo.setBorderPainted(false);	
+		b_undo.addMouseListener(new MouseAdapter(){
+			public void mouseEntered(MouseEvent evt){
+				b_undo.setForeground(Color.WHITE);
+			}
+			public void mouseExited(MouseEvent evt){
+				b_undo.setForeground(Color.BLACK);
+			}
+		});			
 		
 		b_redo = new JButton("Redo");	
 		b_redo.setFont(police_bouton);
-		b_redo.setPreferredSize(d);		
+		b_redo.setPreferredSize(d);	
+		b_redo.setForeground(Color.BLACK);
+		iconeBouton = null;
+		try {
+			iconeBouton = ImageIO.read(getClass().getResource("/images/Redo.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dimg = iconeBouton.getScaledInstance(largeur/15, hauteur/20, Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(dimg);
+		b_redo.setIcon(imageIcon);		
+		b_redo.setOpaque(false);
+		b_redo.setContentAreaFilled(false);
+		b_redo.setBorderPainted(false);	
+		b_redo.addMouseListener(new MouseAdapter(){
+			public void mouseEntered(MouseEvent evt){
+				b_redo.setForeground(Color.WHITE);
+			}
+			public void mouseExited(MouseEvent evt){
+				b_redo.setForeground(Color.BLACK);
+			}
+		});		
+		
 		
 		b_tirerDe = new JButton("Tirer Dé");	
 		b_tirerDe.setFont(police_bouton);
 		b_tirerDe.setPreferredSize(d);	
+		b_tirerDe.setForeground(Color.BLACK);
+		iconeBouton = null;
+		try {
+			iconeBouton = ImageIO.read(getClass().getResource("/images/rollDice.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dimg = iconeBouton.getScaledInstance(largeur/15, hauteur/15, Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(dimg);
+		b_tirerDe.setIcon(imageIcon);		
+		b_tirerDe.setOpaque(false);
+		b_tirerDe.setContentAreaFilled(false);
+		b_tirerDe.setBorderPainted(false);	
+		b_tirerDe.addMouseListener(new MouseAdapter(){
+			public void mouseEntered(MouseEvent evt){
+				b_tirerDe.setForeground(Color.WHITE);
+			}
+			public void mouseExited(MouseEvent evt){
+				b_tirerDe.setForeground(Color.BLACK);
+			}
+		});	
 		
 		b_quitter = new JButton("Quitter");	
 		b_quitter.setFont(police_bouton);
 		b_quitter.setPreferredSize(d);	
+		b_quitter.setForeground(Color.BLACK);
+		iconeBouton = null;
+		try {
+			iconeBouton = ImageIO.read(getClass().getResource("/images/redX.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dimg = iconeBouton.getScaledInstance(largeur/15, hauteur/20, Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(dimg);
+		b_quitter.setIcon(imageIcon);		
+		b_quitter.setOpaque(false);
+		b_quitter.setContentAreaFilled(false);
+		b_quitter.setBorderPainted(false);	
+		b_quitter.addMouseListener(new MouseAdapter(){
+			public void mouseEntered(MouseEvent evt){
+				b_quitter.setForeground(Color.WHITE);
+			}
+			public void mouseExited(MouseEvent evt){
+				b_quitter.setForeground(Color.BLACK);
+			}
+		});			
 		
 		/*Ajout des boutons dans la fenetre */
-		panelBouton = new JPanel();
+		//panelBouton = new JPanel();
+		panelBouton = new BoutonPanel();
 		panelBouton.setLayout(new FlowLayout());
 		
 		panelBouton.add(b_undo);
-		panelBouton.add(b_redo);
 		panelBouton.add(b_tirerDe);
-		panelBouton.add(b_quitter);
-		JButton b_test = new JButton();
-		b_test = new JButton("test");	
-		b_test.setFont(police_bouton);
-		b_test.setPreferredSize(d);		
-		panelBouton.add(b_test); //TEST
+		panelBouton.add(b_redo);
+		panelBouton.add(b_quitter);	
 		
 		//ajout des boutons dans la fenetre
 		Container pane = f_plateauJeu.getContentPane();
-		pane.add(panelBouton, BorderLayout.NORTH);
+		pane.add(panelBouton, BorderLayout.SOUTH);
 		
 		f_plateauJeu.setVisible(true);
 	}
@@ -158,45 +249,37 @@ public class PlateauJeu implements IMenu{
 	 */
 	public void afficherPion(Color couleurPion, int nouvellePosition, int anciennePosition){
 		ImageIcon imagePion;
-		int indexpion = 0; //TEST //numero du panel contenant l'image du pion dans le panel
+		int indexpion = 0;						//numero du label contenant l'image du pion dans le panel
 		if(couleurPion==Color.BLUE){
-			imagePion = new ImageIcon(getClass().getResource("/images/pionbleu.png"));
+			imagePion = new ImageIcon(getClass().getResource("/images/bluepawn.png"));
 			indexpion=4;
 		}
 		else if(couleurPion==Color.GREEN){
-			imagePion = new ImageIcon(getClass().getResource("/images/pionvert.png"));
+			imagePion = new ImageIcon(getClass().getResource("/images/greenpawn.png"));
 			indexpion=0;
 		}
 		else if(couleurPion==Color.YELLOW){
-			imagePion = new ImageIcon(getClass().getResource("/images/pionjaune.png"));
+			imagePion = new ImageIcon(getClass().getResource("/images/yellowpawn.png"));
 			indexpion=1;
 		}
 		else if(couleurPion==Color.WHITE){
-			imagePion = new ImageIcon(getClass().getResource("/images/pionblanc.png"));
+			imagePion = new ImageIcon(getClass().getResource("/images/whitepawn.png"));
 			indexpion=5;
 		}
 		else if(couleurPion==Color.BLACK){
-			imagePion = new ImageIcon(getClass().getResource("/images/pionnoir.png"));
+			//imagePion = new ImageIcon(getClass().getResource("/images/pionnoir.png"));
+			imagePion = new ImageIcon(getClass().getResource("/images/darkpawn.png"));
 			indexpion=2;
 		}
 		else{
-			imagePion = new ImageIcon(getClass().getResource("/images/pionrouge.png"));
+			imagePion = new ImageIcon(getClass().getResource("/images/redpawn.png"));
 			indexpion=6;
 		}
 		
 		/* Permet de modifier la taille de l'image */
 		Image image = imagePion.getImage();
 		Image nouvelleImage;
-		if(couleurPion==Color.YELLOW && ((largeur*hauteur)<150)){
-			nouvelleImage = image.getScaledInstance(largeur/50, hauteur/30, Image.SCALE_SMOOTH);
-		}else if((largeur*hauteur)<150){
-			nouvelleImage = image.getScaledInstance(largeur/30, hauteur/18, Image.SCALE_SMOOTH);
-		}else if(couleurPion==Color.YELLOW){
-			nouvelleImage = image.getScaledInstance(largeur/70, hauteur/42, Image.SCALE_SMOOTH);
-		}else{
-			nouvelleImage = image.getScaledInstance(largeur/50, hauteur/30, Image.SCALE_SMOOTH);
-		}
-		
+		nouvelleImage = image.getScaledInstance(largeur/50, hauteur/30, Image.SCALE_SMOOTH);
 		imagePion = new ImageIcon(nouvelleImage);
 			
 		/* Pour eviter les problemes d'affichage si le joueur part de la 1ere case*/
@@ -237,7 +320,7 @@ public class PlateauJeu implements IMenu{
 	 * nbLigne demande la nombre de ligne que contient le plateau
 	 */
 	public void afficherPlateauJeu(int nbLigne){
-		Border border = LineBorder.createGrayLineBorder();
+		Border border = LineBorder.createBlackLineBorder();
 		final Font police_label = new Font(Font.DIALOG, Font.BOLD, hauteur/50);
 		
 		specialPanel = new SpecialPanel();
@@ -259,6 +342,7 @@ public class PlateauJeu implements IMenu{
 					JLabel labpionnoir = new JLabel();
 					cases.add(labpionnoir);
 					JLabel labnumcase = new JLabel(""+(k+1));
+					labnumcase.setFont(police_label);
 					cases.add(labnumcase);
 					JLabel labpionbleu = new JLabel();
 					cases.add(labpionbleu);
@@ -285,6 +369,7 @@ public class PlateauJeu implements IMenu{
 					JLabel labpionnoir = new JLabel();
 					cases.add(labpionnoir);
 					JLabel labnumcase = new JLabel(""+(temp+1));
+					labnumcase.setFont(police_label);
 					cases.add(labnumcase);
 					JLabel labpionbleu = new JLabel();
 					cases.add(labpionbleu);
@@ -367,8 +452,6 @@ public class PlateauJeu implements IMenu{
 			int y1centre = 0;
 			int x2centre = 0;
 			int y2centre = 0;
-			int i = 0;
-			int j = 0;
 			
 			//on recupere la case depart en passant au travers toutes les cases du composant representant le plateau (specialPanel)
 			for(Component com : components){
@@ -377,10 +460,9 @@ public class PlateauJeu implements IMenu{
 				if(jlabnumcase.getText().equals(caseDepart)){
 					//on recupere les coordonnees du centre de la case
 					x1centre = com.getLocation().x+(com.getSize().width/2);
-					y1centre = com.getLocation().y+(com.getSize().height/2);				
+					y1centre = com.getLocation().y+(com.getSize().height/2);	
 					break;
 				}
-				i++;	
 			}
 			//on recupere la case arrivee en passant au travers toutes les cases du composant representant le plateau (specialPanel)
 			for(Component com2 : components){
@@ -392,13 +474,14 @@ public class PlateauJeu implements IMenu{
 					y2centre = com2.getLocation().y+(com2.getSize().height/2);				
 					break;
 				}
-				j++;	
 			}
+					
 			//on affiche le serpent selon les coordonnees obtenues
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setPaint(Color.RED);
-			g2d.setStroke(new BasicStroke(5));
-			g2d.draw(new Line2D.Float(x1centre, y1centre, x2centre, y2centre));		
+			g2d.setStroke(new BasicStroke(3));
+			g2d.draw(new Line2D.Float(x1centre, y1centre, x2centre, y2centre));		//on dessine la ligne
+			//g.drawImage(image, x1centre, y1centre, 50, 50,null);					//on dessine le serpent : en commentaire pour l'instant : mauvais resultat a l'ecran
 		}
 	}
 	
@@ -461,8 +544,34 @@ public class PlateauJeu implements IMenu{
 		@Override
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
+			Image iconeBouton = null;
+			try {
+				iconeBouton = ImageIO.read(getClass().getResource("/images/bgPlateau.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Image dimg = iconeBouton.getScaledInstance(largeur, hauteur, Image.SCALE_SMOOTH);
+			g.drawImage(dimg, 0, 0, null);
+			
 			dessinerSerpent(g);
 			dessinerEchelle(g);
+		}
+	}
+	
+	private class BoutonPanel extends JPanel{
+		@Override
+		public void paintComponent(Graphics g){
+			super.paintComponent(g);
+			Image iconeBouton = null;
+			try {
+				iconeBouton = ImageIO.read(getClass().getResource("/images/SunFlare.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Image dimg = iconeBouton.getScaledInstance(largeur, hauteur-(hauteur/10), Image.SCALE_SMOOTH);
+			g.drawImage(dimg, 0, 0, null);
 		}
 	}
 	
