@@ -14,34 +14,23 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
 import java.io.IOException;
-import java.util.LinkedList;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-import controleurs.ControleurMenuPrincipal;
 import controleurs.FacadeJeu;
 import domaine.elements.statique.Couleur;
 
@@ -64,172 +53,150 @@ public class PlateauJeu implements IMenu{
 	GridBagLayout layoutPlateauJeu;
 	GridBagConstraints gbc;
 	
-	int largeur;
-	int hauteur;
+	private int largeur;
+	private int hauteur;
 	
-	Point[] adresseSerpent;
-	Point[] adresseEchelle;
+	private Point[] adresseSerpent;
+	private Point[] adresseEchelle;
+	
+	private static final String IMAGE_UNDO = "images/Undo.png";
+	private static final String IMAGE_DICE = "images/rollDice.png";
+	private static final String IMAGE_REDX = "images/redX.png";
+	private static final String IMAGE_BACKGROUND = "images/bgPlateau.png";
+	private static final String IMAGE_SUNFLARE = "images/SunFlare.png";
+	private static final String IMAGE_REDO = "images/Redo.png";
+	
+	private static final String PION_BLEU = "images/bluepawn.png";
+	private static final String PION_ROUGE = "images/redpawn.png";
+	private static final String PION_JAUNE = "images/yellowpawn.png";
+	private static final String PION_VERT = "images/greenpawn.png";
+	private static final String PION_NOIR = "images/whitepawn.png";
+	private static final String PION_BLANC = "images/blackpawn.png";
+	
+	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, 40);
 	
 	//IHM Graphique
 	public void afficherEcran(){
+		facadeJeu = new FacadeJeu();
+		f_plateauJeu = new JFrame();
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //permet des composants swing avec un style recent
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		facadeJeu = new FacadeJeu();
-		
-		f_plateauJeu = new JFrame();
-
-		f_plateauJeu.setTitle("Snakes and Ladders - Partie en cours");
-
-		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		largeur = (int)d.getWidth();
-		hauteur = (int)d.getHeight();
-		f_plateauJeu.setSize(largeur, hauteur-(hauteur/20));
-		f_plateauJeu.setLocationRelativeTo(null);
-		f_plateauJeu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f_plateauJeu.setResizable(false);
+	
+			f_plateauJeu.setTitle("Snakes and Ladders - Partie en cours");
+	
+			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+			largeur = (int)d.getWidth();
+			hauteur = (int)d.getHeight();
+			f_plateauJeu.setSize(largeur, hauteur-(hauteur/20));
+			f_plateauJeu.setLocationRelativeTo(null);
+			f_plateauJeu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			f_plateauJeu.setResizable(false);
+			f_plateauJeu.setLayout(new BorderLayout());
 			
-		f_plateauJeu.setLayout(new BorderLayout());
-		
-		/* Creations des boutons */
-		final Font police_bouton = new Font(Font.DIALOG, Font.BOLD, 40);
-		
-		b_undo = new JButton("Undo");
-		b_undo.setFont(police_bouton);
-		d = b_undo.getPreferredSize();
-		d.width = largeur/5;
-		d.height = hauteur/10;
-		b_undo.setPreferredSize(d);
-		b_undo.setForeground(Color.BLACK);
-		Image iconeBouton = null;
-		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/Undo.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			/* Creations des boutons */
+			b_undo = new JButton("Undo");
+			b_undo.setFont(POLICE_BOUTON);
+			b_undo.setPreferredSize(new Dimension(largeur/5, hauteur/10));
+			b_undo.setForeground(Color.BLACK);
+
+			Image iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_UNDO));
+			ImageIcon imageIcon = new ImageIcon(iconeBouton.getScaledInstance(largeur/15, hauteur/20, Image.SCALE_SMOOTH));
+			
+			b_undo.setIcon(imageIcon);		
+			b_undo.setOpaque(false);
+			b_undo.setContentAreaFilled(false);
+			b_undo.setBorderPainted(false);	
+			b_undo.addMouseListener(new MouseAdapter(){
+				public void mouseEntered(MouseEvent evt){
+					b_undo.setForeground(Color.WHITE);
+				}
+				public void mouseExited(MouseEvent evt){
+					b_undo.setForeground(Color.BLACK);
+				}
+			});			
+			
+			b_redo = new JButton("Redo");	
+			b_redo.setFont(POLICE_BOUTON);
+			b_redo.setPreferredSize(new Dimension(largeur/5, hauteur/10));	
+			b_redo.setForeground(Color.BLACK);
+			
+			iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_REDO));
+			imageIcon = new ImageIcon(iconeBouton.getScaledInstance(largeur/15, hauteur/20, Image.SCALE_SMOOTH));
+			
+			b_redo.setIcon(imageIcon);		
+			b_redo.setOpaque(false);
+			b_redo.setContentAreaFilled(false);
+			b_redo.setBorderPainted(false);	
+			b_redo.addMouseListener(new MouseAdapter(){
+				public void mouseEntered(MouseEvent evt){
+					b_redo.setForeground(Color.WHITE);
+				}
+				public void mouseExited(MouseEvent evt){
+					b_redo.setForeground(Color.BLACK);
+				}
+			});		
+			
+			b_tirerDe = new JButton("Tirer Dé");	
+			b_tirerDe.setFont(POLICE_BOUTON);
+			b_tirerDe.setPreferredSize(new Dimension(largeur/5, hauteur/10));	
+			b_tirerDe.setForeground(Color.BLACK);
+			
+			iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_DICE));
+			imageIcon = new ImageIcon(iconeBouton.getScaledInstance(largeur/15, hauteur/15, Image.SCALE_SMOOTH));
+
+			b_tirerDe.setIcon(imageIcon);		
+			b_tirerDe.setOpaque(false);
+			b_tirerDe.setContentAreaFilled(false);
+			b_tirerDe.setBorderPainted(false);	
+			b_tirerDe.addMouseListener(new MouseAdapter(){
+				public void mouseEntered(MouseEvent evt){
+					b_tirerDe.setForeground(Color.WHITE);
+				}
+				public void mouseExited(MouseEvent evt){
+					b_tirerDe.setForeground(Color.BLACK);
+				}
+			});	
+			
+			b_quitter = new JButton("Quitter");	
+			b_quitter.setFont(POLICE_BOUTON);
+			b_quitter.setPreferredSize(new Dimension(largeur/5, hauteur/10));	
+			b_quitter.setForeground(Color.BLACK);
+			
+			iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_REDX));
+			imageIcon = new ImageIcon(iconeBouton.getScaledInstance(largeur/15, hauteur/20, Image.SCALE_SMOOTH));
+			
+			b_quitter.setIcon(imageIcon);		
+			b_quitter.setOpaque(false);
+			b_quitter.setContentAreaFilled(false);
+			b_quitter.setBorderPainted(false);	
+			b_quitter.addMouseListener(new MouseAdapter(){
+				public void mouseEntered(MouseEvent evt){
+					b_quitter.setForeground(Color.WHITE);
+				}
+				public void mouseExited(MouseEvent evt){
+					b_quitter.setForeground(Color.BLACK);
+				}
+			});			
+			
+			/*Ajout des boutons dans la fenetre */
+			//panelBouton = new JPanel();
+			panelBouton = new BoutonPanel();
+			panelBouton.setLayout(new FlowLayout());
+			
+			panelBouton.add(b_undo);
+			panelBouton.add(b_tirerDe);
+			panelBouton.add(b_redo);
+			panelBouton.add(b_quitter);	
+			
+			//ajout des boutons dans la fenetre
+			Container pane = f_plateauJeu.getContentPane();
+			pane.add(panelBouton, BorderLayout.SOUTH);
+			
+			f_plateauJeu.setVisible(true);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Image dimg = iconeBouton.getScaledInstance(largeur/15, hauteur/20, Image.SCALE_SMOOTH);
-		ImageIcon imageIcon = new ImageIcon(dimg);
-		b_undo.setIcon(imageIcon);		
-		b_undo.setOpaque(false);
-		b_undo.setContentAreaFilled(false);
-		b_undo.setBorderPainted(false);	
-		b_undo.addMouseListener(new MouseAdapter(){
-			public void mouseEntered(MouseEvent evt){
-				b_undo.setForeground(Color.WHITE);
-			}
-			public void mouseExited(MouseEvent evt){
-				b_undo.setForeground(Color.BLACK);
-			}
-		});			
-		
-		b_redo = new JButton("Redo");	
-		b_redo.setFont(police_bouton);
-		b_redo.setPreferredSize(d);	
-		b_redo.setForeground(Color.BLACK);
-		iconeBouton = null;
-		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/Redo.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dimg = iconeBouton.getScaledInstance(largeur/15, hauteur/20, Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
-		b_redo.setIcon(imageIcon);		
-		b_redo.setOpaque(false);
-		b_redo.setContentAreaFilled(false);
-		b_redo.setBorderPainted(false);	
-		b_redo.addMouseListener(new MouseAdapter(){
-			public void mouseEntered(MouseEvent evt){
-				b_redo.setForeground(Color.WHITE);
-			}
-			public void mouseExited(MouseEvent evt){
-				b_redo.setForeground(Color.BLACK);
-			}
-		});		
-		
-		
-		b_tirerDe = new JButton("Tirer DÃ©");	
-		b_tirerDe.setFont(police_bouton);
-		b_tirerDe.setPreferredSize(d);	
-		b_tirerDe.setForeground(Color.BLACK);
-		iconeBouton = null;
-		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/rollDice.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dimg = iconeBouton.getScaledInstance(largeur/15, hauteur/15, Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
-		b_tirerDe.setIcon(imageIcon);		
-		b_tirerDe.setOpaque(false);
-		b_tirerDe.setContentAreaFilled(false);
-		b_tirerDe.setBorderPainted(false);	
-		b_tirerDe.addMouseListener(new MouseAdapter(){
-			public void mouseEntered(MouseEvent evt){
-				b_tirerDe.setForeground(Color.WHITE);
-			}
-			public void mouseExited(MouseEvent evt){
-				b_tirerDe.setForeground(Color.BLACK);
-			}
-		});	
-		
-		b_quitter = new JButton("Quitter");	
-		b_quitter.setFont(police_bouton);
-		b_quitter.setPreferredSize(d);	
-		b_quitter.setForeground(Color.BLACK);
-		iconeBouton = null;
-		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/redX.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dimg = iconeBouton.getScaledInstance(largeur/15, hauteur/20, Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
-		b_quitter.setIcon(imageIcon);		
-		b_quitter.setOpaque(false);
-		b_quitter.setContentAreaFilled(false);
-		b_quitter.setBorderPainted(false);	
-		b_quitter.addMouseListener(new MouseAdapter(){
-			public void mouseEntered(MouseEvent evt){
-				b_quitter.setForeground(Color.WHITE);
-			}
-			public void mouseExited(MouseEvent evt){
-				b_quitter.setForeground(Color.BLACK);
-			}
-		});			
-		
-		/*Ajout des boutons dans la fenetre */
-		//panelBouton = new JPanel();
-		panelBouton = new BoutonPanel();
-		panelBouton.setLayout(new FlowLayout());
-		
-		panelBouton.add(b_undo);
-		panelBouton.add(b_tirerDe);
-		panelBouton.add(b_redo);
-		panelBouton.add(b_quitter);	
-		
-		//ajout des boutons dans la fenetre
-		Container pane = f_plateauJeu.getContentPane();
-		pane.add(panelBouton, BorderLayout.SOUTH);
-		
-		f_plateauJeu.setVisible(true);
 	}
 
 	//Permet de cacher les boutons undo et redo si c'est le tour d'un joueur artificiel
@@ -247,33 +214,41 @@ public class PlateauJeu implements IMenu{
 	 * Supprime l'image du pion situe sur la case anciennePosition
 	 * Affiche l'image du pion situe sur la case nouvellePosition
 	 */
-	public void afficherPion(Color couleurPion, int nouvellePosition, int anciennePosition){
+	public void afficherPion(Couleur couleurPion, int nouvellePosition, int anciennePosition){
 		ImageIcon imagePion;
-		int indexpion = 0;						//numero du label contenant l'image du pion dans le panel
-		if(couleurPion==Color.BLUE){
-			imagePion = new ImageIcon(getClass().getResource("/images/bluepawn.png"));
+		int indexpion = 0;	
+		//numero du label contenant l'image du pion dans le panel]
+		switch(couleurPion){
+		case BLEU:
+			imagePion = new ImageIcon(getClass().getClassLoader().getResource(PION_BLEU));
 			indexpion=4;
-		}
-		else if(couleurPion==Color.GREEN){
-			imagePion = new ImageIcon(getClass().getResource("/images/greenpawn.png"));
+			break;
+			
+		case VERT:
+			imagePion = new ImageIcon(getClass().getClassLoader().getResource(PION_VERT));
 			indexpion=0;
-		}
-		else if(couleurPion==Color.YELLOW){
-			imagePion = new ImageIcon(getClass().getResource("/images/yellowpawn.png"));
+			break;
+		
+		case JAUNE:
+			imagePion = new ImageIcon(getClass().getClassLoader().getResource(PION_JAUNE));
 			indexpion=1;
-		}
-		else if(couleurPion==Color.WHITE){
-			imagePion = new ImageIcon(getClass().getResource("/images/whitepawn.png"));
+			break;
+		
+		case BLANC:
+			imagePion = new ImageIcon(getClass().getClassLoader().getResource(PION_BLANC));
 			indexpion=5;
-		}
-		else if(couleurPion==Color.BLACK){
-			//imagePion = new ImageIcon(getClass().getResource("/images/pionnoir.png"));
-			imagePion = new ImageIcon(getClass().getResource("/images/darkpawn.png"));
+			break;
+		
+		case NOIR:
+			imagePion = new ImageIcon(getClass().getClassLoader().getResource(PION_NOIR));
 			indexpion=2;
-		}
-		else{
-			imagePion = new ImageIcon(getClass().getResource("/images/redpawn.png"));
+			break;
+		
+		case ROUGE:
+		default:
+			imagePion = new ImageIcon(getClass().getClassLoader().getResource(PION_ROUGE));
 			indexpion=6;
+			break;
 		}
 		
 		/* Permet de modifier la taille de l'image */
@@ -493,8 +468,8 @@ public class PlateauJeu implements IMenu{
 	public void dessinerEchelle(Graphics g){
 		Component[] components = specialPanel.getComponents();
 		for(Point p : adresseEchelle){
-			String caseDepart = ""+p.x;		//contient le numero de la case de depart
-			String caseArrivee = ""+p.y;	//contient le numero de la case d'arrivee
+			String caseDepart = "" + p.x;		//contient le numero de la case de depart
+			String caseArrivee = "" + p.y;	//contient le numero de la case d'arrivee
 			int x1centre = 0;
 			int y1centre = 0;
 			int x2centre = 0;
@@ -546,7 +521,7 @@ public class PlateauJeu implements IMenu{
 			super.paintComponent(g);
 			Image iconeBouton = null;
 			try {
-				iconeBouton = ImageIO.read(getClass().getResource("/images/bgPlateau.png"));
+				iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_BACKGROUND));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -565,7 +540,7 @@ public class PlateauJeu implements IMenu{
 			super.paintComponent(g);
 			Image iconeBouton = null;
 			try {
-				iconeBouton = ImageIO.read(getClass().getResource("/images/SunFlare.png"));
+				iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_SUNFLARE));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

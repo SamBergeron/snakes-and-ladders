@@ -1,14 +1,10 @@
 package presentation.vue;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -17,22 +13,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Scanner;
-
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -44,185 +30,151 @@ public class MenuPrincipal implements IMenu{
 	JButton b_quitterPartie;
 	
 	JFrame f_menuPrincipal;
-	
 	GridBagLayout layoutPrincipal;
 	
 	//JPanel panelMenu;
-	
 	ControleurMenuPrincipal controleurMenuPrincipal;
-
-	 Image backgroundImage;
+	Image backgroundImage;
+	
+	private static final String IMAGE_UNAMED = "images/unnamed.png";
+	private static final String IMAGE_MENU = "images/snakeMenuPrincipal.png";
+	private static final String IMAGE_ICON_PARAM = "images/paramIcon.png";
+	private static final String IMAGE_REDX = "images/redX.png";
+	
+	/* Creation des boutons */
+	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, 35);
+	private static final Font POLICE_BOUTON2 = new Font(Font.DIALOG, Font.BOLD, 60);
 	
 	//IHM Graphique
 	public void afficherEcran(){
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //permet des composants swing avec un style recent
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		controleurMenuPrincipal = new ControleurMenuPrincipal();
-
-		/* Creation de la fenetre principale */
-		f_menuPrincipal = new JFrame();
-
-		f_menuPrincipal.setTitle("Snakes and Ladders - Menu Principal");
-		Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
-		int largeur = (int)tailleEcran.getWidth();
-		int hauteur = (int)tailleEcran.getHeight();
-
-		f_menuPrincipal.setSize(largeur/2, hauteur/2);
-		f_menuPrincipal.setLocationRelativeTo(null);
-		f_menuPrincipal.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		f_menuPrincipal.setResizable(false);
-		
-		/* Mise en place de l'image de background du menu principal */
-		BufferedImage img = null;
-		try{
-			img = ImageIO.read(getClass().getResource("/images/unnamed.png"));
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-		Image dimg = img.getScaledInstance(largeur/2, hauteur/2, Image.SCALE_SMOOTH);
-		ImageIcon imageIcon = new ImageIcon(dimg);
-		f_menuPrincipal.setContentPane(new JLabel(imageIcon));
-		
-		
-		layoutPrincipal = new GridBagLayout();
-		f_menuPrincipal.setLayout(layoutPrincipal);
 		EcouteurBouton ecouteurBouton = new EcouteurBouton();
-		
-		/* Creation des boutons */
-		final Font police_button = new Font(Font.DIALOG, Font.BOLD, 35);
-		final Font police_button2 = new Font(Font.DIALOG, Font.BOLD, 60);
-		
-		b_debutPartie = new JButton("Jouer");
-		b_debutPartie.addActionListener(ecouteurBouton);
-		Dimension d_button = new Dimension(largeur/6,hauteur/14);
-		b_debutPartie.setPreferredSize(d_button);
-		b_debutPartie.setFont(police_button);
-		b_debutPartie.setForeground(Color.WHITE);
-		Image iconeBouton = null;
+		controleurMenuPrincipal = new ControleurMenuPrincipal();
 		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/snakeMenuPrincipal.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dimg = iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
-		b_debutPartie.setIcon(imageIcon);		
-		b_debutPartie.setOpaque(false);
-		b_debutPartie.setContentAreaFilled(false);
-		b_debutPartie.setBorderPainted(false);	
-		b_debutPartie.addMouseListener(new MouseAdapter(){
-			public void mouseEntered(MouseEvent evt){
-				b_debutPartie.setFont(police_button2);
-				int x = b_debutPartie.getWidth();
-				int y = b_debutPartie.getHeight();
-				Dimension d_button = new Dimension(x*2,y);
-				b_debutPartie.setPreferredSize(d_button);
-				b_debutPartie.setForeground(Color.GREEN);
-			}
-			public void mouseExited(MouseEvent evt){
-				b_debutPartie.setFont(police_button);
-				int x = b_debutPartie.getWidth();
-				int y = b_debutPartie.getHeight();
-				Dimension d_button = new Dimension(x/2,y);
-				b_debutPartie.setPreferredSize(d_button);
-				b_debutPartie.setForeground(Color.WHITE);
-			}
-		});		
-		
-		
+			//permet des composants swing avec un style recent
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); 			
+			
+			/* Creation de la fenetre principale */
+			f_menuPrincipal = new JFrame("Snakes and Ladders - Menu Principal");
+	
+			Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+			int largeur = (int)tailleEcran.getWidth();
+			int hauteur = (int)tailleEcran.getHeight();
+	
+			f_menuPrincipal.setSize(largeur/2, hauteur/2);
+			f_menuPrincipal.setLocationRelativeTo(null);
+			f_menuPrincipal.setResizable(false);
+			
+			/* Mise en place de l'image de background du menu principal */
+			BufferedImage img = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_UNAMED));
+			Image dimg = img.getScaledInstance(largeur/2, hauteur/2, Image.SCALE_SMOOTH);
+			
+			f_menuPrincipal.setContentPane(new JLabel(new ImageIcon(dimg)));
+			layoutPrincipal = new GridBagLayout();
+			f_menuPrincipal.setLayout(layoutPrincipal);
+			
+			b_debutPartie = new JButton("Jouer");
+			b_debutPartie.addActionListener(ecouteurBouton);
+			b_debutPartie.setPreferredSize(new Dimension(largeur/6,hauteur/14));
+			b_debutPartie.setFont(POLICE_BOUTON);
+			b_debutPartie.setForeground(Color.WHITE);
+			Image iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_MENU));
 
-		b_configurerPartie = new JButton("Configurer");
-		b_configurerPartie.addActionListener(ecouteurBouton);
-		b_configurerPartie.setPreferredSize(b_debutPartie.getPreferredSize()); //pour que tous les boutons aient la meme taille
-		b_configurerPartie.setFont(police_button);
-		b_configurerPartie.setForeground(Color.WHITE);
-		iconeBouton = null;
-		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/paramIcon.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			dimg = iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH);
+			b_debutPartie.setIcon(new ImageIcon(dimg));		
+			b_debutPartie.setOpaque(false);
+			b_debutPartie.setContentAreaFilled(false);
+			b_debutPartie.setBorderPainted(false);	
+			b_debutPartie.addMouseListener(new MouseAdapter(){
+				public void mouseEntered(MouseEvent evt){
+					b_debutPartie.setFont(POLICE_BOUTON2);
+					int x = b_debutPartie.getWidth();
+					int y = b_debutPartie.getHeight();
+					Dimension d_button = new Dimension(x*2,y);
+					b_debutPartie.setPreferredSize(d_button);
+					b_debutPartie.setForeground(Color.GREEN);
+				}
+				public void mouseExited(MouseEvent evt){
+					b_debutPartie.setFont(POLICE_BOUTON);
+					int x = b_debutPartie.getWidth();
+					int y = b_debutPartie.getHeight();
+					Dimension d_button = new Dimension(x/2,y);
+					b_debutPartie.setPreferredSize(d_button);
+					b_debutPartie.setForeground(Color.WHITE);
+				}
+			});		
+	
+			b_configurerPartie = new JButton("Configurer");
+			b_configurerPartie.addActionListener(ecouteurBouton);
+			b_configurerPartie.setPreferredSize(b_debutPartie.getPreferredSize()); //pour que tous les boutons aient la meme taille
+			b_configurerPartie.setFont(POLICE_BOUTON);
+			b_configurerPartie.setForeground(Color.WHITE);
+			iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_ICON_PARAM));
+
+			dimg = iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH);
+			b_configurerPartie.setIcon(new ImageIcon(dimg));		
+			b_configurerPartie.setOpaque(false);
+			b_configurerPartie.setContentAreaFilled(false);
+			b_configurerPartie.setBorderPainted(false);	
+			b_configurerPartie.addMouseListener(new MouseAdapter(){
+				public void mouseEntered(MouseEvent evt){
+					b_configurerPartie.setFont(POLICE_BOUTON2);
+					int x = b_configurerPartie.getWidth();
+					int y = b_configurerPartie.getHeight();
+					Dimension d_button = new Dimension(x*2,y);
+					b_configurerPartie.setPreferredSize(d_button);
+					b_configurerPartie.setForeground(Color.ORANGE);
+				}
+				public void mouseExited(MouseEvent evt){
+					b_configurerPartie.setFont(POLICE_BOUTON);
+					int x = b_configurerPartie.getWidth();
+					int y = b_configurerPartie.getHeight();
+					Dimension d_button = new Dimension(x/2,y);
+					b_configurerPartie.setPreferredSize(d_button);
+					b_configurerPartie.setForeground(Color.WHITE);
+				}
+			});
+			
+			b_quitterPartie = new JButton("Quitter");
+			b_quitterPartie.addActionListener(ecouteurBouton);
+			b_quitterPartie.setPreferredSize(b_debutPartie.getPreferredSize());
+			b_quitterPartie.setFont(POLICE_BOUTON);
+			b_quitterPartie.setForeground(Color.WHITE);
+
+			iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_REDX));
+			b_quitterPartie.setIcon(new ImageIcon(iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH)));		
+			b_quitterPartie.setOpaque(false);
+			b_quitterPartie.setContentAreaFilled(false);
+			b_quitterPartie.setBorderPainted(false);	
+			b_quitterPartie.addMouseListener(new MouseAdapter(){
+				public void mouseEntered(MouseEvent evt){
+					b_quitterPartie.setFont(POLICE_BOUTON2);
+					int x = b_quitterPartie.getWidth();
+					int y = b_quitterPartie.getHeight();
+					Dimension d_button = new Dimension(x*2,y);
+					b_quitterPartie.setPreferredSize(d_button);
+					b_quitterPartie.setForeground(Color.BLACK);
+				}
+				public void mouseExited(MouseEvent evt){
+					b_quitterPartie.setFont(POLICE_BOUTON);
+					int x = b_quitterPartie.getWidth();
+					int y = b_quitterPartie.getHeight();
+					Dimension d_button = new Dimension(x/2,y);
+					b_quitterPartie.setPreferredSize(d_button);
+					b_quitterPartie.setForeground(Color.WHITE);
+				}
+			});		
+			
+			//Generer la grille de jeu
+			GridBagConstraints gbc = genererGrid(hauteur, largeur);
+			f_menuPrincipal.add(b_quitterPartie,gbc);
+			f_menuPrincipal.setVisible(true);
+			
+		} catch(Exception e){
 			e.printStackTrace();
 		}
-		dimg = iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
-		b_configurerPartie.setIcon(imageIcon);		
-		b_configurerPartie.setOpaque(false);
-		b_configurerPartie.setContentAreaFilled(false);
-		b_configurerPartie.setBorderPainted(false);	
-		b_configurerPartie.addMouseListener(new MouseAdapter(){
-			public void mouseEntered(MouseEvent evt){
-				b_configurerPartie.setFont(police_button2);
-				int x = b_configurerPartie.getWidth();
-				int y = b_configurerPartie.getHeight();
-				Dimension d_button = new Dimension(x*2,y);
-				b_configurerPartie.setPreferredSize(d_button);
-				b_configurerPartie.setForeground(Color.ORANGE);
-			}
-			public void mouseExited(MouseEvent evt){
-				b_configurerPartie.setFont(police_button);
-				int x = b_configurerPartie.getWidth();
-				int y = b_configurerPartie.getHeight();
-				Dimension d_button = new Dimension(x/2,y);
-				b_configurerPartie.setPreferredSize(d_button);
-				b_configurerPartie.setForeground(Color.WHITE);
-			}
-		});
-		
-		
-		b_quitterPartie = new JButton("Quitter");
-		b_quitterPartie.addActionListener(ecouteurBouton);
-		b_quitterPartie.setPreferredSize(b_debutPartie.getPreferredSize());
-		b_quitterPartie.setFont(police_button);
-		b_quitterPartie.setForeground(Color.WHITE);
-		iconeBouton = null;
-		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/redX.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dimg = iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
-		b_quitterPartie.setIcon(imageIcon);		
-		b_quitterPartie.setOpaque(false);
-		b_quitterPartie.setContentAreaFilled(false);
-		b_quitterPartie.setBorderPainted(false);	
-		b_quitterPartie.addMouseListener(new MouseAdapter(){
-			public void mouseEntered(MouseEvent evt){
-				b_quitterPartie.setFont(police_button2);
-				int x = b_quitterPartie.getWidth();
-				int y = b_quitterPartie.getHeight();
-				Dimension d_button = new Dimension(x*2,y);
-				b_quitterPartie.setPreferredSize(d_button);
-				b_quitterPartie.setForeground(Color.BLACK);
-			}
-			public void mouseExited(MouseEvent evt){
-				b_quitterPartie.setFont(police_button);
-				int x = b_quitterPartie.getWidth();
-				int y = b_quitterPartie.getHeight();
-				Dimension d_button = new Dimension(x/2,y);
-				b_quitterPartie.setPreferredSize(d_button);
-				b_quitterPartie.setForeground(Color.WHITE);
-			}
-		});		
-		
-		
-		
+	}
+	
+	private GridBagConstraints genererGrid(int hauteur, int largeur){
 		/* Ajout des boutons sur la fenetre */
 		GridBagConstraints gbc = new GridBagConstraints();
 		
@@ -239,9 +191,8 @@ public class MenuPrincipal implements IMenu{
 		
 		gbc.gridy = 2;
 		gbc.insets = new Insets(hauteur/56, largeur/50, hauteur/75, 0);
-		f_menuPrincipal.add(b_quitterPartie,gbc);
-
-		f_menuPrincipal.setVisible(true);
+		
+		return gbc;
 	}
 	
 	private class EcouteurBouton implements ActionListener{

@@ -60,198 +60,148 @@ public class MenuConfiguration implements IMenu {
 	JSpinner spinnerSerpents;
 	JSpinner spinnerEchelles;
 	
-	int nbCases = 40; //nb de cases choisit par le joueur, initialise au minimum : 40
+	private int nbCases = 40; //nb de cases choisit par le joueur, initialise au minimum : 40
 	
 	//signifie que 1/5eme au maximum des cases peuvent etre des serpents 
 	//signifie qu'un autre 1/5eme au maximum des cases peuvent etre des echelles 
 	final int pourcentageSerpentEchelle = 5;
+	
+	private static final String IMAGE_CONFIG = "images/configurationBackground.jpg";
+	private static final String IMAGE_SQUARE = "images/square.png";
+	private static final String IMAGE_SNAKE_CONFIG = "images/snakeConfig.png";
+	private static final String IMAGE_LADDER_CONFIG = "images/ladderConfig.png";
+	private static final String IMAGE_BACK = "images/back.png";
+	private static final String IMAGE_SAVE = "images/save.png";
+	
+	private static final Font POLICE_LABEL = new Font(Font.DIALOG, Font.BOLD, 35);
+	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, 45);
 
 	public void afficherEcran() {
 		
-		/* Mode Graphique */
-		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //permet des composants swing avec un style recent
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			controleurMenuConfiguration = new ControleurMenuConfiguration();
+			
+			/* Creation de la fenetre */
+			f_menuConfiguration = new JFrame("Snakes and Ladders - Menu Configuration");
 		
-		controleurMenuConfiguration = new ControleurMenuConfiguration();
-		
-		/* Creation de la fenetre */
-		f_menuConfiguration = new JFrame();
+			Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+			int largeur = (int)tailleEcran.getWidth();
+			int hauteur = (int)tailleEcran.getHeight();
 	
-		f_menuConfiguration.setTitle("Snakes and Ladders - Menu Configuration");
-		Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
-		int largeur = (int)tailleEcran.getWidth();
-		int hauteur = (int)tailleEcran.getHeight();
-
-		f_menuConfiguration.setSize(largeur/2, hauteur/2);
-		f_menuConfiguration.setLocationRelativeTo(null);
-		f_menuConfiguration.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		f_menuConfiguration.setResizable(false);
-		
-		/* Mise en place de l'image de background du menu de configuration */
-		BufferedImage img = null;
-		try{
-			img = ImageIO.read(getClass().getResource("/images/configurationBackground.jpg"));
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-		Image dimg = img.getScaledInstance(largeur/2, hauteur/2, Image.SCALE_SMOOTH);
-		ImageIcon imageIcon = new ImageIcon(dimg);
-		f_menuConfiguration.setContentPane(new JLabel(imageIcon));		
-		
-		
-		layoutConfiguration = new GridBagLayout();
-		f_menuConfiguration.setLayout(layoutConfiguration);		
-
-		
-		//Ajout des labels
-		final Font police_label = new Font(Font.DIALOG, Font.BOLD, 35);
-		label_case = new JLabel("Cases");
-		label_case.setFont(police_label);
-		label_case.setForeground(Color.BLUE);
-		Image iconeBouton = null;
-		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/square.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dimg = iconeBouton.getScaledInstance(largeur/40, hauteur/30, Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
-		label_case.setIcon(imageIcon);		
-		
-		label_serpents = new JLabel("Serpents");
-		label_serpents.setFont(police_label);
-		label_serpents.setForeground(Color.RED);
-		iconeBouton = null;
-		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/snakeConfig.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dimg = iconeBouton.getScaledInstance(largeur/40, hauteur/30, Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
-		label_serpents.setIcon(imageIcon);		
-		
-		
-		label_echelles = new JLabel("Echelles");	
-		label_echelles.setFont(police_label);
-		label_echelles.setForeground(Color.GREEN);
-		iconeBouton = null;
-		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/ladderConfig.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dimg = iconeBouton.getScaledInstance(largeur/40, hauteur/30, Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
-		label_echelles.setIcon(imageIcon);	
-
-		//Ajout des spinner
-		//Spinner choix du nombre de case (commence a 40 cases, minimum 40 cases, maximum 200cases, incremente de 10cases)
-		EcouteurSpinner ecouteurSpinner = new EcouteurSpinner();
-		spinnerCases = new JSpinner(new SpinnerNumberModel(40,40,200,10));
-		spinnerCases.addChangeListener(ecouteurSpinner);
-		Dimension d = spinnerCases.getPreferredSize();
-		d.width = largeur/10;
-		d.height = hauteur/30;
-		spinnerCases.setPreferredSize(d);
-		spinnerCases.setFont(police_label);
+			f_menuConfiguration.setSize(largeur/2, hauteur/2);
+			f_menuConfiguration.setLocationRelativeTo(null);
+			f_menuConfiguration.setResizable(false);
+			
+			/* Mise en place de l'image de background du menu de configuration */
+			BufferedImage img = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_CONFIG));
+			ImageIcon imageIcon = new ImageIcon(img.getScaledInstance(largeur/2, hauteur/2, Image.SCALE_SMOOTH));
+			f_menuConfiguration.setContentPane(new JLabel(imageIcon));		
+			
+			
+			layoutConfiguration = new GridBagLayout();
+			f_menuConfiguration.setLayout(layoutConfiguration);		
 	
-		//1 case sur 5 peut etre un serpent
-		spinnerSerpents = new JSpinner(new SpinnerNumberModel(0,0,nbCases/pourcentageSerpentEchelle,1));
-		d = spinnerSerpents.getPreferredSize();
-		d.width = largeur/10;
-		d.height = hauteur/30;
-		spinnerSerpents.setPreferredSize(d);
-		spinnerSerpents.setFont(police_label);
+			
+			//Ajout des labels
+			Image iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_SQUARE));
+			imageIcon = new ImageIcon(iconeBouton.getScaledInstance(largeur/40, hauteur/30, Image.SCALE_SMOOTH));
+			
+			label_case = new JLabel("Cases");
+			label_case.setFont(POLICE_LABEL);
+			label_case.setForeground(Color.BLUE);
+			label_case.setIcon(imageIcon);		
+			
+			label_serpents = new JLabel("Serpents");
+			label_serpents.setFont(POLICE_LABEL);
+			label_serpents.setForeground(Color.RED);
+
+			iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_SNAKE_CONFIG));
+			imageIcon = new ImageIcon(iconeBouton.getScaledInstance(largeur/40, hauteur/30, Image.SCALE_SMOOTH));
+			
+			label_serpents.setIcon(imageIcon);		
+			label_echelles = new JLabel("Echelles");	
+			label_echelles.setFont(POLICE_LABEL);
+			label_echelles.setForeground(Color.GREEN);
+
+			iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_LADDER_CONFIG));
+			imageIcon = new ImageIcon(iconeBouton.getScaledInstance(largeur/40, hauteur/30, Image.SCALE_SMOOTH));
+			label_echelles.setIcon(imageIcon);	
+	
+			//Ajout des spinner
+			//Spinner choix du nombre de case (commence a 40 cases, minimum 40 cases, maximum 200cases, incremente de 10cases)
+			EcouteurSpinner ecouteurSpinner = new EcouteurSpinner();
+			spinnerCases = new JSpinner(new SpinnerNumberModel(40,40,200,10));
+			spinnerCases.addChangeListener(ecouteurSpinner);
+			spinnerCases.setPreferredSize(new Dimension(largeur/10, hauteur/30));
+			spinnerCases.setFont(POLICE_LABEL);
 		
-		//1 case sur 5 peut etre une echelle
-		spinnerEchelles = new JSpinner(new SpinnerNumberModel(0,0,nbCases/pourcentageSerpentEchelle,1));	
-		d = spinnerEchelles.getPreferredSize();
-		d.width = largeur/10;
-		d.height = hauteur/30;
-		spinnerEchelles.setPreferredSize(d);
-		spinnerEchelles.setFont(police_label);
-		
-		//Creation des boutons sauvegarde et retour
-		final Font police_bouton = new Font(Font.DIALOG, Font.BOLD, 45);
-		
-		EcouteurBouton ecouteurBouton = new EcouteurBouton();
-		b_svgConfig = new JButton("Sauvegarder");
-		b_svgConfig.addActionListener(ecouteurBouton);
-		b_svgConfig.setFont(police_bouton);
-		d = b_svgConfig.getPreferredSize();
-		d.width = largeur/5;
-		d.height = hauteur/10;
-		b_svgConfig.setPreferredSize(d);
-		b_svgConfig.setForeground(Color.BLACK);
-		iconeBouton = null;
-		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/save.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			//1 case sur 5 peut etre un serpent
+			spinnerSerpents = new JSpinner(new SpinnerNumberModel(0,0,nbCases/pourcentageSerpentEchelle,1));
+			spinnerSerpents.setPreferredSize(new Dimension(largeur/10, hauteur/30));
+			spinnerSerpents.setFont(POLICE_LABEL);
+			
+			//1 case sur 5 peut etre une echelle
+			spinnerEchelles = new JSpinner(new SpinnerNumberModel(0,0,nbCases/pourcentageSerpentEchelle,1));	
+			spinnerEchelles.setPreferredSize(new Dimension(largeur/10, hauteur/30));
+			spinnerEchelles.setFont(POLICE_LABEL);
+			
+			EcouteurBouton ecouteurBouton = new EcouteurBouton();
+			b_svgConfig = new JButton("Sauvegarder");
+			b_svgConfig.addActionListener(ecouteurBouton);
+			b_svgConfig.setFont(POLICE_BOUTON);
+			b_svgConfig.setPreferredSize(new Dimension(largeur/5, hauteur/10));
+			b_svgConfig.setForeground(Color.BLACK);
+
+			iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_SAVE));
+			imageIcon = new ImageIcon(iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH));
+			
+			b_svgConfig.setIcon(imageIcon);		
+			b_svgConfig.setOpaque(false);
+			b_svgConfig.setContentAreaFilled(false);
+			b_svgConfig.setBorderPainted(false);	
+			b_svgConfig.addMouseListener(new MouseAdapter(){
+				public void mouseEntered(MouseEvent evt){
+					b_svgConfig.setForeground(Color.GREEN);
+				}
+				public void mouseExited(MouseEvent evt){
+					b_svgConfig.setForeground(Color.BLACK);
+				}
+			});			
+			
+			b_retour = new JButton("Retour");	
+			b_retour.addActionListener(ecouteurBouton);	
+			b_retour.setFont(POLICE_BOUTON);
+			b_retour.setPreferredSize(new Dimension(largeur/5, hauteur/10));
+			b_retour.setForeground(Color.BLACK);
+
+			iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_BACK));
+			imageIcon = new ImageIcon(iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH));
+			
+			b_retour.setIcon(imageIcon);		
+			b_retour.setOpaque(false);
+			b_retour.setContentAreaFilled(false);
+			b_retour.setBorderPainted(false);	
+			b_retour.addMouseListener(new MouseAdapter(){
+				public void mouseEntered(MouseEvent evt){
+					b_retour.setForeground(Color.RED);
+				}
+				public void mouseExited(MouseEvent evt){
+					b_retour.setForeground(Color.BLACK);
+				}
+			});				
+			
+			GridBagConstraints gbc = genererGrille(hauteur, largeur);
+			f_menuConfiguration.add(b_retour,gbc);
+			f_menuConfiguration.setVisible(true);	
+			
+		} catch (Exception e){
 			e.printStackTrace();
 		}
-		dimg = iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
-		b_svgConfig.setIcon(imageIcon);		
-		b_svgConfig.setOpaque(false);
-		b_svgConfig.setContentAreaFilled(false);
-		b_svgConfig.setBorderPainted(false);	
-		b_svgConfig.addMouseListener(new MouseAdapter(){
-			public void mouseEntered(MouseEvent evt){
-				b_svgConfig.setForeground(Color.GREEN);
-			}
-			public void mouseExited(MouseEvent evt){
-				b_svgConfig.setForeground(Color.BLACK);
-			}
-		});			
 		
-		b_retour = new JButton("Retour");	
-		b_retour.addActionListener(ecouteurBouton);	
-		b_retour.setFont(police_bouton);
-		b_retour.setPreferredSize(d);
-		b_retour.setForeground(Color.BLACK);
-		iconeBouton = null;
-		try {
-			iconeBouton = ImageIO.read(getClass().getResource("/images/back.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dimg = iconeBouton.getScaledInstance(largeur/25, hauteur/30, Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
-		b_retour.setIcon(imageIcon);		
-		b_retour.setOpaque(false);
-		b_retour.setContentAreaFilled(false);
-		b_retour.setBorderPainted(false);	
-		b_retour.addMouseListener(new MouseAdapter(){
-			public void mouseEntered(MouseEvent evt){
-				b_retour.setForeground(Color.RED);
-			}
-			public void mouseExited(MouseEvent evt){
-				b_retour.setForeground(Color.BLACK);
-			}
-		});				
-		
-		
-		
+	}
+	
+	private GridBagConstraints genererGrille(int hauteur, int largeur){
 		/* Ajout des boutons sur la fenetre */
 		GridBagConstraints gbc = new GridBagConstraints();
 		
@@ -293,11 +243,9 @@ public class MenuConfiguration implements IMenu {
 		gbc.gridx = 1;
 		gbc.gridy = 3;
 		gbc.insets = new Insets(hauteur/56, largeur/50, hauteur/75, largeur/50);
-		f_menuConfiguration.add(b_retour,gbc);
 		
-			
-		f_menuConfiguration.setVisible(true);		
-		
+		return gbc;
+	
 	}
 	
 	private class EcouteurBouton implements ActionListener{

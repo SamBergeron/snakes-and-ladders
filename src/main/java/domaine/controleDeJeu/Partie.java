@@ -1,14 +1,10 @@
 package domaine.controleDeJeu;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.plaf.SliderUI;
-
-import controleurs.FacadeJeu;
 import domaine.elements.De;
 import domaine.elements.Joueur;
 import domaine.elements.Plateau;
@@ -130,15 +126,8 @@ public class Partie {
 		return plateau.getAdresseEchelle();
 	}
 	
-	public Color getCouleurPion(int indexJoueur){
-		Couleur couleur = joueurs.get(indexJoueur).getCouleurPion();
-		switch(couleur){
-			case ROUGE : return Color.RED;
-			case VERT : return Color.GREEN;
-			case BLEU : return Color.BLUE;
-			case JAUNE : return Color.YELLOW;
-			case BLANC : return Color.WHITE;
-			default : return Color.BLACK; 
-		}
+	public Couleur getCouleurPion(int indexJoueur){
+		return joueurs.get(indexJoueur).getCouleurPion();
+		
 	}
 }
