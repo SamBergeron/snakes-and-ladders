@@ -8,7 +8,10 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PersistenceDelegate;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -18,14 +21,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.metal.MetalBorders.TextFieldBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.text.Position;
 
-public class MenuConfigurationJoueurs implements IMenu {
+public class MenuConfigurationJoueurs implements IMenu{
 	private JFrame frameConteneurconfiguration;
 	
 	private JPanel panelJoueurs;
@@ -42,19 +48,25 @@ public class MenuConfigurationJoueurs implements IMenu {
 	private JLabel labelCouleurJoueur;
 	private JLabel labelAI;
 	private JLabel labelDE;
+	private JLabel labelAlgo;
 	
 	private JTextArea textNomJoueur;
 	
 	private JComboBox<domaine.elements.statique.Couleur> comboCouleur;
 	private JComboBox<domaine.elements.statique.NombreFaces> comboValeurDE;
+	private JComboBox<String> comboAlgo;
 	
 	private JCheckBox checkAI;
 	
 	private JTable tableJoueurs;
-	private JList<domaine.elements.Joueur> test;
+	private String[] tableCollumnName = {"Nom","Couleur","Type"};
+	private DefaultTableModel tableModel;
+	private ArrayList<domaine.elements.Joueur> listeJoueurs;
 	
 	@Override
 	public void afficherEcran() {
+		EcouterBoutton e = new EcouterBoutton();
+		
 		int hauteurFrame = Toolkit.getDefaultToolkit().getScreenSize().height/2;
 		int LargeurFrame = Toolkit.getDefaultToolkit().getScreenSize().width/2;
 		
@@ -77,7 +89,7 @@ public class MenuConfigurationJoueurs implements IMenu {
 			panelNomJoueur.setBounds(5, 45, panelJoueurs.getWidth() - 10, 20);
 				labelNomJoueur = new JLabel("Nom");
 				textNomJoueur = new JTextArea();
-			
+				
 			panelNomJoueur.add(labelNomJoueur);
 			panelNomJoueur.add(textNomJoueur);
 			
@@ -122,29 +134,42 @@ public class MenuConfigurationJoueurs implements IMenu {
 		
 			JPanel panelValeurDE = new JPanel(new GridLayout(1, 2));
 			panelValeurDE.setBounds(5, 45, panelDe.getWidth() - 10, 20);
-			labelDE = new JLabel("Valeur du dé");
-			comboValeurDE = new JComboBox<>(domaine.elements.statique.NombreFaces.values());
+				labelDE = new JLabel("Valeur du dé");
+				comboValeurDE = new JComboBox<>(domaine.elements.statique.NombreFaces.values());
 			panelValeurDE.add(labelDE);
 			panelValeurDE.add(comboValeurDE);
 			
-		
+			JPanel panelAlgo = new JPanel(new GridLayout(1, 2));
+			panelAlgo.setBounds(5, panelValeurDE.getY() + panelValeurDE.getHeight() + 5, panelDe.getWidth() - 10, 20);
+				labelAlgo = new JLabel("Algorithme de victoire");
+				comboAlgo = new JComboBox<>();
+				comboAlgo.addItem("algorithme 1");
+				comboAlgo.addItem("algorithme 2");
+				comboAlgo.addItem("algorithme 3");
+			panelAlgo.add(labelAlgo);
+			panelAlgo.add(comboAlgo);
+			
+		panelDe.add(panelAlgo);
 		panelDe.add(labelJoueur);
 		panelDe.add(panelValeurDE);
 		
 		//section panel fait  ////////////////////
 		panelFait = new JPanel(null);
 		panelFait.setBounds(panelDe.getX() + panelDe.getX(), 5, LargeurFrame / 3 - 5, hauteurFrame - 40);
-		
-			tableJoueurs = new JTable();
-			tableJoueurs.setBounds(5, 45, panelFait.getWidth() - 10, panelFait.getHeight() / 2);
+
+			tableModel = new DefaultTableModel(tableCollumnName, 0);
+			tableJoueurs = new JTable(tableModel);
+			JScrollPane scroll = new JScrollPane(tableJoueurs);
+			scroll.setBounds(5, 45, panelFait.getWidth() - 10, panelFait.getHeight() / 2);
 			
 			buttonRetirerJoueur = new JButton("Retirer joueur");
-			buttonRetirerJoueur.setBounds(5, tableJoueurs.getY() + tableJoueurs.getHeight() + 5, panelFait.getWidth() - 10, 20);
+			buttonRetirerJoueur.setBounds(5, scroll.getY() + scroll.getHeight() + 5, panelFait.getWidth() - 10, 20);
+			buttonRetirerJoueur.addActionListener(e);
 
 			nouvellePartieBouton = new JButton("Demmarer partie");
 			nouvellePartieBouton.setBounds(5, panelDe.getHeight() - 40, panelDe.getWidth() - 10, 40);
 			
-		panelFait.add(tableJoueurs);
+		panelFait.add(scroll);
 		panelFait.add(buttonRetirerJoueur);
 		panelFait.add(nouvellePartieBouton);
 		//panelContenu.add(panelJoueurs);
@@ -154,4 +179,24 @@ public class MenuConfigurationJoueurs implements IMenu {
 		frameConteneurconfiguration.add(panelFait);
 		frameConteneurconfiguration.setVisible(true);
 	}
+	/**
+	 * Classe privée qui fait office de action listener
+	 * */
+	private class EcouterBoutton implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == buttonAjouterJoueur){
+				
+			}else if(e.getSource() == buttonRetirerJoueur){
+				
+			}else if(e.getSource() == buttonRetour){
+				
+			}else if(e.getSource() == nouvellePartieBouton){
+				
+			}
+		}
+		
+	}
 }
+
+
