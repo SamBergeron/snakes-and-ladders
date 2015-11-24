@@ -31,6 +31,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.Position;
 
+import domaine.elements.statique.Couleur;
+import domaine.elements.statique.NombreFaces;
+
 public class MenuConfigurationJoueurs implements IMenu{
 	private JFrame frameConteneurconfiguration;
 	
@@ -62,8 +65,8 @@ public class MenuConfigurationJoueurs implements IMenu{
 	private String[] tableCollumnName = {"Nom","Couleur","Type"};
 	private DefaultTableModel tableModel;
 	private ArrayList<domaine.elements.Joueur> listeJoueurs;
+
 	
-	@Override
 	public void afficherEcran() {
 		EcouterBoutton e = new EcouterBoutton();
 		
@@ -97,7 +100,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 			JPanel panelCouleurJoueur = new JPanel(new GridLayout(1, 2));
 			panelCouleurJoueur.setBounds(5, panelNomJoueur.getY()+panelNomJoueur.getHeight()+5, panelJoueurs.getWidth() - 10, 20);
 				labelCouleurJoueur = new JLabel("Couleur du joueur");
-				comboCouleur = new JComboBox<>(domaine.elements.statique.Couleur.values());
+				comboCouleur = new JComboBox<Couleur>(domaine.elements.statique.Couleur.values());
 			
 			panelCouleurJoueur.add(labelCouleurJoueur);
 			panelCouleurJoueur.add(comboCouleur);
@@ -135,14 +138,14 @@ public class MenuConfigurationJoueurs implements IMenu{
 			JPanel panelValeurDE = new JPanel(new GridLayout(1, 2));
 			panelValeurDE.setBounds(5, 45, panelDe.getWidth() - 10, 20);
 				labelDE = new JLabel("Valeur du dé");
-				comboValeurDE = new JComboBox<>(domaine.elements.statique.NombreFaces.values());
+				comboValeurDE = new JComboBox<NombreFaces>(domaine.elements.statique.NombreFaces.values());
 			panelValeurDE.add(labelDE);
 			panelValeurDE.add(comboValeurDE);
 			
 			JPanel panelAlgo = new JPanel(new GridLayout(1, 2));
 			panelAlgo.setBounds(5, panelValeurDE.getY() + panelValeurDE.getHeight() + 5, panelDe.getWidth() - 10, 20);
 				labelAlgo = new JLabel("Algorithme de victoire");
-				comboAlgo = new JComboBox<>();
+				comboAlgo = new JComboBox<String>();
 				comboAlgo.addItem("algorithme 1");
 				comboAlgo.addItem("algorithme 2");
 				comboAlgo.addItem("algorithme 3");
@@ -183,7 +186,6 @@ public class MenuConfigurationJoueurs implements IMenu{
 	 * Classe privée qui fait office de action listener
 	 * */
 	private class EcouterBoutton implements ActionListener{
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == buttonAjouterJoueur){
 				
