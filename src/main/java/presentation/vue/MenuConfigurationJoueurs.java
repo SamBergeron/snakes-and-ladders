@@ -20,6 +20,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -31,6 +32,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.Position;
 
+import controleurs.ControleurMenuConfigurationJoueurs;
+import domaine.controleDeJeu.StrategieVictoire;
+import domaine.elements.De;
+import domaine.elements.Humain;
+import domaine.elements.Joueur;
 import domaine.elements.statique.Couleur;
 import domaine.elements.statique.NombreFaces;
 
@@ -117,6 +123,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 			
 			buttonAjouterJoueur = new JButton("Ajouter joueur à la liste");
 			buttonAjouterJoueur.setBounds(5, panelAI.getHeight()+panelAI.getY()+5, panelJoueurs.getWidth() - 10, 20);
+			buttonAjouterJoueur.addActionListener(e);
 			
 			buttonRetour = new JButton("Retour menu principal");
 			buttonRetour.setBounds(5, panelJoueurs.getHeight() - 40, panelJoueurs.getWidth()-10, 40);
@@ -171,6 +178,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 
 			nouvellePartieBouton = new JButton("Demmarer partie");
 			nouvellePartieBouton.setBounds(5, panelDe.getHeight() - 40, panelDe.getWidth() - 10, 40);
+			nouvellePartieBouton.addActionListener(e);
 			
 		panelFait.add(scroll);
 		panelFait.add(buttonRetirerJoueur);
@@ -188,13 +196,31 @@ public class MenuConfigurationJoueurs implements IMenu{
 	private class EcouterBoutton implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == buttonAjouterJoueur){
-				
+				ControleurMenuConfigurationJoueurs c = new ControleurMenuConfigurationJoueurs();
+				if(c.ajouterJoueurs(textNomJoueur.getText(), (Couleur)comboCouleur.getSelectedItem(), checkAI.isSelected(), tableModel)){
+					comboCouleur.removeItemAt(comboCouleur.getSelectedIndex());
+				}
+			
 			}else if(e.getSource() == buttonRetirerJoueur){
+				if(tableJoueurs.getSelectedRow() != -1){
+					ControleurMenuConfigurationJoueurs c = new ControleurMenuConfigurationJoueurs();
+					c.retirerJoueur(tableJoueurs.getSelectedRow(), tableModel);
+				}
 				
 			}else if(e.getSource() == buttonRetour){
+				frameConteneurconfiguration.dispose();
+				
+				MenuPrincipal MP = new MenuPrincipal();
+				MP.afficherEcran();
 				
 			}else if(e.getSource() == nouvellePartieBouton){
-				
+				if(tableJoueurs.getRowCount() < 2){
+					JOptionPane.showMessageDialog(null, "Le nombre de joueurs ne peut pas etre inferieur a 2");
+					return;
+				}
+				frameConteneurconfiguration.dispose();
+				ControleurMenuConfigurationJoueurs c = new ControleurMenuConfigurationJoueurs();
+				c.demarerPartie(tableJoueurs, (String)comboAlgo.getSelectedItem(), (NombreFaces)comboValeurDE.getSelectedItem());
 			}
 		}
 		
