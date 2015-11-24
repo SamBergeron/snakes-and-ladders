@@ -1,12 +1,10 @@
 package presentation.vue;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -15,24 +13,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -254,12 +243,10 @@ public class MenuConfiguration implements IMenu {
 			if(e.getSource()== b_svgConfig){
 				controleurMenuConfiguration.sauvegarderConfiguration((Integer)spinnerCases.getValue()/10,10,(Integer)spinnerEchelles.getValue(),(Integer)spinnerSerpents.getValue());
 			}
-			else if(e.getSource() == b_retour){
-				//action a faire lorsque le bouton retour est clique
-				f_menuConfiguration.dispose();
-				MenuPrincipal mp = new MenuPrincipal();
-				mp.afficherEcran();
-			}
+			//action a faire lorsque le bouton retour est clique
+			f_menuConfiguration.dispose();
+			MenuPrincipal mp = new MenuPrincipal();
+			mp.afficherEcran();
 		}
 	}
 	

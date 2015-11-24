@@ -11,7 +11,7 @@ import com.google.gson.GsonBuilder;
 public class SerializerConfigPartie {
 	private static final String FICHIER_CONFIG = "configPartie.json";
 	
-	public boolean sauverConfig(ConfigPartie config){
+	public void sauverConfig(ConfigPartie config){
 		Gson jsonWriter = new GsonBuilder().setPrettyPrinting().create();;		
 		String json = jsonWriter.toJson(config);
 		
@@ -20,11 +20,9 @@ public class SerializerConfigPartie {
 			FileWriter writer = new FileWriter(FICHIER_CONFIG);
 			writer.write(json);
 			writer.close();
-			return true;
 		} catch (IOException e) {
 			System.out.println("Erreur d'�criture dans le fichier de config");
 			e.printStackTrace();
-			return false;
 		}
 	}
 	

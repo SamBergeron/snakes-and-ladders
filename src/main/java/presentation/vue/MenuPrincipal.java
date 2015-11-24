@@ -13,15 +13,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import controleurs.ControleurMenuPrincipal;
 
 public class MenuPrincipal implements IMenu{

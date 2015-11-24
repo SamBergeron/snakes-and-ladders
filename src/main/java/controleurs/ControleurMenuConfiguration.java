@@ -4,11 +4,8 @@ import javax.swing.JOptionPane;
 
 import domaine.configuration.ConfigPartie;
 import domaine.configuration.SerializerConfigPartie;
-import presentation.vue.MenuConfiguration;
 
 public class ControleurMenuConfiguration {
-	private MenuConfiguration mConfig;
-	private FacadeJeu facadeJeu;
 	/*
 	 * Gere la commande specifie dans commande
 	 * 1 : ecran pour une partie
@@ -23,11 +20,8 @@ public class ControleurMenuConfiguration {
 		config.setLargeurPlateau(largeur);
 		config.setNbEchelles(nbEchelles);
 		config.setNbSerpents(nbSerpents);
-		boolean verifSvg = serializerConfig.sauverConfig(config);
-		if(verifSvg==true){
-			JOptionPane.showMessageDialog(null, "Sauvegarde des configurations effectuees avec succes !");
-		}else{
-			JOptionPane.showMessageDialog(null, "Probleme de sauvegarde - Annulation de la commande");
-		}
+		
+		serializerConfig.sauverConfig(config);
+		JOptionPane.showMessageDialog(null, "Sauvegarde des configurations effectuees avec succes !");
 	}
 }
