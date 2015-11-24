@@ -44,13 +44,13 @@ public class FacadeJeu {
 	private ActionListener actionListener3;
 	private ActionListener actionListener4;
 	
-	public void demarrerPartie(){ //on commence par creer les objets du domaine
+	public void demarrerPartie(Partie partie){ //on commence par creer les objets du domaine
 		try {
 			
 			////////////////////////////// cette portion de code doit remplacer le mode console par le mode graphique
 			configLoader = new SerializerConfigPartie();
 			config = configLoader.chargerConfig();
-		
+			
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Rentrez le type de de (6,8 ou 20 faces) : ");
 			int nbFaceDe = sc.nextInt();
@@ -132,6 +132,9 @@ public class FacadeJeu {
 				partie.addJoueur(nouveauJoueur);
 			}
 			sc.close();
+			
+			
+			
 			plateauJeu = new PlateauJeu();
 			plateauJeu.afficherEcran();
 			indexJoueurCourant=0;	

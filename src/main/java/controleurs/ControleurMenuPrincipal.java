@@ -1,10 +1,12 @@
 package controleurs;
 
 import presentation.vue.MenuConfiguration;
+import presentation.vue.MenuConfigurationJoueurs;
 
 public class ControleurMenuPrincipal {
 	private MenuConfiguration mConfig;
 	private FacadeJeu facadeJeu;
+	private MenuConfigurationJoueurs menuJoueur;
 	/*
 	 * Gere la commande specifie dans commande
 	 * 1 : ecran pour une partie
@@ -12,8 +14,8 @@ public class ControleurMenuPrincipal {
 	 */
 	public void gererCommande (int commande){
 		if(commande==1){ //on demarre une nouvelle partie
-			facadeJeu = new FacadeJeu();
-			facadeJeu.demarrerPartie();
+			menuJoueur = new MenuConfigurationJoueurs();
+			menuJoueur.afficherEcran();
 		}
 		else if(commande==2){ //on veut configurer une partie
 			mConfig = new MenuConfiguration();
