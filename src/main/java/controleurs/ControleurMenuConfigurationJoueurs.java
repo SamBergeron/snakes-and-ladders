@@ -65,6 +65,7 @@ public class ControleurMenuConfigurationJoueurs {
 			String nom = null;
 			Couleur c = null;
 			Boolean isAI = null;
+			//fait la construction des objects joueurs
 			for (int j = 0; j < 3; j++) {
 				if (j == 0) {
 					nom = (String) tableJoueurs.getModel().getValueAt(i, j);
@@ -74,6 +75,7 @@ public class ControleurMenuConfigurationJoueurs {
 					isAI = (Boolean)tableJoueurs.getModel().getValueAt(i, j);
 				}
 			}
+			//separe si c'est un ai ou un humain
 			if (isAI) {
 				AI a = new AI(nom, c);
 				p.addJoueur(a);
@@ -104,5 +106,4 @@ public class ControleurMenuConfigurationJoueurs {
 		}
 		return strat;
 	}
-
 }

@@ -1,42 +1,23 @@
 package presentation.vue;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PersistenceDelegate;
-import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
-import javax.swing.plaf.metal.MetalBorders.TextFieldBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.text.Position;
-
 import controleurs.ControleurMenuConfigurationJoueurs;
-import domaine.controleDeJeu.StrategieVictoire;
-import domaine.elements.De;
-import domaine.elements.Humain;
-import domaine.elements.Joueur;
 import domaine.elements.statique.Couleur;
 import domaine.elements.statique.NombreFaces;
 
@@ -70,7 +51,6 @@ public class MenuConfigurationJoueurs implements IMenu{
 	private JTable tableJoueurs;
 	private String[] tableCollumnName = {"Nom","Couleur","Type"};
 	private DefaultTableModel tableModel;
-	private ArrayList<domaine.elements.Joueur> listeJoueurs;
 
 	
 	public void afficherEcran() {
@@ -190,6 +170,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 		frameConteneurconfiguration.add(panelFait);
 		frameConteneurconfiguration.setVisible(true);
 	}
+	
 	/**
 	 * Classe privée qui fait office de action listener
 	 * */
@@ -199,10 +180,12 @@ public class MenuConfigurationJoueurs implements IMenu{
 				ControleurMenuConfigurationJoueurs c = new ControleurMenuConfigurationJoueurs();
 				if(c.ajouterJoueurs(textNomJoueur.getText(), (Couleur)comboCouleur.getSelectedItem(), checkAI.isSelected(), tableModel)){
 					comboCouleur.removeItemAt(comboCouleur.getSelectedIndex());
+					textNomJoueur.setText("");
 				}
 			
 			}else if(e.getSource() == buttonRetirerJoueur){
 				if(tableJoueurs.getSelectedRow() != -1){
+					comboCouleur.addItem((Couleur)tableModel.getValueAt(tableJoueurs.getSelectedRow(), 1));
 					ControleurMenuConfigurationJoueurs c = new ControleurMenuConfigurationJoueurs();
 					c.retirerJoueur(tableJoueurs.getSelectedRow(), tableModel);
 				}
@@ -223,8 +206,5 @@ public class MenuConfigurationJoueurs implements IMenu{
 				c.demarerPartie(tableJoueurs, (String)comboAlgo.getSelectedItem(), (NombreFaces)comboValeurDE.getSelectedItem());
 			}
 		}
-		
 	}
 }
-
-
