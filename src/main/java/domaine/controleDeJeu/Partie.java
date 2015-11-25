@@ -69,14 +69,6 @@ public class Partie {
 		//Probablement pas utile finalement (?)
 	}
 	
-	/*
-	 * determine si on a un joueur humain ou artificiel, pour savoir
-	 * si le de doit se lancer automatiquement ou non
-	 */
-	public boolean estAI(int indexJoueur){
-		return joueurs.get(indexJoueur).estAI();
-	}
-	
 	public void undo(int indexJoueur){
 		anciennePosition = joueurs.get(indexJoueur).getCaseCourante(); //utile pour l'affichage du pion a l'ecran
 		joueurs.get(indexJoueur).undo();
@@ -129,5 +121,9 @@ public class Partie {
 	public Couleur getCouleurPion(int indexJoueur){
 		return joueurs.get(indexJoueur).getCouleurPion();
 		
+	}
+	
+	public List<Joueur> getJoueurs(){
+		return joueurs;
 	}
 }

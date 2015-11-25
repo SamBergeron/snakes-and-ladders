@@ -9,7 +9,7 @@ public abstract class Joueur {
 	public Joueur (String nom, Couleur couleurPion){
 		this.nom = nom;
 		this.couleurPion = couleurPion;
-		this.caseCourante = 0;
+		this.caseCourante = 1;
 	}
 	
 	/*

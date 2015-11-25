@@ -5,7 +5,6 @@ import presentation.vue.MenuConfigurationJoueurs;
 
 public class ControleurMenuPrincipal {
 	private MenuConfiguration mConfig;
-	private FacadeJeu facadeJeu;
 	private MenuConfigurationJoueurs menuJoueur;
 	/*
 	 * Gere la commande specifie dans commande

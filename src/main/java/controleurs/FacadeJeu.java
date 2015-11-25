@@ -1,34 +1,14 @@
 package controleurs;
 
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import domaine.configuration.ConfigPartie;
 import domaine.configuration.SerializerConfigPartie;
 import domaine.controleDeJeu.Partie;
-import domaine.controleDeJeu.StrategieAlgorithme1;
-import domaine.controleDeJeu.StrategieAlgorithme2;
-import domaine.controleDeJeu.StrategieAlgorithme3;
-import domaine.elements.AI;
-import domaine.elements.De;
-import domaine.elements.Humain;
-import domaine.elements.Joueur;
 import domaine.elements.Plateau;
-import domaine.elements.statique.Couleur;
-import domaine.elements.statique.NombreFaces;
-import presentation.vue.MenuConfiguration;
 import presentation.vue.MenuPrincipal;
 import presentation.vue.PlateauJeu;
 
@@ -37,109 +17,33 @@ public class FacadeJeu {
 	private ConfigPartie config;
 	private PlateauJeu plateauJeu;
 	private Partie partie;
-	private int indexJoueurCourant;
+	private int indexJoueurCourant = 0;
 	private int nombreJoueur;
-	private ActionListener actionListener;
-	private ActionListener actionListener2;
-	private ActionListener actionListener3;
-	private ActionListener actionListener4;
+	private ActionListener actionListenerUndo;
+	private ActionListener actionListenerRedo;
+	private ActionListener actionListenerTirer;
+	private ActionListener actionListenerQuitter;
+	
+	private static final int UNDO = 1;
+	private static final int REDO = 2;
+	private static final int TIRER = 3;
+	private static final int QUITTER = 4;
 	
 	public void demarrerPartie(Partie partie){ //on commence par creer les objets du domaine
 		try {
-			
-			////////////////////////////// cette portion de code doit remplacer le mode console par le mode graphique
+			this.partie = partie;
+			// Charger la configuration
 			configLoader = new SerializerConfigPartie();
 			config = configLoader.chargerConfig();
 			
-			Scanner sc = new Scanner(System.in);
-			System.out.println("Rentrez le type de de (6,8 ou 20 faces) : ");
-			int nbFaceDe = sc.nextInt();
-			while(nbFaceDe!=6 && nbFaceDe!=8 && nbFaceDe!=20){
-				System.out.println("Type de de incorrect");
-				System.out.println("Rentrez le type de de (6,8 ou 20 faces) : ");
-				nbFaceDe = sc.nextInt();
-			}
-			
-			System.out.println("Rentrez le type d'algorithme de victoire (1,2 ou 3) : ");
-			int typeAlgo = sc.nextInt();
-			while(typeAlgo!=1 && typeAlgo!=2 && typeAlgo!=3){
-				System.out.println("Type d'algorithme incorrect");
-				System.out.println("Rentrez le type d'algorithme de victoire (1,2 ou 3) : ");
-				typeAlgo = sc.nextInt();
-			}
-			
+			// Construire le plateau en fonction de la config
 			Plateau p = new Plateau(config.getLongueurPlateau(), config.getLargeurPlateau(), config.getNbSerpents(), config.getNbEchelles());
-			De d;
-			if(nbFaceDe==6){
-				d = new De(NombreFaces.SIX);
-			}else if(nbFaceDe==8){
-				d = new De(NombreFaces.HUIT);
-			}else{
-				d = new De(NombreFaces.VINGT);
-			}
 			
-			partie = new Partie();
-			partie.setDe(d);
-			partie.setPlateau(p);
-			
-			if(typeAlgo==1){
-				partie.setAlgo(new StrategieAlgorithme1());
-			}else if(typeAlgo==2){
-				partie.setAlgo(new StrategieAlgorithme2());
-			}else{
-				partie.setAlgo(new StrategieAlgorithme3());
-			}			
-			
-			System.out.println("Nombre de joueurs : ");
-			int nbJoueur = sc.nextInt();
-			while(nbJoueur<1 || nbJoueur>6){
-				System.out.println("Nombre de joueur incorrect");
-				System.out.println("Nombre de joueurs : ");
-				nbJoueur = sc.nextInt();
-			}
-			nombreJoueur=nbJoueur;
-			int i;
-			for(i=0; i<nbJoueur; i++){
-				String nomJoueur;
-				int typeJoueur=0;
-				Joueur nouveauJoueur; 
-				Couleur couleurPion;
-				if(i==0){
-					couleurPion = Couleur.VERT; 
-				}else if(i==1){
-					couleurPion = Couleur.BLEU; 
-				}else if(i==2){
-					couleurPion = Couleur.JAUNE; 
-				}else if(i==3){
-					couleurPion = Couleur.NOIR; 
-				}else if(i==4){
-					couleurPion = Couleur.ROUGE; 
-				}else{
-					couleurPion = Couleur.BLANC; 
-				}
-				System.out.println("Nom du joueur : ");
-				nomJoueur = sc.next();
-				while(typeJoueur!=1 && typeJoueur!=2){
-					System.out.println("Humain (1) ou AI(2) ? : ");
-					typeJoueur = sc.nextInt();
-				}
-				if(typeJoueur==1){
-					nouveauJoueur = new Humain(nomJoueur,couleurPion);
-				}else{
-					nouveauJoueur = new AI(nomJoueur,couleurPion);
-				}
-				nouveauJoueur.setCaseCourante(1);
-				partie.addJoueur(nouveauJoueur);
-			}
-			sc.close();
-			
-			
+			// Ajouter le plateau a la partie fournie par ControleurMenuConfigurationJoueurs
+			this.partie.setPlateau(p);
 			
 			plateauJeu = new PlateauJeu();
 			plateauJeu.afficherEcran();
-			indexJoueurCourant=0;	
-			////////////////////////////// cette portion de code doit basculer en mode graphique plutot que console
-			
 			
 			plateauJeu.afficherPlateauJeu(config.getLongueurPlateau()); //affiche le plateau de jeu du nombre de cases voulues
 			plateauJeu.setAdresseSerpent(partie.getAdresseSerpents());
@@ -147,15 +51,16 @@ public class FacadeJeu {
 			plateauJeu.refreshSpecialPanel();
 			
 			//afficher les pions de tous les joueurs (faire une boucle for)
-			for(i=0; i<nombreJoueur; i++){
+			nombreJoueur = partie.getJoueurs().size();
+			for(int i=0; i<nombreJoueur; i++){
 				plateauJeu.afficherPion(partie.getCouleurPion(i), 1,1);
 			}
 			
 			control(); 									//attache les actionslistener aux boutons de plateau jeu
 			afficheUndoRedo(indexJoueurCourant);		//active ou desactive les undo/redo selon le type du joueur courant
 			JOptionPane.showMessageDialog(null, "Tour du joueur "+partie.afficherNomJoueur(indexJoueurCourant));
-			if(partie.estAI(indexJoueurCourant)){		//si le joueur courant est artificiel, il tire tout de suite au de (pas d'autres actions possble)
-				while(gererCommande(3)){
+			if(partie.getJoueurs().get(indexJoueurCourant).estAI()){		//si le joueur courant est artificiel, il tire tout de suite au de (pas d'autres actions possble)
+				while(gererCommande(TIRER)){
 					//voir control() - actionlistener3 pour plus d'information
 				}
 			}
@@ -173,17 +78,18 @@ public class FacadeJeu {
 	 * dans PlateauJeu
 	 */
 	public boolean gererCommande (int commande){
-		if(commande==1){ //on fait un undo
+		switch(commande){
+		case UNDO:
 			partie.undo(indexJoueurCourant);
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());
 			return false;
-		}
-		else if(commande==2){ //on fait un redo
+			
+		case REDO:
 			partie.redo(indexJoueurCourant);
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());
 			return false;
-		}
-		else if(commande==3){ //on lance le de et on deplace le joueur	
+			
+		case TIRER:
 			boolean finPartie = partie.tirerDeEtDeplacer(indexJoueurCourant);
 			System.out.println("nouvelle position : "+partie.getDeplacement()+" Ancienne position : "+partie.getAnciennePosition());
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());	//on affiche la nouvelle position du joueur
@@ -198,19 +104,21 @@ public class FacadeJeu {
 				indexJoueurCourant=0;
 			}	
 			afficheUndoRedo(indexJoueurCourant);
-			if(partie.estAI(indexJoueurCourant)&&finPartie!=true){
+			if(partie.getJoueurs().get(indexJoueurCourant).estAI() && finPartie != true){
 				JOptionPane.showMessageDialog(null, "Tour du joueur "+partie.afficherNomJoueur(indexJoueurCourant));
 				return true;
 			}
 			JOptionPane.showMessageDialog(null, "Tour du joueur "+partie.afficherNomJoueur(indexJoueurCourant));
-		}
-		else if(commande==4){ //on quitte la partie et on revient au menu principal
+			return false;
+		
+		case QUITTER:
+		default:
 			plateauJeu.getf_plateauJeu().dispose();
 			MenuPrincipal mp = new MenuPrincipal();
 			mp.afficherEcran();
 			return false;
+		
 		}
-		return false;
 	}
 	
 	/*
@@ -218,37 +126,37 @@ public class FacadeJeu {
 	 * et leur associe l'action a effectuer en cas de besoin
 	 */
 	public void control(){
-       actionListener = new ActionListener() {
+       actionListenerUndo = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					gererCommande(1);
+					gererCommande(UNDO);
 				}
 	    };                
-	    plateauJeu.getb_undo().addActionListener(actionListener);   
+	    plateauJeu.getb_undo().addActionListener(actionListenerUndo);   
 	    
-	    actionListener2 = new ActionListener() {
+	    actionListenerRedo = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					gererCommande(2);
+					gererCommande(REDO);
 				}
 	    };                
-	    plateauJeu.getb_redo().addActionListener(actionListener2);   
+	    plateauJeu.getb_redo().addActionListener(actionListenerRedo);   
 	    
-	    actionListener3 = new ActionListener() {
+	    actionListenerTirer = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					while(gererCommande(3)){
+					while(gererCommande(TIRER)){
 						//tant que c'est le tour d'un joueur de type AI
 						//on continue a lancer automatiquement la commande 3 :
 						//la seule action qu'un joueur artificiel peut faire
 					}
 				}		
 	    };                
-		plateauJeu.getb_tirerDe().addActionListener(actionListener3);  
+		plateauJeu.getb_tirerDe().addActionListener(actionListenerTirer);  
 		
-		actionListener4 = new ActionListener() {
+		actionListenerQuitter = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					gererCommande(4);
+					gererCommande(QUITTER);
 				}
 		};                
-		plateauJeu.getb_quitter().addActionListener(actionListener4);  
+		plateauJeu.getb_quitter().addActionListener(actionListenerQuitter);  
 	}			
 
 	/*
@@ -256,7 +164,7 @@ public class FacadeJeu {
 	 * dependamment que le joueur courant soit AI ou Humain
 	 */
 	public void afficheUndoRedo(int indexJoueurCourant){
-		if(partie.estAI(indexJoueurCourant)){ //si c'est un joueur artificiel je cache les boutons undo/redo
+		if(partie.getJoueurs().get(indexJoueurCourant).estAI()){ //si c'est un joueur artificiel je cache les boutons undo/redo
 			plateauJeu.cacheUndoRedo(true);
 		}
 		else{ //sinon je les affiche

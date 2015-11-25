@@ -70,8 +70,8 @@ public class PlateauJeu implements IMenu{
 	private static final String PION_ROUGE = "images/redpawn.png";
 	private static final String PION_JAUNE = "images/yellowpawn.png";
 	private static final String PION_VERT = "images/greenpawn.png";
-	private static final String PION_NOIR = "images/whitepawn.png";
-	private static final String PION_BLANC = "images/blackpawn.png";
+	private static final String PION_BLANC = "images/whitepawn.png";
+	private static final String PION_NOIR = "images/darkpawn.png";
 	
 	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, 40);
 	
