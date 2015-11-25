@@ -49,7 +49,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 	private JCheckBox checkAI;
 	
 	private JTable tableJoueurs;
-	private String[] tableCollumnName = {"Nom","Couleur","Type"};
+	private String[] tableCollumnName = {"Nom","Couleur","AI"};
 	private DefaultTableModel tableModel;
 
 	
@@ -107,6 +107,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 			
 			buttonRetour = new JButton("Retour menu principal");
 			buttonRetour.setBounds(5, panelJoueurs.getHeight() - 40, panelJoueurs.getWidth()-10, 40);
+			buttonRetour.addActionListener(e);
 			
 		panelJoueurs.add(panelNomJoueur);
 		panelJoueurs.add(panelCouleurJoueur);
@@ -192,7 +193,6 @@ public class MenuConfigurationJoueurs implements IMenu{
 				
 			}else if(e.getSource() == buttonRetour){
 				frameConteneurconfiguration.dispose();
-				
 				MenuPrincipal MP = new MenuPrincipal();
 				MP.afficherEcran();
 				
