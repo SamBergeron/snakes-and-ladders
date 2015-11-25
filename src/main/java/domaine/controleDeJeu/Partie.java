@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import domaine.elements.De;
 import domaine.elements.Joueur;
 import domaine.elements.Plateau;
@@ -69,37 +68,50 @@ public class Partie {
 		//Probablement pas utile finalement (?)
 	}
 	
-	public void undo(int indexJoueur){
+	public boolean undo(int indexJoueur){
 		anciennePosition = joueurs.get(indexJoueur).getCaseCourante(); //utile pour l'affichage du pion a l'ecran
-		joueurs.get(indexJoueur).undo();
+		boolean resultatUndo = joueurs.get(indexJoueur).undo();
 		deplacement = joueurs.get(indexJoueur).getCaseCourante(); 		//utile pour l'affichage du pion a l'ecran
+		return resultatUndo;
 	}
-	public void redo(int indexJoueur){
+	
+	public boolean redo(int indexJoueur){
 		anciennePosition = joueurs.get(indexJoueur).getCaseCourante(); //utile pour l'affichage du pion a l'ecran
-		joueurs.get(indexJoueur).redo();
+		boolean resultatRedo = joueurs.get(indexJoueur).redo();
 		deplacement = joueurs.get(indexJoueur).getCaseCourante(); 		//utile pour l'affichage du pion a l'ecran
+		return resultatRedo;
 	}
+	
 	public String afficherNomJoueur(int indexJoueur){
 		return joueurs.get(indexJoueur).getNom();
 	}
-	public boolean tirerDeEtDeplacer(int indexJoueur){
-		boolean unGagnant = false;
-		int valeurDe = de.rouler();
-		JOptionPane.showMessageDialog(null, "RESULTAT DÃ‰ : "+valeurDe); //NE PAS LAISSER ICI : POUR DEBUGUAGE
+	
+	public int tirerAuDe(){
+		return de.rouler();
+	}
+	
+	// Cette methode retourne maintenant la distance de deplacement du joueur et le deplace
+	// en comparant avec le lancer du de on peut determiner s'il a tombé sur une case serpent/échelle
+	// cette vérification pour l'affichage se fera dans FacadeJeu 
+	public int deplacerJoueur(int indexJoueur, int resultatDe){
+		
 		anciennePosition = joueurs.get(indexJoueur).getCaseCourante();
-		deplacement = valeurDe + anciennePosition;	
+		deplacement = resultatDe + anciennePosition;	
 		int posFinale = plateau.getCaseFinale().getPosition();
-		System.out.println("partie - tirerDeEtDeplace - posFinale vaut : "+posFinale+" et deplacement vaut : "+deplacement);
 		deplacement = algo.calculerVictoire(joueurs.get(indexJoueur).getCaseCourante(), deplacement, posFinale);
-		System.out.println("deplacement2 vaut : "+deplacement);
 		deplacement = plateau.getCases().get(deplacement-1).getPosition();
-		System.out.println("deplacement3 vaut : "+deplacement);
-		System.out.println("Tour du joueur " + joueurs.get(indexJoueur).getNom()); //pour debuguage seulement
+
 		joueurs.get(indexJoueur).deplacer(deplacement);
-		if((deplacement)==posFinale){
-			unGagnant = true;
-		}
-		return unGagnant;
+		
+		return deplacement-anciennePosition;
+	}
+	
+	// Cette methode ne fait que confirmer la victoire, 
+	// le deplacement sur la case finale se fait avec deplacerJoueur ci-haut ^
+	public boolean verifierVictoire(int indexJoueur){
+		int posFinale = plateau.getCaseFinale().getPosition();
+		int posJ = joueurs.get(indexJoueur).getCaseCourante();
+		return posFinale == posJ;
 	}
 	
 	public int getDeplacement(){

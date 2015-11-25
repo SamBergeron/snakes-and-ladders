@@ -80,18 +80,37 @@ public class FacadeJeu {
 	public boolean gererCommande (int commande){
 		switch(commande){
 		case UNDO:
-			partie.undo(indexJoueurCourant);
+			boolean resultUndo = partie.undo(indexJoueurCourant);
+			if(!resultUndo){
+				JOptionPane.showMessageDialog(null, "Impossible de faire un undo");
+			}
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());
 			return false;
 			
 		case REDO:
-			partie.redo(indexJoueurCourant);
+			boolean resultRedo = partie.redo(indexJoueurCourant);
+			if(!resultRedo){
+				JOptionPane.showMessageDialog(null, "Impossible de faire redo, aucun mouvement suivant dans l'historique");
+			}
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());
 			return false;
 			
 		case TIRER:
-			boolean finPartie = partie.tirerDeEtDeplacer(indexJoueurCourant);
-			System.out.println("nouvelle position : "+partie.getDeplacement()+" Ancienne position : "+partie.getAnciennePosition());
+			// On commence par lancer le de
+			int resultatDe = partie.tirerAuDe();
+			JOptionPane.showMessageDialog(null, "Vous avez jouer un "+ resultatDe);
+			
+			// ensuite on deplace le joueeur
+			int deplacement = partie.deplacerJoueur(indexJoueurCourant, resultatDe);
+			if(deplacement <= 0) {
+				JOptionPane.showMessageDialog(null, "Oups! On descend un serpent!");
+			} else if(deplacement > resultatDe) {
+				JOptionPane.showMessageDialog(null, "Chanceux! Vous montez l'échelle!");
+			}
+			
+			// On vérifie que le déplacement est sur la case finale
+			boolean finPartie = partie.verifierVictoire(indexJoueurCourant);
+					
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());	//on affiche la nouvelle position du joueur
 			if(finPartie==true){
 				JOptionPane.showMessageDialog(null, "Felicitation, le gagnant est : "+partie.afficherNomJoueur(indexJoueurCourant));

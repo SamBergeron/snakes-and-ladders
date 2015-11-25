@@ -3,12 +3,7 @@ package domaine.elements;
 import domaine.elements.statique.Couleur;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Scanner;
-
-import javax.swing.JOptionPane;
 
 public class Humain extends Joueur{
 	
@@ -51,33 +46,24 @@ public class Humain extends Joueur{
 		this.positionListe++;
 	}
 	
-	@Override
-	public void undo(){	
-		if(positionListe==0){
-			//ATTENTION : pas sur de laisser ca ici 
-			JOptionPane.showMessageDialog(null, "Impossible de faire undo : aucun mouvement precedent dans l'historique");
-		}
-		else if(histoCase.size()-positionListe>10){
-			//ATTENTION : pas sur de laisser ca ici 
-			JOptionPane.showMessageDialog(null, "Impossible de faire undo : pas plus de 10 undo autorises");
-		}
-		else{
+	public boolean undo(){	
+		if(positionListe == 0 || histoCase.size()-positionListe>10){
+			return false;
+		} else {
 			positionListe--;
 			this.setCaseCourante(histoCase.get(positionListe));
-			System.out.println("Undo effectue avec succes");
+			return true;
 		}
 	}
 	
-	@Override
-	public void redo(){
+	public boolean redo(){
 		if(positionListe==histoCase.size()-1){
-			//ATTENTION : pas sur de laisser ca ici 
-			JOptionPane.showMessageDialog(null, "Impossible de faire redo : aucun mouvement suivant dans l'historique");
+			return false;
 		}
 		else{
 			positionListe++;
 			this.setCaseCourante(histoCase.get(positionListe));
-			System.out.println("Redo effectue avec succes");
+			return true;
 		}	
 	}
 	

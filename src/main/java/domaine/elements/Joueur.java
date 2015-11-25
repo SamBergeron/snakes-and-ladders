@@ -1,5 +1,6 @@
 package domaine.elements;
-import domaine.elements.statique.*;
+
+import domaine.elements.statique.Couleur;
 
 public abstract class Joueur {
 	private String nom;
@@ -28,13 +29,8 @@ public abstract class Joueur {
 		return true;
 	}
 	
-	public void undo(){
-		
-	}
-	
-	public void redo(){
-		
-	}
+	public boolean undo(){ return false; }
+	public boolean redo(){ return false; }
 	
 	public void setCaseCourante(int nouvellePosition){
 		this.caseCourante = nouvellePosition;
