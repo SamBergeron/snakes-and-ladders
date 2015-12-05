@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -15,8 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
 import controleurs.ControleurMenuConfigurationJoueurs;
 import domaine.elements.statique.Couleur;
 import domaine.elements.statique.NombreFaces;
@@ -40,7 +43,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 	private JLabel labelDE;
 	private JLabel labelAlgo;
 	
-	private JTextArea textNomJoueur;
+	private JTextField textNomJoueur;
 	
 	private JComboBox<domaine.elements.statique.Couleur> comboCouleur;
 	private JComboBox<domaine.elements.statique.NombreFaces> comboValeurDE;
@@ -55,6 +58,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 	
 	public void afficherEcran() {
 		EcouterBoutton e = new EcouterBoutton();
+		EcouterText k = new EcouterText();
 		
 		int hauteurFrame = Toolkit.getDefaultToolkit().getScreenSize().height/2;
 		int LargeurFrame = Toolkit.getDefaultToolkit().getScreenSize().width/2;
@@ -77,7 +81,8 @@ public class MenuConfigurationJoueurs implements IMenu{
 			JPanel panelNomJoueur = new JPanel(new GridLayout(1, 2));
 			panelNomJoueur.setBounds(5, 45, panelJoueurs.getWidth() - 10, 20);
 				labelNomJoueur = new JLabel("Nom");
-				textNomJoueur = new JTextArea();
+				textNomJoueur = new JTextField();
+				textNomJoueur.addKeyListener(k);
 				
 			panelNomJoueur.add(labelNomJoueur);
 			panelNomJoueur.add(textNomJoueur);
@@ -164,31 +169,38 @@ public class MenuConfigurationJoueurs implements IMenu{
 		panelFait.add(scroll);
 		panelFait.add(buttonRetirerJoueur);
 		panelFait.add(nouvellePartieBouton);
-		//panelContenu.add(panelJoueurs);
 		
 		frameConteneurconfiguration.add(panelJoueurs);
 		frameConteneurconfiguration.add(panelDe);
 		frameConteneurconfiguration.add(panelFait);
 		frameConteneurconfiguration.setVisible(true);
 	}
+
+	private void ajouterJoueur(){
+		ControleurMenuConfigurationJoueurs c = new ControleurMenuConfigurationJoueurs();
+		if(c.ajouterJoueurs(textNomJoueur.getText(), (Couleur)comboCouleur.getSelectedItem(), checkAI.isSelected(), tableModel)){
+			comboCouleur.removeItemAt(comboCouleur.getSelectedIndex());
+			textNomJoueur.setText("");
+			textNomJoueur.requestFocus();
+		}
+	}
 	
 	/**
-	 * Classe privée qui fait office de action listener
+	 * Classe privée qui fait office de action listener pour les button
 	 * */
 	private class EcouterBoutton implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == buttonAjouterJoueur){
-				ControleurMenuConfigurationJoueurs c = new ControleurMenuConfigurationJoueurs();
-				if(c.ajouterJoueurs(textNomJoueur.getText(), (Couleur)comboCouleur.getSelectedItem(), checkAI.isSelected(), tableModel)){
-					comboCouleur.removeItemAt(comboCouleur.getSelectedIndex());
-					textNomJoueur.setText("");
-				}
-			
+				ajouterJoueur();
+				
 			}else if(e.getSource() == buttonRetirerJoueur){
 				if(tableJoueurs.getSelectedRow() != -1){
 					comboCouleur.addItem((Couleur)tableModel.getValueAt(tableJoueurs.getSelectedRow(), 1));
 					ControleurMenuConfigurationJoueurs c = new ControleurMenuConfigurationJoueurs();
 					c.retirerJoueur(tableJoueurs.getSelectedRow(), tableModel);
+					if(!buttonAjouterJoueur.isEnabled()){
+						buttonAjouterJoueur.setEnabled(true);
+					}
 				}
 				
 			}else if(e.getSource() == buttonRetour){
@@ -205,6 +217,22 @@ public class MenuConfigurationJoueurs implements IMenu{
 				ControleurMenuConfigurationJoueurs c = new ControleurMenuConfigurationJoueurs();
 				c.demarerPartie(tableJoueurs, (String)comboAlgo.getSelectedItem(), (NombreFaces)comboValeurDE.getSelectedItem());
 			}
+		}
+	}
+	//changer cette classe pour dequoi de meilleur
+	private class EcouterText implements KeyListener{
+		public void keyPressed(KeyEvent arg0) {
+			if(arg0.getKeyChar() == 10){
+				ajouterJoueur();
+			}
+		}
+
+		public void keyReleased(KeyEvent arg0) {
+			return;	
+		}
+
+		public void keyTyped(KeyEvent arg0) {
+			return;
 		}
 	}
 }
