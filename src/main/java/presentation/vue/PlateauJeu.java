@@ -494,6 +494,7 @@ public class PlateauJeu implements IMenu{
 	 * appelé. Cet appel est souvent implicite
 	 * (lors de la creation du JPanel, lors d'un mouvement sur le JPanel etc..)
 	 */
+	@SuppressWarnings("serial")		//car cette classe ne sera jamais serialisee (supprime l'avertissement)
 	private class SpecialPanel extends JPanel{
 		@Override
 		public void paintComponent(Graphics g){
@@ -512,6 +513,7 @@ public class PlateauJeu implements IMenu{
 		}
 	}
 	
+	@SuppressWarnings("serial")		//car cette classe ne sera jamais serialisee (supprime l'avertissement)
 	private class BoutonPanel extends JPanel{
 		@Override
 		public void paintComponent(Graphics g){

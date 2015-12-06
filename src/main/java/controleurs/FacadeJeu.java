@@ -102,7 +102,7 @@ public class FacadeJeu {
 			
 			// ensuite on deplace le joueeur
 			int deplacement = partie.deplacerJoueur(indexJoueurCourant, resultatDe);
-			if(deplacement <= 0) {
+			if(deplacement < 0) {
 				JOptionPane.showMessageDialog(null, "Oups! On descend un serpent!");
 			} else if(deplacement > resultatDe) {
 				JOptionPane.showMessageDialog(null, "Chanceux! Vous montez l'\u00E9chelle!");

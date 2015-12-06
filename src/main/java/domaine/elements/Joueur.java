@@ -18,7 +18,6 @@ public abstract class Joueur {
 	 * Retourne la nouvelle position du joueur 
 	 */
 	public void deplacer(int deplacement){
-		System.out.println("Je suis rendu a la case : " + deplacement + " ");
 		this.caseCourante = deplacement;
 	}
 	

@@ -60,14 +60,6 @@ public class Partie {
 		return resultat;
 	}
 	
-	/*
-	 * Dans le cas d'un undo/redo : avise le controleur qu'il faut deplacer le pion
-	 * du joueur graphiquement
-	 */
-	public void deplacementPion(int position, Couleur couleurPion){
-		//Probablement pas utile finalement (?)
-	}
-	
 	public boolean undo(int indexJoueur){
 		anciennePosition = joueurs.get(indexJoueur).getCaseCourante(); //utile pour l'affichage du pion a l'ecran
 		boolean resultatUndo = joueurs.get(indexJoueur).undo();
@@ -91,8 +83,8 @@ public class Partie {
 	}
 	
 	// Cette methode retourne maintenant la distance de deplacement du joueur et le deplace
-	// en comparant avec le lancer du de on peut determiner s'il a tomb� sur une case serpent/�chelle
-	// cette v�rification pour l'affichage se fera dans FacadeJeu 
+	// en comparant avec le lancer du de on peut determiner s'il est tombe sur une case serpent/echelle
+	// cette verification pour l'affichage se fera dans FacadeJeu 
 	public int deplacerJoueur(int indexJoueur, int resultatDe){
 		
 		anciennePosition = joueurs.get(indexJoueur).getCaseCourante();
