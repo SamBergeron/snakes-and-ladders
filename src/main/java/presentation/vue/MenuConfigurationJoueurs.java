@@ -77,8 +77,6 @@ public class MenuConfigurationJoueurs implements IMenu{
 		EcouterBoutton e = new EcouterBoutton();
 		EcouterText k = new EcouterText();
 		
-
-		
 		//configuration du frame de configuration
 		frameConteneurconfiguration = new JFrame("Snakes and Ladders - Menu Configuration");
 		frameConteneurconfiguration.setLayout(null);
@@ -139,7 +137,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 			panelAI.add(checkAI);
 			
 			
-			buttonAjouterJoueur = new JButton("Ajouter joueur a la liste");
+			buttonAjouterJoueur = new JButton("Ajouter joueur \u00e0 la liste");
 			buttonAjouterJoueur.setFont(POLICE_BOUTON2);
 			buttonAjouterJoueur.setBounds(5, panelAI.getHeight()+panelAI.getY()+5, panelJoueurs.getWidth() - 10, 20);
 			buttonAjouterJoueur.addActionListener(e);
@@ -167,7 +165,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 			JPanel panelValeurDE = new JPanel(new GridLayout(1, 2));
 			panelValeurDE.setBounds(5, 45, panelDe.getWidth() - 10, 20);
 			panelValeurDE.setOpaque(false);
-				labelDE = new JLabel("De : Valeur");
+				labelDE = new JLabel("Valeur D\u00e9");
 				labelDE.setFont(POLICE_BOUTON);
 				comboValeurDE = new JComboBox<NombreFaces>(domaine.elements.statique.NombreFaces.values());
 			panelValeurDE.add(labelDE);
@@ -176,7 +174,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 			JPanel panelAlgo = new JPanel(new GridLayout(1, 2));
 			panelAlgo.setBounds(5, panelValeurDE.getY() + panelValeurDE.getHeight() + 5, panelDe.getWidth() - 10, 20);
 			panelAlgo.setOpaque(false);
-				labelAlgo = new JLabel("Difficulte");
+				labelAlgo = new JLabel("Difficult\u00e9");
 				labelAlgo.setFont(POLICE_BOUTON);
 				comboAlgo = new JComboBox<String>();
 				comboAlgo.addItem("Facile (algorithme 1)");
@@ -204,7 +202,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 			buttonRetirerJoueur.setBounds(5, scroll.getY() + scroll.getHeight() + 5, panelFait.getWidth() - 10, 20);
 			buttonRetirerJoueur.addActionListener(e);
 
-			nouvellePartieBouton = new JButton("Demarrer partie");
+			nouvellePartieBouton = new JButton("D\u00e9marrer partie");
 			nouvellePartieBouton.setFont(POLICE_BOUTON);
 			nouvellePartieBouton.setBounds(5, panelDe.getHeight() - 40, panelDe.getWidth() - 10, 40);
 			nouvellePartieBouton.addActionListener(e);
@@ -253,7 +251,7 @@ public class MenuConfigurationJoueurs implements IMenu{
 				
 			}else if(e.getSource() == nouvellePartieBouton){
 				if(tableJoueurs.getRowCount() < 2){
-					JOptionPane.showMessageDialog(null, "Le nombre de joueurs ne peut pas etre inferieur a 2");
+					JOptionPane.showMessageDialog(null, "Le nombre de joueurs ne peut pas etre inf\u00e8rieur a 2");
 					return;
 				}
 				frameConteneurconfiguration.dispose();

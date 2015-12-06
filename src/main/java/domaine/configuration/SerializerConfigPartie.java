@@ -21,7 +21,7 @@ public class SerializerConfigPartie {
 			writer.write(json);
 			writer.close();
 		} catch (IOException e) {
-			System.out.println("Erreur d'�criture dans le fichier de config");
+			System.out.println("Erreur d'\u00e9criture dans le fichier de configuration");
 			e.printStackTrace();
 		}
 	}
@@ -36,7 +36,7 @@ public class SerializerConfigPartie {
 			ConfigPartie config = jsonReader.fromJson(br, ConfigPartie.class);
 			return config;
 		} catch (IOException e) {
-			System.out.println("Erreur de lecture dans le fichier de config");
+			System.out.println("Erreur de lecture dans le fichier de configuration");
 			throw e;
 		}
 	}

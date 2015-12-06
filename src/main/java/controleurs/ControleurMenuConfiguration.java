@@ -23,6 +23,6 @@ public class ControleurMenuConfiguration {
 		config.setNbSerpents(nbSerpents);
 		
 		serializerConfig.sauverConfig(config);
-		JOptionPane.showMessageDialog(null, "Sauvegarde des configurations effectuees avec succes !");
+		JOptionPane.showMessageDialog(null, "Sauvegarde des configurations effectu\u00e9es avec succ\u00e8s !");
 	}
 }

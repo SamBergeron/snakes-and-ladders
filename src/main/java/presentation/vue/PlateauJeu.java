@@ -10,8 +10,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
@@ -25,40 +23,27 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-
-import controleurs.FacadeJeu;
 import domaine.elements.statique.Couleur;
 
 public class PlateauJeu implements IMenu{
 
-	JButton b_undo;
-	JButton b_redo;
-	JButton b_tirerDe;
-	JButton b_quitter;
-	
-	JFrame f_plateauJeu;
-	JPanel panelBouton;
-	JPanel panelPlateau;
-	JLayeredPane layPlateau;
-	
-	SpecialPanel specialPanel;
-	
-	FacadeJeu facadeJeu;
-	
-	GridBagLayout layoutPlateauJeu;
-	GridBagConstraints gbc;
-	
-	private int largeur;
-	private int hauteur;
+
+	private JButton b_undo;
+	private JButton b_redo;
+	private JButton b_tirerDe;
+	private JButton b_quitter;
+	private JFrame f_plateauJeu;
+	private JPanel panelBouton;
+	private SpecialPanel specialPanel;
 	
 	private Point[] adresseSerpent;
 	private Point[] adresseEchelle;
 	
+	/* Path des images utilisees */
 	private static final String IMAGE_UNDO = "images/Undo.png";
 	private static final String IMAGE_DICE = "images/rollDice.png";
 	private static final String IMAGE_REDX = "images/redX.png";
@@ -73,28 +58,31 @@ public class PlateauJeu implements IMenu{
 	private static final String PION_BLANC = "images/whitepawn.png";
 	private static final String PION_NOIR = "images/darkpawn.png";
 	
-	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, 40);
+	/* On recupere les dimensions de l'ecran */
+	private static final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+	private static final int largeur = (int)d.getWidth();
+	private static final int hauteur = (int)d.getHeight();	
 	
-	//IHM Graphique
+	/* Definition des polices de caracteres */
+	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, largeur/40);
+	
+	/* Permet d'afficher le plateau de jeu */
 	public void afficherEcran(){
-		facadeJeu = new FacadeJeu();
 		f_plateauJeu = new JFrame();
 		
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //permet des composants swing avec un style recent
+			/* permet d'avoir des composants swing avec un style recent */
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 	
+			/* Creation de la fenetre du plateau de jeu */
 			f_plateauJeu.setTitle("Snakes and Ladders - Partie en cours");
-	
-			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-			largeur = (int)d.getWidth();
-			hauteur = (int)d.getHeight();
 			f_plateauJeu.setSize(largeur, hauteur-(hauteur/20));
 			f_plateauJeu.setLocationRelativeTo(null);
 			f_plateauJeu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			f_plateauJeu.setResizable(false);
 			f_plateauJeu.setLayout(new BorderLayout());
 			
-			/* Creations des boutons */
+			/* Creation et configuration du bouton Undo */
 			b_undo = new JButton("Undo");
 			b_undo.setFont(POLICE_BOUTON);
 			b_undo.setPreferredSize(new Dimension(largeur/5, hauteur/10));
@@ -116,6 +104,7 @@ public class PlateauJeu implements IMenu{
 				}
 			});			
 			
+			/* Creation et configuration du bouton Redo */
 			b_redo = new JButton("Redo");	
 			b_redo.setFont(POLICE_BOUTON);
 			b_redo.setPreferredSize(new Dimension(largeur/5, hauteur/10));	
@@ -137,7 +126,8 @@ public class PlateauJeu implements IMenu{
 				}
 			});		
 			
-			b_tirerDe = new JButton("Tirer D�");	
+			/* Creation et configuration du bouton tirer au de */
+			b_tirerDe = new JButton("Tirer D\u00e9");	
 			b_tirerDe.setFont(POLICE_BOUTON);
 			b_tirerDe.setPreferredSize(new Dimension(largeur/5, hauteur/10));	
 			b_tirerDe.setForeground(Color.BLACK);
@@ -158,6 +148,7 @@ public class PlateauJeu implements IMenu{
 				}
 			});	
 			
+			/* Creation et configuration du bouton Quitter */
 			b_quitter = new JButton("Quitter");	
 			b_quitter.setFont(POLICE_BOUTON);
 			b_quitter.setPreferredSize(new Dimension(largeur/5, hauteur/10));	
@@ -179,8 +170,7 @@ public class PlateauJeu implements IMenu{
 				}
 			});			
 			
-			/*Ajout des boutons dans la fenetre */
-			//panelBouton = new JPanel();
+			/*Ajout des boutons dans le panel */
 			panelBouton = new BoutonPanel();
 			panelBouton.setLayout(new FlowLayout());
 			
@@ -189,7 +179,7 @@ public class PlateauJeu implements IMenu{
 			panelBouton.add(b_redo);
 			panelBouton.add(b_quitter);	
 			
-			//ajout des boutons dans la fenetre
+			/* ajout des boutons dans la fenetre */
 			Container pane = f_plateauJeu.getContentPane();
 			pane.add(panelBouton, BorderLayout.SOUTH);
 			
@@ -257,7 +247,7 @@ public class PlateauJeu implements IMenu{
 		nouvelleImage = image.getScaledInstance(largeur/50, hauteur/30, Image.SCALE_SMOOTH);
 		imagePion = new ImageIcon(nouvelleImage);
 			
-		/* Pour eviter les problemes d'affichage si le joueur part de la 1ere case*/
+		/* Pour eviter les problemes d'affichage si le joueur part de la 1ere case */
 		if(anciennePosition==0){
 			anciennePosition=1;
 		}
@@ -300,11 +290,13 @@ public class PlateauJeu implements IMenu{
 		
 		specialPanel = new SpecialPanel();
 		specialPanel.setLayout(new GridLayout(nbLigne,10));
-		layPlateau = f_plateauJeu.getLayeredPane();
 		
 		int i,j,k;
-		k = (nbLigne*10)-1; //nombre de case totale sur le plateau
-		boolean decroissant = true;
+		k = (nbLigne*10)-1; 		//nombre de case totale sur le plateau
+		boolean decroissant = false;	
+		if((k/10)%2 != 0){			//permet de toujours demarrer la partie en bas a gauche de l'ecran
+			decroissant = true;		//que le nombre total de cases du plateau soit pair ou impair
+		}
 		for(i=nbLigne; i>0; i--){
 			if(decroissant==true){
 				for(j=10; j>0; j--){
@@ -367,7 +359,7 @@ public class PlateauJeu implements IMenu{
 				decroissant = true;
 			}
 		}
-		//Cette configuration fonctionne pour l'affichage des lignes
+
 		specialPanel.revalidate();
 		specialPanel.setOpaque(true);
 		specialPanel.setBackground(Color.WHITE);
@@ -399,18 +391,10 @@ public class PlateauJeu implements IMenu{
 	
 	public void setAdresseSerpent(Point[] tabAdresse){
 		adresseSerpent = tabAdresse;
-		System.out.println("Debuguage setAdresseSerpent");
-		for(Point p : adresseSerpent){
-			System.out.println(""+p);
-		}
 	}
 	
 	public void setAdresseEchelle(Point[] tabAdresse){
 		adresseEchelle = tabAdresse;
-		System.out.println("Debuguage setAdresseEchelle");
-		for(Point p : adresseEchelle){
-			System.out.println(""+p);
-		}
 	}
 	
 	/*
@@ -456,7 +440,6 @@ public class PlateauJeu implements IMenu{
 			g2d.setPaint(Color.RED);
 			g2d.setStroke(new BasicStroke(3));
 			g2d.draw(new Line2D.Float(x1centre, y1centre, x2centre, y2centre));		//on dessine la ligne
-			//g.drawImage(image, x1centre, y1centre, 50, 50,null);					//on dessine le serpent : en commentaire pour l'instant : mauvais resultat a l'ecran
 		}
 	}
 	
@@ -469,13 +452,11 @@ public class PlateauJeu implements IMenu{
 		Component[] components = specialPanel.getComponents();
 		for(Point p : adresseEchelle){
 			String caseDepart = "" + p.x;		//contient le numero de la case de depart
-			String caseArrivee = "" + p.y;	//contient le numero de la case d'arrivee
+			String caseArrivee = "" + p.y;		//contient le numero de la case d'arrivee
 			int x1centre = 0;
 			int y1centre = 0;
 			int x2centre = 0;
 			int y2centre = 0;
-			int i = 0;
-			int j = 0;
 			
 			//on recupere la case depart en passant au travers toutes les cases du composant representant le plateau (specialPanel)
 			for(Component com : components){
@@ -487,7 +468,6 @@ public class PlateauJeu implements IMenu{
 					y1centre = com.getLocation().y+(com.getSize().height/2);				
 					break;
 				}
-				i++;	
 			}
 			//on recupere la case arrivee en passant au travers toutes les cases du composant representant le plateau (specialPanel)
 			for(Component com2 : components){
@@ -499,7 +479,6 @@ public class PlateauJeu implements IMenu{
 					y2centre = com2.getLocation().y+(com2.getSize().height/2);				
 					break;
 				}
-				j++;	
 			}
 			//on affiche l'echelle selon les coordonnees obtenues
 			Graphics2D g2d = (Graphics2D) g;
@@ -523,7 +502,6 @@ public class PlateauJeu implements IMenu{
 			try {
 				iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_BACKGROUND));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			Image dimg = iconeBouton.getScaledInstance(largeur, hauteur, Image.SCALE_SMOOTH);
@@ -542,7 +520,6 @@ public class PlateauJeu implements IMenu{
 			try {
 				iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_SUNFLARE));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			Image dimg = iconeBouton.getScaledInstance(largeur, hauteur-(hauteur/10), Image.SCALE_SMOOTH);
