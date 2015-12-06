@@ -99,17 +99,17 @@ public class ControleurMenuConfigurationJoueurs {
 		
 		FacadeJeu FJ = new FacadeJeu();
 		FJ.demarrerPartie(p);
-	}
+	} 
 
 	private StrategieVictoire selectStrategieAlgo(String s) {
 		StrategieVictoire strat = null;
-		if (s == "algorithme 1") {
+		if (s == "Facile (algorithme 1)") {
 			strat = new StrategieAlgorithme1();
 			return strat;
-		} else if (s == "algorithme 2") {
+		} else if (s == "Moyen (algorithme 2)") {
 			strat = new StrategieAlgorithme2();
 			return strat;
-		} else if (s == "algorithme 3") {
+		} else if (s == "Difficile (algorithme 3)") {
 			strat = new StrategieAlgorithme3();
 			return strat;
 		}
