@@ -1,5 +1,7 @@
 package domaine.elements;
 
+import javax.swing.JOptionPane;
+
 public class CaseEchelle extends Case {
 	
 	private Case redirection;
@@ -11,6 +13,7 @@ public class CaseEchelle extends Case {
 	
 	@Override
 	public int getPosition(){
+		JOptionPane.showMessageDialog(null, "Chanceux! Vous montez l'\u00E9chelle!");
 		return redirection.getPosition();
 	}
 	

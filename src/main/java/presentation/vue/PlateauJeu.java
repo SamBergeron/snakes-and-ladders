@@ -275,7 +275,7 @@ public class PlateauJeu implements IMenu{
 			JLabel jlabpion = (JLabel)encours.getComponent(indexpion);
 			if(jlabnumcase.getText().equals(nouvPosition)){
 				jlabpion.setIcon(imagePion);
-			}				
+			}
 		}
 	}
 	
@@ -463,7 +463,7 @@ public class PlateauJeu implements IMenu{
 				JPanel encours = (JPanel)com;
 				JLabel jlabnumcase = (JLabel)encours.getComponent(3); //encours.getComponent(3) renvoie le numero de la case
 				if(jlabnumcase.getText().equals(caseDepart)){
-					//on recupere les coordonnees du centre de la case
+					//on recupere les coordonnees du centre de la case				
 					x1centre = com.getLocation().x+(com.getSize().width/2);
 					y1centre = com.getLocation().y+(com.getSize().height/2);				
 					break;
