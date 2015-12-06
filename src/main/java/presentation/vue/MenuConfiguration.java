@@ -18,7 +18,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
@@ -29,25 +28,20 @@ import controleurs.ControleurMenuConfiguration;
 
 public class MenuConfiguration implements IMenu {
 	
-	JFrame f_menuConfiguration;
+	/* Elements graphique du menu configuration */
+	private JFrame f_menuConfiguration;
+	private GridBagLayout layoutConfiguration;
+	private JLabel label_case;
+	private JLabel label_serpents;
+	private JLabel label_echelles;
+	private JButton b_svgConfig;
+	private JButton b_retour;
+	private JSpinner spinnerCases;
+	private JSpinner spinnerSerpents;
+	private JSpinner spinnerEchelles;
 	
+	/* Controleur du menu configuration */
 	ControleurMenuConfiguration controleurMenuConfiguration;
-	
-	JPanel panelConfiguration; //un panel gerant la configuration generale de la page de configuration
-	JPanel panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8; //un panel pour chaque case du GridLayout
-	
-	GridBagLayout layoutConfiguration;
-	
-	JLabel label_case;
-	JLabel label_serpents;
-	JLabel label_echelles;
-	
-	JButton b_svgConfig;
-	JButton b_retour;
-	
-	JSpinner spinnerCases;
-	JSpinner spinnerSerpents;
-	JSpinner spinnerEchelles;
 	
 	private int nbCases = 40; //nb de cases choisit par le joueur, initialise au minimum : 40
 	
@@ -55,6 +49,7 @@ public class MenuConfiguration implements IMenu {
 	//signifie qu'un autre 1/5eme au maximum des cases peuvent etre des echelles 
 	final int pourcentageSerpentEchelle = 5;
 	
+	/* Path des images utilisees */
 	private static final String IMAGE_CONFIG = "images/configurationBackground.jpg";
 	private static final String IMAGE_SQUARE = "images/square.png";
 	private static final String IMAGE_SNAKE_CONFIG = "images/snakeConfig.png";
@@ -62,22 +57,25 @@ public class MenuConfiguration implements IMenu {
 	private static final String IMAGE_BACK = "images/back.png";
 	private static final String IMAGE_SAVE = "images/save.png";
 	
-	private static final Font POLICE_LABEL = new Font(Font.DIALOG, Font.BOLD, 35);
-	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, 45);
+	/* Recuperation des dimensions de l'ecran */
+	private static final Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+	private static final int largeur = (int)tailleEcran.getWidth();
+	private static final int hauteur = (int)tailleEcran.getHeight();	
+	
+	/* Definition des polices utilisees */ //35,45
+	private static final Font POLICE_LABEL = new Font(Font.DIALOG, Font.BOLD, largeur/45);
+	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, largeur/45);
 
+	/* Permet d'afficher la fenetre de configuration */
 	public void afficherEcran() {
 		
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //permet des composants swing avec un style recent
+			/* permet d'avoir des composants swing avec un style recent */
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			controleurMenuConfiguration = new ControleurMenuConfiguration();
 			
-			/* Creation de la fenetre */
+			/* Creation de la fenetre de configuration */
 			f_menuConfiguration = new JFrame("Snakes and Ladders - Menu Configuration");
-		
-			Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
-			int largeur = (int)tailleEcran.getWidth();
-			int hauteur = (int)tailleEcran.getHeight();
-	
 			f_menuConfiguration.setSize(largeur/2, hauteur/2);
 			f_menuConfiguration.setLocationRelativeTo(null);
 			f_menuConfiguration.setResizable(false);
@@ -87,12 +85,10 @@ public class MenuConfiguration implements IMenu {
 			ImageIcon imageIcon = new ImageIcon(img.getScaledInstance(largeur/2, hauteur/2, Image.SCALE_SMOOTH));
 			f_menuConfiguration.setContentPane(new JLabel(imageIcon));		
 			
-			
 			layoutConfiguration = new GridBagLayout();
 			f_menuConfiguration.setLayout(layoutConfiguration);		
-	
 			
-			//Ajout des labels
+			/* Ajout des labels */
 			Image iconeBouton = ImageIO.read(getClass().getClassLoader().getResource(IMAGE_SQUARE));
 			imageIcon = new ImageIcon(iconeBouton.getScaledInstance(largeur/40, hauteur/30, Image.SCALE_SMOOTH));
 			
@@ -117,7 +113,7 @@ public class MenuConfiguration implements IMenu {
 			imageIcon = new ImageIcon(iconeBouton.getScaledInstance(largeur/40, hauteur/30, Image.SCALE_SMOOTH));
 			label_echelles.setIcon(imageIcon);	
 	
-			//Ajout des spinner
+			/* Ajout des spinner */
 			//Spinner choix du nombre de case (commence a 40 cases, minimum 40 cases, maximum 200cases, incremente de 10cases)
 			EcouteurSpinner ecouteurSpinner = new EcouteurSpinner();
 			spinnerCases = new JSpinner(new SpinnerNumberModel(40,40,200,10));
@@ -136,6 +132,8 @@ public class MenuConfiguration implements IMenu {
 			spinnerEchelles.setFont(POLICE_LABEL);
 			
 			EcouteurBouton ecouteurBouton = new EcouteurBouton();
+			
+			/* Creation et configuration du bouton Sauvegarder */
 			b_svgConfig = new JButton("Sauvegarder");
 			b_svgConfig.addActionListener(ecouteurBouton);
 			b_svgConfig.setFont(POLICE_BOUTON);
@@ -158,6 +156,7 @@ public class MenuConfiguration implements IMenu {
 				}
 			});			
 			
+			/* Creation et configuration du bouton Retour */
 			b_retour = new JButton("Retour");	
 			b_retour.addActionListener(ecouteurBouton);	
 			b_retour.setFont(POLICE_BOUTON);
@@ -234,7 +233,6 @@ public class MenuConfiguration implements IMenu {
 		gbc.insets = new Insets(hauteur/56, largeur/50, hauteur/75, largeur/50);
 		
 		return gbc;
-	
 	}
 	
 	private class EcouteurBouton implements ActionListener{

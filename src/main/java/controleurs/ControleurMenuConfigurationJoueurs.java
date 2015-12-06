@@ -51,7 +51,7 @@ public class ControleurMenuConfigurationJoueurs {
 			return false;
 		}
 		if(nom.isEmpty()){
-			JOptionPane.showMessageDialog(null, "Le nom du joueur je peut pas etre vide");
+			JOptionPane.showMessageDialog(null, "Le nom du joueur ne peut pas etre vide");
 			return false;
 		}
 		for(int i = 0 ; i < tableModel.getRowCount() ; i++){
@@ -70,7 +70,6 @@ public class ControleurMenuConfigurationJoueurs {
 	public void demarerPartie(JTable tableJoueurs, String strat, NombreFaces nbFaces) {
 		Partie p = new Partie();
 		
-		// ce code va etre getho!!!!!
 		for (int i = 0; i < tableJoueurs.getRowCount(); i++) {
 			String nom = null;
 			Couleur c = null;

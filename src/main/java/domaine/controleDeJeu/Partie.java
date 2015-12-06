@@ -91,14 +91,14 @@ public class Partie {
 	}
 	
 	// Cette methode retourne maintenant la distance de deplacement du joueur et le deplace
-	// en comparant avec le lancer du de on peut determiner s'il a tombé sur une case serpent/échelle
-	// cette vérification pour l'affichage se fera dans FacadeJeu 
+	// en comparant avec le lancer du de on peut determiner s'il a tombï¿½ sur une case serpent/ï¿½chelle
+	// cette vï¿½rification pour l'affichage se fera dans FacadeJeu 
 	public int deplacerJoueur(int indexJoueur, int resultatDe){
 		
 		anciennePosition = joueurs.get(indexJoueur).getCaseCourante();
 		deplacement = resultatDe + anciennePosition;	
 		int posFinale = plateau.getCaseFinale().getPosition();
-		deplacement = algo.calculerVictoire(joueurs.get(indexJoueur).getCaseCourante(), deplacement, posFinale);
+		deplacement = algo.calculerVictoire(anciennePosition, deplacement, posFinale);
 		deplacement = plateau.getCases().get(deplacement-1).getPosition();
 
 		joueurs.get(indexJoueur).deplacer(deplacement);

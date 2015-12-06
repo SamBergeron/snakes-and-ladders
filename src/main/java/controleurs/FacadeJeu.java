@@ -67,7 +67,7 @@ public class FacadeJeu {
 			
 		// Si la configuration n'existe pas on skip et on reprï¿½sente le menu principal	
 		} catch (IOException e) {
-			System.out.println("Si la configuration n'existe pas veuiller en crï¿½er une!");
+			System.out.println("Si la configuration n'existe pas veuiller en creer une!");
 			MenuPrincipal mp = new MenuPrincipal();
 			mp.afficherEcran();
 		}
@@ -105,10 +105,10 @@ public class FacadeJeu {
 			if(deplacement <= 0) {
 				JOptionPane.showMessageDialog(null, "Oups! On descend un serpent!");
 			} else if(deplacement > resultatDe) {
-				JOptionPane.showMessageDialog(null, "Chanceux! Vous montez l'échelle!");
+				JOptionPane.showMessageDialog(null, "Chanceux! Vous montez l'echelle!");
 			}
 			
-			// On vérifie que le déplacement est sur la case finale
+			// On vï¿½rifie que le dï¿½placement est sur la case finale
 			boolean finPartie = partie.verifierVictoire(indexJoueurCourant);
 					
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());	//on affiche la nouvelle position du joueur

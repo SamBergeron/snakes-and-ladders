@@ -137,7 +137,7 @@ public class PlateauJeu implements IMenu{
 				}
 			});		
 			
-			b_tirerDe = new JButton("Tirer Dé");	
+			b_tirerDe = new JButton("Tirer Dï¿½");	
 			b_tirerDe.setFont(POLICE_BOUTON);
 			b_tirerDe.setPreferredSize(new Dimension(largeur/5, hauteur/10));	
 			b_tirerDe.setForeground(Color.BLACK);
