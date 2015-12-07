@@ -19,6 +19,8 @@ import domaine.elements.statique.Couleur;
 import domaine.elements.statique.NombreFaces;
 
 public class ControleurMenuConfigurationJoueurs {
+	private final int nbJoueurMaxmum = 6;
+	
 	public void nouvellePartie(ArrayList<Joueur> listeJoueurs, De de, StrategieVictoire strat) {
 		Partie p = new Partie();
 		p.setDe(de);
@@ -42,8 +44,16 @@ public class ControleurMenuConfigurationJoueurs {
 		}
 		return true;
 	}
-
+	
 	private boolean validerJoueur(String nom, DefaultTableModel tableModel) {
+		if(tableModel.getRowCount() >= nbJoueurMaxmum){
+			JOptionPane.showMessageDialog(null, "Le nombre de joueur maximum est atteint");
+			return false;
+		}
+		if(nom.isEmpty()){
+			JOptionPane.showMessageDialog(null, "Le nom du joueur ne peut pas etre vide");
+			return false;
+		}
 		for(int i = 0 ; i < tableModel.getRowCount() ; i++){
 			if(tableModel.getValueAt(i, 0).equals(nom)){
 				JOptionPane.showMessageDialog(null, "Le joueur est deja present dans la liste");
@@ -60,7 +70,6 @@ public class ControleurMenuConfigurationJoueurs {
 	public void demarerPartie(JTable tableJoueurs, String strat, NombreFaces nbFaces) {
 		Partie p = new Partie();
 		
-		// ce code va etre getho!!!!!
 		for (int i = 0; i < tableJoueurs.getRowCount(); i++) {
 			String nom = null;
 			Couleur c = null;
@@ -90,17 +99,17 @@ public class ControleurMenuConfigurationJoueurs {
 		
 		FacadeJeu FJ = new FacadeJeu();
 		FJ.demarrerPartie(p);
-	}
+	} 
 
 	private StrategieVictoire selectStrategieAlgo(String s) {
 		StrategieVictoire strat = null;
-		if (s == "algorithme 1") {
+		if (s == "Facile (algorithme 1)") {
 			strat = new StrategieAlgorithme1();
 			return strat;
-		} else if (s == "algorithme 2") {
+		} else if (s == "Moyen (algorithme 2)") {
 			strat = new StrategieAlgorithme2();
 			return strat;
-		} else if (s == "algorithme 3") {
+		} else if (s == "Difficile (algorithme 3)") {
 			strat = new StrategieAlgorithme3();
 			return strat;
 		}

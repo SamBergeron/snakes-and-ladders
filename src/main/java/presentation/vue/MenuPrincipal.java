@@ -22,41 +22,42 @@ import javax.swing.UIManager;
 import controleurs.ControleurMenuPrincipal;
 
 public class MenuPrincipal implements IMenu{
-	JButton b_debutPartie;
-	JButton b_configurerPartie;
-	JButton b_quitterPartie;
 	
-	JFrame f_menuPrincipal;
-	GridBagLayout layoutPrincipal;
+	/* Element graphique du menu principal */
+	private JButton b_debutPartie;
+	private JButton b_configurerPartie;
+	private JButton b_quitterPartie;
+	private JFrame f_menuPrincipal;
+	private GridBagLayout layoutPrincipal;
 	
-	//JPanel panelMenu;
-	ControleurMenuPrincipal controleurMenuPrincipal;
-	Image backgroundImage;
+	/* Controleur du menu principal */
+	private ControleurMenuPrincipal controleurMenuPrincipal;
 	
+	/* Path des images utilisees */
 	private static final String IMAGE_UNAMED = "images/unnamed.png";
 	private static final String IMAGE_MENU = "images/snakeMenuPrincipal.png";
 	private static final String IMAGE_ICON_PARAM = "images/paramIcon.png";
 	private static final String IMAGE_REDX = "images/redX.png";
 	
-	/* Creation des boutons */
-	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, 35);
-	private static final Font POLICE_BOUTON2 = new Font(Font.DIALOG, Font.BOLD, 60);
+	/* Recuperation des dimensions de l'ecran */
+	private static final Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+	private static final int largeur = (int)tailleEcran.getWidth();
+	private static final int hauteur = (int)tailleEcran.getHeight();
 	
-	//IHM Graphique
+	/* Definition des polices utilisees */
+	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, (largeur/50));
+	private static final Font POLICE_BOUTON2 = new Font(Font.DIALOG, Font.BOLD, largeur/30);
+	
+	/* Permet d'afficher la fenetre de menu principal */
 	public void afficherEcran(){
 		EcouteurBouton ecouteurBouton = new EcouteurBouton();
 		controleurMenuPrincipal = new ControleurMenuPrincipal();
 		try {
-			//permet des composants swing avec un style recent
+			/* permet d'avoir des composants swing avec un style recent */
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); 			
 			
 			/* Creation de la fenetre principale */
 			f_menuPrincipal = new JFrame("Snakes and Ladders - Menu Principal");
-	
-			Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
-			int largeur = (int)tailleEcran.getWidth();
-			int hauteur = (int)tailleEcran.getHeight();
-	
 			f_menuPrincipal.setSize(largeur/2, hauteur/2);
 			f_menuPrincipal.setLocationRelativeTo(null);
 			f_menuPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,6 +71,7 @@ public class MenuPrincipal implements IMenu{
 			layoutPrincipal = new GridBagLayout();
 			f_menuPrincipal.setLayout(layoutPrincipal);
 			
+			/* Creation et configuration du bouton Jouer */
 			b_debutPartie = new JButton("Jouer");
 			b_debutPartie.addActionListener(ecouteurBouton);
 			b_debutPartie.setPreferredSize(new Dimension(largeur/6,hauteur/14));
@@ -101,6 +103,7 @@ public class MenuPrincipal implements IMenu{
 				}
 			});		
 	
+			/* Creation et configuration du bouton Configurer */
 			b_configurerPartie = new JButton("Configurer");
 			b_configurerPartie.addActionListener(ecouteurBouton);
 			b_configurerPartie.setPreferredSize(b_debutPartie.getPreferredSize()); //pour que tous les boutons aient la meme taille
@@ -132,6 +135,7 @@ public class MenuPrincipal implements IMenu{
 				}
 			});
 			
+			/* Creation et configuration du bouton Quitter */
 			b_quitterPartie = new JButton("Quitter");
 			b_quitterPartie.addActionListener(ecouteurBouton);
 			b_quitterPartie.setPreferredSize(b_debutPartie.getPreferredSize());
@@ -162,7 +166,7 @@ public class MenuPrincipal implements IMenu{
 				}
 			});		
 			
-			//Generer la grille de jeu
+			/* Insertion des boutons dans la fenetre */
 			GridBagConstraints gbc = genererGrid(hauteur, largeur);
 			f_menuPrincipal.add(b_quitterPartie,gbc);
 			f_menuPrincipal.setVisible(true);
@@ -210,18 +214,4 @@ public class MenuPrincipal implements IMenu{
 			}
 		}
 	}
-	
-	/*
-	private class ImagePanel extends JComponent{
-	    private Image image;
-	    public ImagePanel(Image image) {
-	        this.image = image;
-	    }
-	    @Override
-	    protected void paintComponent(Graphics g) {
-	        super.paintComponent(g);
-	        g.drawImage(image, 0, 0, this);
-	    }		
-	}*/
-
 }

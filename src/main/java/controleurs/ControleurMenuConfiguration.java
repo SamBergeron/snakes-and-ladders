@@ -15,6 +15,7 @@ public class ControleurMenuConfiguration {
 		//action a faire lorsque le bouton svg est clique
 		SerializerConfigPartie serializerConfig = new SerializerConfigPartie();
 		ConfigPartie config = new ConfigPartie();
+		
 		//la longueur du plateau est egale au nb de cases/10 (la largeur est de 10 par defaut)
 		config.setLongueurPlateau(longueur);
 		config.setLargeurPlateau(largeur);
@@ -22,6 +23,6 @@ public class ControleurMenuConfiguration {
 		config.setNbSerpents(nbSerpents);
 		
 		serializerConfig.sauverConfig(config);
-		JOptionPane.showMessageDialog(null, "Sauvegarde des configurations effectuees avec succes !");
+		JOptionPane.showMessageDialog(null, "Sauvegarde des configurations effectu\u00e9es avec succ\u00e8s !");
 	}
 }

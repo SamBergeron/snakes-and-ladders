@@ -1,5 +1,7 @@
 package domaine.elements;
 
+import javax.swing.JOptionPane;
+
 public class CaseSerpent extends Case {
 	
 	private Case redirection;
@@ -11,6 +13,7 @@ public class CaseSerpent extends Case {
 	
 	@Override
 	public int getPosition(){
+		JOptionPane.showMessageDialog(null, "Oups! On descend un serpent!");
 		return redirection.getPosition();
 	}
 	

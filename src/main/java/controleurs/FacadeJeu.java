@@ -65,9 +65,9 @@ public class FacadeJeu {
 				}
 			}
 			
-		// Si la configuration n'existe pas on skip et on reprï¿½sente le menu principal	
+		// Si la configuration n'existe pas on passe et on represente le menu principal	
 		} catch (IOException e) {
-			System.out.println("Si la configuration n'existe pas veuiller en crï¿½er une!");
+			System.out.println("Si la configuration n'existe pas veuiller en cr\u00e9er une!");
 			MenuPrincipal mp = new MenuPrincipal();
 			mp.afficherEcran();
 		}
@@ -98,22 +98,17 @@ public class FacadeJeu {
 		case TIRER:
 			// On commence par lancer le de
 			int resultatDe = partie.tirerAuDe();
-			JOptionPane.showMessageDialog(null, "Vous avez jouer un "+ resultatDe);
+			JOptionPane.showMessageDialog(null, "Vous avez jou\u00E9 un "+ resultatDe);
 			
-			// ensuite on deplace le joueeur
-			int deplacement = partie.deplacerJoueur(indexJoueurCourant, resultatDe);
-			if(deplacement <= 0) {
-				JOptionPane.showMessageDialog(null, "Oups! On descend un serpent!");
-			} else if(deplacement > resultatDe) {
-				JOptionPane.showMessageDialog(null, "Chanceux! Vous montez l'échelle!");
-			}
-			
-			// On vérifie que le déplacement est sur la case finale
-			boolean finPartie = partie.verifierVictoire(indexJoueurCourant);
+			// ensuite on deplace le joueur
+			partie.deplacerJoueur(indexJoueurCourant, resultatDe);
 					
+			// On verifie que le deplacement est sur la case finale
+			boolean finPartie = partie.verifierVictoire(indexJoueurCourant);
+			
 			plateauJeu.afficherPion(partie.getCouleurPion(indexJoueurCourant), partie.getDeplacement(), partie.getAnciennePosition());	//on affiche la nouvelle position du joueur
 			if(finPartie==true){
-				JOptionPane.showMessageDialog(null, "Felicitation, le gagnant est : "+partie.afficherNomJoueur(indexJoueurCourant));
+				JOptionPane.showMessageDialog(null, "F\u00E9licitation, le gagnant est : "+partie.afficherNomJoueur(indexJoueurCourant));
 				indexJoueurCourant=0;
 				gererCommande(4);
 				return false;
