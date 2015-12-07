@@ -8,19 +8,17 @@ Instructions d'installation
 - Exécuter la commande "java -jar NOM_DU_JAR.jar"
 
 # Rapport
-___
 
 # INF5153-20
 # Génie logiciel : conception
-___
 ## Compte rendu d'implémentation pour l'application stand-alone Serpents et Échelles
 ___
 ##### Présenté à M. BERGER, Jacques
 - Nom : __Laurier Paquette-Bérubé__, Code Permanent : __PAQL20099109__
 - Nom : __Samuel Bergeron__, Code Permanent : __BERS24129004__
 - Nom : __Benjamin Rosa__, Code Permanent : __ROSB31128601__
-___
 
+---
 ## Table des matières
 ### 1. [Différences entre la conception et l'implémentation](#Diff)
 - Modification 	de calculerVictoire()
