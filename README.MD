@@ -36,7 +36,7 @@ ___
 - Factory pour les 	cases
 
 ___
-## Différences entre la conception et l'implémentation <a id="Diff"></a>
+## <a id="Diff"></a>Différences entre la conception et l'implémentation 
 ### Modification de calculerVictoire()
 
 Nous avons dû revoir la signature de la fonction calculerVictoire proposée par l'interface StratégieVictoire. Initialement il était prévu de ne faire passer en paramètre de la fonction que la valeur de la nouvelle position du joueur après le jet de dé. Nous nous sommes vite rendu compte de l'erreur de conception faite, et nous l'avons corrigé en rajoutant deux nouveaux paramètres, afin de permettre à la fonction de remplir correctement son rôle.
@@ -82,7 +82,7 @@ La fonction générant les cases spéciales se trouve dans Plateau. Nous avons d
 FacadeJeu peut récupérer l'information contenu dans ces tableaux grâce aux get correspondant dans Plateau. Il peut ensuite faire passer ces tableaux à PlateauJeu pour que ce dernier puisse dessiner les Serpents et Échelles à l'écran. 
 
 ---
-## Choix des patterns GoF <a id="GoF"></a>
+## <a id="Gof"></a>Choix des patterns GoF
 ### Strategy pour l'algorithme de victoire
 
 Le patron de conception GoF Strategy est idéal pour implémenter la contrainte qui demande à avoir 3 façons différentes de terminer le jeu. Les objets du domaine manipuleront seulement une interface StrategieVictoire via sa fonction calculerVictoire(), sans se soucier de la manière dont un joueur est déclaré gagnant.
