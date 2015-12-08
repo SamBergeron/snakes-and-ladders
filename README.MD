@@ -31,7 +31,7 @@ Instructions d'installation
 ### 2. [Choix des patterns GoF](#choix-des-patterns-gof)
 - [Strategy pour l'algorithme de victoire](#strategy-pour-lalgorithme-de-victoire)
 - [Facade pour la communication entre PlateauJeu et Partie](#facade-pour-facadejeu)
-- [Factory pour les cases](#factory-pour-les-casess)
+- [Factory pour les cases](#factory-pour-les-cases)
 
 ___
 ## Différences entre la conception et l'implémentation 
