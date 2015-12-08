@@ -73,7 +73,7 @@ En procédant ainsi, il a fallu de facto créer plusieurs accesseurs dans Partie
 Cette nouvelle façon de faire a rendu obsolète la fonction jouerUnePartie qui a donc été supprimée. À la place, le déroulement d'une partie est géré dans FacadeJeu et dépend du type de joueur dont c'est le tour et si c'est un humain, de l'action effectué par lui sur les boutons de PlateauJeu.
 
 ### Affichage des serpents et des échelles
-Un autre problème est apparu lors de la génération du plateau de jeu. Pour dessiner les Serpents et les Échelles PlateauJeu doit connaître les cases choisies par la fonction générant ces cases spéciales, pour pouvoir ensuite dessiner les Serpents et Échelles. \
+Un autre problème est apparu lors de la génération du plateau de jeu. Pour dessiner les Serpents et les Échelles PlateauJeu doit connaître les cases choisies par la fonction générant ces cases spéciales, pour pouvoir ensuite dessiner les Serpents et Échelles.
 
 La fonction générant les cases spéciales se trouve dans Plateau. Nous avons dû rajouter deux attributs privées dans cette classe : deux tableaux de Point. La partie x du point correspond au numéro de la case de départ et la partie y au numéro de la case d'arrivée du Serpent ou de l'Échelle.
 
@@ -86,9 +86,10 @@ FacadeJeu peut récupérer l'information contenu dans ces tableaux grâce aux ge
 Le patron de conception GoF Strategy est idéal pour implémenter la contrainte qui demande à avoir 3 façons différentes de terminer le jeu. Les objets du domaine manipuleront seulement une interface StrategieVictoire via sa fonction calculerVictoire(), sans se soucier de la manière dont un joueur est déclaré gagnant.
 
 ### Facade pour FacadeJeu
-Le patron de conception Facade est idéal pour faire l’implémentatino des fonctionnalité de jeu. À la place de devoir utiliser plusieurs classes de gestion de partie, la facade jeu englobe tous ces fonctionnalité est les gère elle même. Par ce fait, les controleurs ont uniquement besoin d’instancier la classe FacadeJeu pour avoir accès à tous les fonctionnalité des interfaces d’une partie. Voila le diagramme de package qui illustre ce patron de conception. 
+Le patron de conception Facade est idéal pour faire l’implémentation des fonctionnalité de jeu. À la place de devoir utiliser plusieurs classes de gestion de partie, la facade jeu englobe tous ces fonctionnalité est les gère elle même. Par ce fait, les controleurs ont uniquement besoin d’instancier la classe FacadeJeu pour avoir accès à tous les fonctionnalité des interfaces d’une partie. Voila le diagramme de package qui illustre ce patron de conception. 
 
 	mettre le diagramme ici
 	
 ### Factory pour les cases
+Nous avons aussi utilié le partron GoF Abstract Factory pour générer les cases du plateau. La classe `CasesFactory` contient les méthodes `genererCaseNormale`, `genererCaseSerpent` et `genererCaseEchelle` qui créer un case de chaque type. La classe du plateau contient donc une instance de la "factory" qui se charge de générer chacunes des cases selon les spécifications précises (elle se charge donc de bien espacer les serpents et les échelles, et de respecter les contraintes de nonbre de ces deux types des cases). Si nous voulions modifier la création des cases spéciales, ou bien même ajouter un autre type de case (case ascenseur peut-être?) nous n'aurions qu'à modifier la factory, et créer une autre méthode de génération de cette nouvelle case. Deplus, la factory nous permet de faire abstraction de quel type concret de `Case` il sagit, la méthode de génération choisie s'en charge pour nous et le plateau n'a pas à se soucier de ça.
 
