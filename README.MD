@@ -12,7 +12,7 @@ Instructions d'installation
 # INF5153-20
 # Génie logiciel : conception
 ## Compte rendu d'implémentation pour l'application stand-alone Serpents et Échelles
-___
+
 ##### Présenté à M. BERGER, Jacques
 - Nom : __Laurier Paquette-Bérubé__, Code Permanent : __PAQL20099109__
 - Nom : __Samuel Bergeron__, Code Permanent : __BERS24129004__
@@ -20,21 +20,21 @@ ___
 
 ---
 ## Table des matières
-### 1. [Différences entre la conception et l'implémentation](#Diff)
-- Modification 	de calculerVictoire()
-- Correction 	erreur DSS jouerUnePartie
-- Abandon du 	système d'interface pour un dé
-- Ajout des 	fonctionnalités Undo et Redo dans la classe Joueur
-- Changement des 	relations entre FacadeJeu et Partie
-- Affichage 	des serpents et des échelles
+### 1. [Différences entre la conception et l'implémentation](#différences-entre-la-conception-et-limplémentation)
+- [Modification de calculerVictoire()](#modification-de-calculervictoire)
+- [Correction erreur DSS jouerUnePartie](#correction-erreur-dss-jouerunepartie)
+- [Abandon du système d'interface pour un dé](#abandon-du-système-dinterface-pour-un-dé)
+- [Ajout des fonctionnalités Undo et Redo dans la classe Joueur](#ajout-des-fonctionnalités-undo-et-redo-dans-la-classe-joueur)
+- [Changement des relations entre FacadeJeu et Partie](#changement-des-relations-entre-facadejeu-et-partie)
+- [Affichage des serpents et des échelles](#affichage-des-serpents-et-des-échelles)
 	
-### 2. [Choix des patterns GoF](#Gof)
-- Strategy pour 	l'algorithme de victoire
-- Facade pour la 	communication entre PlateauJeu et Partie
-- Factory pour les 	cases
+### 2. [Choix des patterns GoF](#choix-des-patterns-gof)
+- [Strategy pour l'algorithme de victoire](#strategy-pour-lalgorithme-de-victoire)
+- [Facade pour la communication entre PlateauJeu et Partie](#facade-pour-facadejeu)
+- [Factory pour les cases](#factory-pour-les-casess)
 
 ___
-## <a id="Diff"></a>Différences entre la conception et l'implémentation 
+## Différences entre la conception et l'implémentation 
 ### Modification de calculerVictoire()
 
 Nous avons dû revoir la signature de la fonction calculerVictoire proposée par l'interface StratégieVictoire. Initialement il était prévu de ne faire passer en paramètre de la fonction que la valeur de la nouvelle position du joueur après le jet de dé. Nous nous sommes vite rendu compte de l'erreur de conception faite, et nous l'avons corrigé en rajoutant deux nouveaux paramètres, afin de permettre à la fonction de remplir correctement son rôle.
@@ -80,7 +80,7 @@ La fonction générant les cases spéciales se trouve dans Plateau. Nous avons d
 FacadeJeu peut récupérer l'information contenu dans ces tableaux grâce aux get correspondant dans Plateau. Il peut ensuite faire passer ces tableaux à PlateauJeu pour que ce dernier puisse dessiner les Serpents et Échelles à l'écran. 
 
 ---
-## <a id="Gof"></a>Choix des patterns GoF
+## Choix des patterns GoF
 ### Strategy pour l'algorithme de victoire
 
 Le patron de conception GoF Strategy est idéal pour implémenter la contrainte qui demande à avoir 3 façons différentes de terminer le jeu. Les objets du domaine manipuleront seulement une interface StrategieVictoire via sa fonction calculerVictoire(), sans se soucier de la manière dont un joueur est déclaré gagnant.
@@ -89,4 +89,6 @@ Le patron de conception GoF Strategy est idéal pour implémenter la contrainte 
 Le patron de conception Facade est idéal pour faire l’implémentatino des fonctionnalité de jeu. À la place de devoir utiliser plusieurs classes de gestion de partie, la facade jeu englobe tous ces fonctionnalité est les gère elle même. Par ce fait, les controleurs ont uniquement besoin d’instancier la classe FacadeJeu pour avoir accès à tous les fonctionnalité des interfaces d’une partie. Voila le diagramme de package qui illustre ce patron de conception. 
 
 	mettre le diagramme ici
+	
+### Factory pour les cases
 

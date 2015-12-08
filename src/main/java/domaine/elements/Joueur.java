@@ -13,7 +13,7 @@ public abstract class Joueur {
 		this.caseCourante = 1;
 	}
 	
-	/*
+	/**
 	 * Prend en parametre la valeur du jet de de 
 	 * Retourne la nouvelle position du joueur 
 	 */
@@ -21,7 +21,7 @@ public abstract class Joueur {
 		this.caseCourante = deplacement;
 	}
 	
-	/*
+	/**
 	 * Retourne vrai si le joueur est de type AI
 	 */
 	public boolean estAI(){

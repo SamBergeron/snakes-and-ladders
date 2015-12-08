@@ -46,8 +46,8 @@ public class FacadeJeu {
 			plateauJeu.afficherEcran();
 			
 			plateauJeu.afficherPlateauJeu(config.getLongueurPlateau()); //affiche le plateau de jeu du nombre de cases voulues
-			plateauJeu.setAdresseSerpent(partie.getAdresseSerpents());
-			plateauJeu.setAdresseEchelle(partie.getAdresseEchelles());
+			plateauJeu.setAdresseSerpent(partie.getPlateau().getAdresseSerpent());
+			plateauJeu.setAdresseEchelle(partie.getPlateau().getAdresseEchelle());
 			plateauJeu.refreshSpecialPanel();
 			
 			//afficher les pions de tous les joueurs (faire une boucle for)
@@ -100,9 +100,17 @@ public class FacadeJeu {
 			int resultatDe = partie.tirerAuDe();
 			JOptionPane.showMessageDialog(null, "Vous avez jou\u00E9 un "+ resultatDe);
 			
-			// ensuite on deplace le joueur
-			partie.deplacerJoueur(indexJoueurCourant, resultatDe);
-					
+			// on prends la position du joueur avant son deplacement
+			int dep = partie.deplacerJoueur(indexJoueurCourant, resultatDe);
+			
+			// On affiche le resultat du deplacement
+			if(dep == -1)
+				JOptionPane.showMessageDialog(null, "Vous avez d\u00E9pass\u00E9 la case finale");
+			else {
+				String message = partie.getPlateau().getCases().get(dep-1).message();
+				JOptionPane.showMessageDialog(null, message);
+			}
+			
 			// On verifie que le deplacement est sur la case finale
 			boolean finPartie = partie.verifierVictoire(indexJoueurCourant);
 			

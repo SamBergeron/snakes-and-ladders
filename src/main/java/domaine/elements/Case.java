@@ -23,6 +23,10 @@ public class Case {
 	public void setNbJoueurs(int nbJoueurs) {
 		this.nbJoueurs = nbJoueurs;
 	}
+	
+	public String message(){
+		return "Vous avez tomb\u00E9 sur la case " + position; 
+	}
 
 	@Override
 	public String toString() {

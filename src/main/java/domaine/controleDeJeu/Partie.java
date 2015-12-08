@@ -1,6 +1,5 @@
 package domaine.controleDeJeu;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,25 +80,38 @@ public class Partie {
 	public int tirerAuDe(){
 		return de.rouler();
 	}
-	
-	// Cette methode retourne maintenant la distance de deplacement du joueur et le deplace
-	// en comparant avec le lancer du de on peut determiner s'il est tombe sur une case serpent/echelle
-	// cette verification pour l'affichage se fera dans FacadeJeu 
+	 
+	/**
+	 * Cette methode retourne maintenant la distance de deplacement du joueur et le deplace
+	 * en comparant avec le lancer du de on peut determiner s'il est tombe sur une case serpent/echelle
+	 * cette verification pour l'affichage se fera dans FacadeJeu
+	 * 
+	 * @param indexJoueur
+	 * @param resultatDe
+	 * @return le déplacement initial du joueur, 
+	 * ou -1 si le joueur a eu un déplacement à cause de l'algo de victoire 
+	 */
 	public int deplacerJoueur(int indexJoueur, int resultatDe){
 		
 		anciennePosition = joueurs.get(indexJoueur).getCaseCourante();
-		deplacement = resultatDe + anciennePosition;	
+		int landing = resultatDe + anciennePosition;	
 		int posFinale = plateau.getCaseFinale().getPosition();
-		deplacement = algo.calculerVictoire(anciennePosition, deplacement, posFinale);
+		deplacement = algo.calculerVictoire(anciennePosition, landing, posFinale);
 		deplacement = plateau.getCases().get(deplacement-1).getPosition();
 
 		joueurs.get(indexJoueur).deplacer(deplacement);
 		
-		return deplacement-anciennePosition;
+		if(landing > posFinale)
+			return -1;
+		else return landing;
 	}
 	
-	// Cette methode ne fait que confirmer la victoire, 
-	// le deplacement sur la case finale se fait avec deplacerJoueur ci-haut ^
+	/**
+	 * Cette methode ne fait que confirmer la victoire, 
+	 * le deplacement sur la case finale se fait avec deplacerJoueur ci-haut ^
+	 * @param indexJoueur
+	 * @return true si le joueur est gagnant
+	 */
 	public boolean verifierVictoire(int indexJoueur){
 		int posFinale = plateau.getCaseFinale().getPosition();
 		int posJ = joueurs.get(indexJoueur).getCaseCourante();
@@ -114,17 +126,8 @@ public class Partie {
 		return anciennePosition;
 	}
 	
-	public Point[] getAdresseSerpents(){
-		return plateau.getAdresseSerpent();
-	}
-	
-	public Point[] getAdresseEchelles(){
-		return plateau.getAdresseEchelle();
-	}
-	
 	public Couleur getCouleurPion(int indexJoueur){
 		return joueurs.get(indexJoueur).getCouleurPion();
-		
 	}
 	
 	public List<Joueur> getJoueurs(){

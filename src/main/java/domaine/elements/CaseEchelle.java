@@ -1,7 +1,5 @@
 package domaine.elements;
 
-import javax.swing.JOptionPane;
-
 public class CaseEchelle extends Case {
 	
 	private Case redirection;
@@ -13,7 +11,6 @@ public class CaseEchelle extends Case {
 	
 	@Override
 	public int getPosition(){
-		JOptionPane.showMessageDialog(null, "Chanceux! Vous montez l'\u00E9chelle!");
 		return redirection.getPosition();
 	}
 	
@@ -26,7 +23,14 @@ public class CaseEchelle extends Case {
 			this.redirection = redirection;
 		else throw new Error("Une \u00e9chelle doit rediriger vers une case plus grande");
 	}
-
+	
+	@Override
+	public String message() {
+		return "Chanceux! Vous avez tomb\u00e9 sur la case " + (position + 1)
+				+ " , et montez l'\u00E9chele jusqu'\u00E0 la case "
+				+ getPosition();
+	}
+	
 	@Override
 	public String toString() {
 		return "CaseEchelle [redirection=" + redirection + "], position =" + position;
