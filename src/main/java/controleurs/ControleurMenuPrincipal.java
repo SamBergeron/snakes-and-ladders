@@ -21,7 +21,6 @@ public class ControleurMenuPrincipal {
 			mConfig.afficherEcran();
 		}
 		else{ //quitte le jeu
-			System.out.println("Merci d'avoir joue a Serpents et Echelles!");
 			System.exit(0);
 		}
 		

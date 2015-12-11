@@ -25,7 +25,7 @@ public class Case {
 	}
 	
 	public String message(){
-		return "Vous avez tomb\u00E9 sur la case " + position; 
+		return "Vous \u00eates tomb\u00E9 sur la case " + position; 
 	}
 
 	@Override

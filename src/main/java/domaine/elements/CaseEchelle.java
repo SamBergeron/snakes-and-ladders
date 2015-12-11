@@ -26,8 +26,8 @@ public class CaseEchelle extends Case {
 	
 	@Override
 	public String message() {
-		return "Chanceux! Vous avez tomb\u00e9 sur la case " + (position + 1)
-				+ " , et montez l'\u00E9chele jusqu'\u00E0 la case "
+		return "Chanceux! Vous \u00eates tomb\u00e9 sur la case " + (position + 1)
+				+ " , et montez l'\u00E9chelle jusqu'\u00E0 la case "
 				+ getPosition();
 	}
 	
