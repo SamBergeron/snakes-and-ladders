@@ -62,9 +62,9 @@ public class MenuConfiguration implements IMenu {
 	private static final int largeur = (int)tailleEcran.getWidth();
 	private static final int hauteur = (int)tailleEcran.getHeight();	
 	
-	/* Definition des polices utilisees */ //35,45
-	private static final Font POLICE_LABEL = new Font(Font.DIALOG, Font.BOLD, largeur/45);
-	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, largeur/45);
+	/* Definition des polices utilisees */
+	private static final Font POLICE_LABEL = new Font(Font.DIALOG, Font.BOLD, largeur/50);
+	private static final Font POLICE_BOUTON = new Font(Font.DIALOG, Font.BOLD, largeur/50);
 
 	/* Permet d'afficher la fenetre de configuration */
 	public void afficherEcran() {

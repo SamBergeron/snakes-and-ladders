@@ -51,7 +51,11 @@ public class Humain extends Joueur{
 			return false;
 		} else {
 			positionListe--;
-			this.setCaseCourante(histoCase.get(positionListe));
+			if(histoCase.get(positionListe)==0){
+				this.setCaseCourante(1);
+			}else{
+				this.setCaseCourante(histoCase.get(positionListe));
+			}
 			return true;
 		}
 	}

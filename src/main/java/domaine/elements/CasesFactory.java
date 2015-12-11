@@ -35,7 +35,7 @@ public class CasesFactory implements AbstractCaseFactory {
 				fin = 0;
 			}
 		}
-		//Créer le serpent, le sauver dans notre liste et puis le retourner au plateau
+		//Creer le serpent, le sauver dans notre liste et puis le retourner au plateau
 		CaseSerpent snake = new CaseSerpent(debut, registeredCases.get(fin));
 		registeredCases.set(debut, snake);
 		adressesSerpents.add(new Point(debut+1,fin+1));
@@ -53,7 +53,7 @@ public class CasesFactory implements AbstractCaseFactory {
 				fin = 0;
 			}
 		}
-		//Créer le serpent, le sauver dans notre liste et puis le retourner au plateau
+		//Creer le serpent, le sauver dans notre liste et puis le retourner au plateau
 		CaseEchelle echelle = new CaseEchelle(debut, registeredCases.get(fin));
 		adressesEchelles.add(new Point(debut+1,fin+1));
 		registeredCases.set(debut, echelle);
