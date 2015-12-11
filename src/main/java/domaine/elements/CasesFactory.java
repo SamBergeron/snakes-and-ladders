@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CasesFactory {
+public class CasesFactory implements AbstractCaseFactory {
 	
 	private List<Point> adressesSerpents;
 	private List<Point> adressesEchelles;
@@ -24,7 +24,7 @@ public class CasesFactory {
 		return c;
 	}
 	
-	public CaseSerpent genererCaseSerpent(){
+	public CaseSerpent genererCaseDescente(){
 		int debut = 0;
 		int fin = 0;
 		while((debut-fin)<10){ //car on veut que le serpent fasse descendre d'au moins un niveau complet
@@ -42,7 +42,7 @@ public class CasesFactory {
 		return snake;
 	}
 	
-	public CaseEchelle genererCaseEhelle(){
+	public CaseEchelle genererCaseMontee(){
 		int debut = 0;
 		int fin = 0;
 		while((fin-debut)<10 || debut==0){ //car on veut que l'echelle fasse monter d'au moins un niveau complet
@@ -67,7 +67,7 @@ public class CasesFactory {
 	 * Retourne vrai si la case est deja utilise
 	 * Retourne faux si elle est libre
 	 */
-	public boolean verifierDisponibiliteCase(int indexCase, int indexCase2, List<Point> tableau){
+	private boolean verifierDisponibiliteCase(int indexCase, int indexCase2, List<Point> tableau){
 		for(Point p : tableau){
 			if(((p.x-1)==indexCase || (p.x-1)==indexCase2 
 					|| (p.y-1)==indexCase || (p.y-1)==indexCase2)){
@@ -77,12 +77,12 @@ public class CasesFactory {
 		return false;
 	}
 
-	public Point[] getAdressesSerpents() {
+	public Point[] getAdressesDescentes() {
 		Point[] liste = new Point[adressesSerpents.size()];
 		return adressesSerpents.toArray(liste);
 	}
 
-	public Point[] getAdressesEchelles() {
+	public Point[] getAdressesMontees() {
 		return adressesEchelles.toArray(new Point[adressesEchelles.size()]);
 	}
 	

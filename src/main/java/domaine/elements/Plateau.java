@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Plateau {
 	private List<Case> cases;
-	private CasesFactory casesFactory;
+	private AbstractCaseFactory casesFactory;
 	
 	public Plateau(int longueur, int largeur, int serpents, int echelles) {
 		int size = longueur*largeur;
@@ -24,23 +24,23 @@ public class Plateau {
 		
 		/* On genere pseudo-aleatoirement les serpents*/
 		for(int i=0; i < serpents; i++){
-			Case serpent = casesFactory.genererCaseSerpent();
+			Case serpent = casesFactory.genererCaseDescente();
 			// On veut la position de départ sans la redirection
 			cases.set(serpent.position, serpent);
 		}
 		
 		for(int i=0; i < echelles; i++){
-			Case echelle = casesFactory.genererCaseEhelle();
+			Case echelle = casesFactory.genererCaseMontee();
 			cases.set(echelle.position, echelle);
 		}
 	};
 	
 	public Point[] getAdresseEchelle(){
-		return casesFactory.getAdressesEchelles();
+		return casesFactory.getAdressesMontees();
 	}
 	
 	public Point[] getAdresseSerpent(){
-		return casesFactory.getAdressesSerpents();
+		return casesFactory.getAdressesDescentes();
 	}
 	
 	public Case getCaseFinale(){
