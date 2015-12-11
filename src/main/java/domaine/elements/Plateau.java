@@ -10,7 +10,7 @@ public class Plateau {
 	
 	public Plateau(int longueur, int largeur, int serpents, int echelles) {
 		int size = longueur*largeur;
-		casesFactory = new CasesFactory(size, serpents, echelles);
+		casesFactory = new SerpentEchelleFactory(size, serpents, echelles);
 		genererCases(size, serpents, echelles);
 	}
 	

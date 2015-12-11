@@ -4,14 +4,14 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CasesFactory implements AbstractCaseFactory {
+public class SerpentEchelleFactory implements AbstractCaseFactory {
 	
 	private List<Point> adressesSerpents;
 	private List<Point> adressesEchelles;
 	private List<Case> registeredCases;
 	private int nbCases;
 	
-	public CasesFactory(int nbCases, int serpents, int echelles){
+	public SerpentEchelleFactory(int nbCases, int serpents, int echelles){
 		this.nbCases = nbCases;
 		adressesEchelles = new ArrayList<Point>();
 		adressesSerpents = new ArrayList<Point>();
