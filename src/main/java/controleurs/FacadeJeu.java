@@ -67,7 +67,7 @@ public class FacadeJeu {
 			
 		// Si la configuration n'existe pas on passe et on represente le menu principal	
 		} catch (IOException e) {
-			System.out.println("Si la configuration n'existe pas veuiller en cr\u00e9er une!");
+			JOptionPane.showMessageDialog(null, "Aucune configuration n'existe pour la partie, choisir l'option configurer en premier");
 			MenuPrincipal mp = new MenuPrincipal();
 			mp.afficherEcran();
 		}
